@@ -1,0 +1,367 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum PostType {
+  ARTICLE
+  TOOL
+  HOSTING
+  SAAS
+  COMPARISON
+  PAGE
+}
+
+enum ContentFormat {
+  MARKDOWN
+  MDX
+  HTML
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  image        String?
+  passwordHash String?
+  role         UserRole @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  author Author?
+}
+
+model Author {
+  id          String   @id @default(cuid())
+  userId      String?  @unique
+  name        String
+  slug        String
+  locale      String   @default("en")
+  bio         String?
+  avatarId    String?
+  avatarUrl   String?
+  websiteUrl  String?
+  twitterUrl  String?
+  linkedinUrl String?
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  noIndex     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  avatar Media? @relation("AuthorAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
+  posts  Post[]
+  tools  Tool[]
+
+  @@unique([slug, locale])
+  @@index([locale])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String
+  locale      String    @default("en")
+  description String?
+  type        PostType?
+  parentId    String?
+  order       Int       @default(0)
+  isFeatured  Boolean   @default(false)
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  noIndex     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+  posts    Post[]
+  tools    Tool[]
+
+  @@unique([slug, locale])
+  @@index([parentId])
+  @@index([type, locale])
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  locale      String   @default("en")
+  description String?
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  noIndex     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  posts PostTag[]
+
+  @@unique([slug, locale])
+  @@index([locale])
+}
+
+model Post {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String
+  locale          String        @default("en")
+  excerpt         String?
+  content         String?
+  type            PostType      @default(ARTICLE)
+  status          PostStatus    @default(DRAFT)
+  format          ContentFormat @default(MARKDOWN)
+  authorId        String?
+  categoryId      String?
+  featuredImageId String?
+  coverImageUrl   String?
+  seoTitle        String?
+  seoDesc         String?
+  canonical       String?
+  ogImageId       String?
+  ogImageUrl      String?
+  noIndex         Boolean       @default(false)
+  publishedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  author        Author?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  category      Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage Media?    @relation("PostFeaturedImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
+  ogImage       Media?    @relation("PostOgImage", fields: [ogImageId], references: [id], onDelete: SetNull)
+  tags          PostTag[]
+
+  @@unique([slug, locale])
+  @@index([status, type, locale, publishedAt])
+  @@index([categoryId])
+  @@index([authorId])
+}
+
+model PostTag {
+  postId String
+  tagId  String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+}
+
+model Tool {
+  id               String        @id @default(cuid())
+  name             String
+  slug             String
+  locale           String        @default("en")
+  type             PostType      @default(TOOL)
+  tagline          String?
+  shortDescription String?
+  description      String?
+  websiteUrl       String?
+  pricingSummary   String?
+  content          String?
+  format           ContentFormat @default(MARKDOWN)
+  status           PostStatus    @default(DRAFT)
+  authorId         String?
+  categoryId       String?
+  logoId           String?
+  seoTitle         String?
+  seoDesc          String?
+  canonical        String?
+  ogImageId        String?
+  ogImageUrl       String?
+  noIndex          Boolean       @default(false)
+  componentKey     String?
+  isFeatured       Boolean       @default(false)
+  order            Int           @default(0)
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  author   Author?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  logo     Media?    @relation("ToolLogo", fields: [logoId], references: [id], onDelete: SetNull)
+  ogImage  Media?    @relation("ToolOgImage", fields: [ogImageId], references: [id], onDelete: SetNull)
+
+  @@unique([slug, locale])
+  @@index([status, type, locale, publishedAt])
+  @@index([categoryId])
+}
+
+model HostingProvider {
+  id                  String     @id @default(cuid())
+  name                String
+  slug                String     @unique
+  shortDescription    String?
+  description         String?
+  logoUrl             String?
+  websiteUrl          String?
+  affiliateUrl        String?
+  pricingFrom         Decimal?   @db.Decimal(10, 2)
+  currency            String     @default("USD")
+  rating              Decimal?   @db.Decimal(3, 1)
+  pros                Json?
+  cons                Json?
+  features            Json?
+  bestFor             Json?
+  performanceNotes    String?
+  supportNotes        String?
+  dataCenterLocations Json?
+  status              PostStatus @default(DRAFT)
+  isFeatured          Boolean    @default(false)
+  order               Int        @default(0)
+  seoTitle            String?
+  seoDescription      String?
+  canonicalUrl        String?
+  ogImageUrl          String?
+  noindex             Boolean    @default(false)
+  publishedAt         DateTime?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  @@index([status, isFeatured, order])
+  @@index([rating])
+}
+
+model SaaSProduct {
+  id               String     @id @default(cuid())
+  name             String
+  slug             String     @unique
+  shortDescription String?
+  description      String?
+  logoUrl          String?
+  websiteUrl       String?
+  affiliateUrl     String?
+  category         String?
+  pricingModel     String?
+  pricingFrom      Decimal?   @db.Decimal(10, 2)
+  currency         String     @default("USD")
+  rating           Decimal?   @db.Decimal(3, 1)
+  features         Json?
+  pros             Json?
+  cons             Json?
+  bestFor          Json?
+  alternatives     Json?
+  status           PostStatus @default(DRAFT)
+  isFeatured       Boolean    @default(false)
+  order            Int        @default(0)
+  seoTitle         String?
+  seoDescription   String?
+  canonicalUrl     String?
+  ogImageUrl       String?
+  noindex          Boolean    @default(false)
+  publishedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([status, category, isFeatured, order])
+  @@index([rating])
+}
+
+model Comparison {
+  id                String     @id @default(cuid())
+  title             String
+  slug              String     @unique
+  excerpt           String?
+  itemAName         String
+  itemBName         String
+  itemALogoUrl      String?
+  itemBLogoUrl      String?
+  itemAUrl          String?
+  itemBUrl          String?
+  itemAAffiliateUrl String?
+  itemBAffiliateUrl String?
+  summary           String?
+  verdict           String?
+  winner            String?
+  comparisonTable   Json?
+  prosA             Json?
+  consA             Json?
+  prosB             Json?
+  consB             Json?
+  bestForA          Json?
+  bestForB          Json?
+  content           String?
+  status            PostStatus @default(DRAFT)
+  isFeatured        Boolean    @default(false)
+  order             Int        @default(0)
+  seoTitle          String?
+  seoDescription    String?
+  canonicalUrl      String?
+  ogImageUrl        String?
+  noindex           Boolean    @default(false)
+  publishedAt       DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([status, isFeatured, order, createdAt])
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String?
+  url          String
+  mimeType     String
+  alt          String?
+  altText      String?
+  thumbnailUrl String?
+  width        Int?
+  height       Int?
+  size         Int?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  authorAvatars Author[] @relation("AuthorAvatar")
+  postFeatured  Post[]   @relation("PostFeaturedImage")
+  postOgImages  Post[]   @relation("PostOgImage")
+  toolLogos     Tool[]   @relation("ToolLogo")
+  toolOgImages  Tool[]   @relation("ToolOgImage")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String
+  locale    String   @default("en")
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, locale])
+  @@index([locale])
+}
+
+model Redirect {
+  id          String   @id @default(cuid())
+  source      String
+  destination String
+  statusCode  Int      @default(301)
+  locale      String   @default("en")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([source, locale])
+  @@index([active])
+}
