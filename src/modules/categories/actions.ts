@@ -65,7 +65,7 @@ export async function saveCategoryAction(
   if (!(await ensureAdmin())) {
     return {
       ok: false,
-      message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u danh má»¥c.",
+      message: "Bạn không có quyền lưu danh mục.",
     }
   }
 
@@ -80,26 +80,26 @@ export async function saveCategoryAction(
   const errors: CategoryFormState["errors"] = {}
 
   if (!name) {
-    errors.name = "Vui lÃ²ng nháº­p tÃªn danh má»¥c."
+    errors.name = "Vui lòng nhập tên danh mục."
   }
 
   if (!slug) {
-    errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
+    errors.slug = "Vui lòng nhập slug hợp lệ."
   }
 
   if (!Number.isInteger(order)) {
-    errors.order = "Thá»© tá»± pháº£i lÃ  sá»‘ nguyÃªn."
+    errors.order = "Thứ tự phải là số nguyên."
   }
 
   if (id && parentId === id) {
-    errors.parentId = "Danh má»¥c khÃ´ng thá»ƒ chá»n chÃ­nh nÃ³ lÃ m danh má»¥c cha."
+    errors.parentId = "Danh mục không thể chọn chính nó làm danh mục cha."
   }
 
   if (id && parentId) {
     const descendants = await getDescendantIds(id)
 
     if (descendants.has(parentId)) {
-      errors.parentId = "KhÃ´ng thá»ƒ chá»n danh má»¥c con lÃ m danh má»¥c cha."
+      errors.parentId = "Không thể chọn danh mục con làm danh mục cha."
     }
   }
 
@@ -118,13 +118,13 @@ export async function saveCategoryAction(
     : null
 
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       ok: false,
-      message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin danh má»¥c.",
+      message: "Vui lòng kiểm tra lại thông tin danh mục.",
       errors,
     }
   }
@@ -159,44 +159,20 @@ export async function saveCategoryAction(
 
   return {
     ok: true,
-    message: id ? "ÄÃ£ cáº­p nháº­t danh má»¥c." : "ÄÃ£ táº¡o danh má»¥c.",
+    message: id ? "Đã cập nhật danh mục." : "Đã tạo danh mục.",
   }
 }
 
 export async function deleteCategoryAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/categories", { error: "Ban khong co quyen xoa danh muc." }))
+    redirect(adminRedirect("/admin/categories", { error: "Bạn không có quyền xóa danh mục." }))
   }
 
   const id = text(formData, "id")
-  const category = await prisma.category.findUnique({
-    where: { id },
-    include: {
-      _count: {
-        select: {
-          posts: true,
-          tools: true,
-        },
-      },
-    },
-  })
-
-  if (!category) {
-    redirect(adminRedirect("/admin/categories", { error: "Khong tim thay danh muc." }))
-  }
-
-  if (category._count.posts > 0 || category._count.tools > 0) {
-    redirect(adminRedirect("/admin/categories", { error: "Khong the xoa danh muc dang co bai viet hoac cong cu." }))
-  }
-
-  try {
-    await prisma.category.delete({
-      where: { id },
-    })
-  } catch {
-    redirect(adminRedirect("/admin/categories", { error: deleteErrorMessage("danh muc") }))
-  }
-
+  const category = await prisma.category.findUnique({ where: { id }, include: { _count: { select: { posts: true, tools: true } } } })
+  if (!category) redirect(adminRedirect("/admin/categories", { error: "Không tìm thấy danh mục." }))
+  if (category._count.posts > 0 || category._count.tools > 0) redirect(adminRedirect("/admin/categories", { error: "Không thể xóa danh mục đang có bài viết hoặc công cụ." }))
+  try { await prisma.category.delete({ where: { id } }) } catch { redirect(adminRedirect("/admin/categories", { error: deleteErrorMessage("danh mục") })) }
   revalidatePath("/admin/categories")
-  redirect(adminRedirect("/admin/categories", { success: "Da xoa danh muc." }))
+  redirect(adminRedirect("/admin/categories", { success: "Đã xóa danh mục." }))
 }

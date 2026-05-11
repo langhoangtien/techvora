@@ -58,7 +58,7 @@ export function SaaSForm({ product }: { product?: SaaSProduct | null }) {
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.name)}>
-                <FieldLabel htmlFor="name">Tên sản phẩm</FieldLabel>
+                <FieldLabel htmlFor="name" required>Tên sản phẩm</FieldLabel>
                 <Input
                   id="name"
                   name="name"
@@ -74,7 +74,7 @@ export function SaaSForm({ product }: { product?: SaaSProduct | null }) {
               </Field>
               <div className="grid gap-4 md:grid-cols-[1fr_auto]">
                 <Field data-invalid={Boolean(state.errors?.slug)}>
-                  <FieldLabel htmlFor="slug">Slug</FieldLabel>
+                  <FieldLabel htmlFor="slug" required>Slug</FieldLabel>
                   <Input
                     id="slug"
                     name="slug"
@@ -223,7 +223,7 @@ export function SaaSForm({ product }: { product?: SaaSProduct | null }) {
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.status)}>
-                <FieldLabel htmlFor="status">Trạng thái</FieldLabel>
+                <FieldLabel htmlFor="status" required>Trạng thái</FieldLabel>
                 <select id="status" name="status" defaultValue={product?.status ?? "DRAFT"} className="h-9 rounded-lg border bg-background px-3 text-sm">
                   {statuses.map((status) => (
                     <option key={status.value} value={status.value}>{status.label}</option>

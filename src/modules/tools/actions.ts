@@ -55,7 +55,7 @@ export async function saveToolAction(
   formData: FormData
 ): Promise<ToolFormState> {
   if (!(await ensureAdmin())) {
-    return { ok: false, message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u cÃ´ng cá»¥." }
+    return { ok: false, message: "Bạn không có quyền lưu công cụ." }
   }
 
   const id = nullableText(formData, "id")
@@ -67,14 +67,14 @@ export async function saveToolAction(
   const ogImageUrl = nullableText(formData, "ogImageUrl")
   const errors: ToolFormState["errors"] = {}
 
-  if (!name) errors.name = "Vui lÃ²ng nháº­p tÃªn cÃ´ng cá»¥."
-  if (!slug) errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
-  if (!validStatuses.has(status)) errors.status = "Tráº¡ng thÃ¡i khÃ´ng há»£p lá»‡."
+  if (!name) errors.name = "Vui lòng nhập tên công cụ."
+  if (!slug) errors.slug = "Vui lòng nhập slug hợp lệ."
+  if (!validStatuses.has(status)) errors.status = "Trạng thái không hợp lệ."
   if (componentKey && !toolComponentKeys.includes(componentKey as ToolComponentKey)) {
-    errors.componentKey = "Component key khÃ´ng há»£p lá»‡."
+    errors.componentKey = "Component key không hợp lệ."
   }
-  if (!isValidOptionalUrl(canonical)) errors.canonicalUrl = "Canonical URL khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(ogImageUrl)) errors.ogImageUrl = "OG image URL khÃ´ng há»£p lá»‡."
+  if (!isValidOptionalUrl(canonical)) errors.canonicalUrl = "Canonical URL không hợp lệ."
+  if (!isValidOptionalUrl(ogImageUrl)) errors.ogImageUrl = "OG image URL không hợp lệ."
 
   const existingSlug = slug
     ? await prisma.tool.findFirst({
@@ -84,13 +84,13 @@ export async function saveToolAction(
     : null
 
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       ok: false,
-      message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin cÃ´ng cá»¥.",
+      message: "Vui lòng kiểm tra lại thông tin công cụ.",
       errors,
     }
   }
@@ -130,39 +130,45 @@ export async function saveToolAction(
   revalidatePath(`/tools/${tool.slug}`)
   redirect(
     `/admin/tools/${tool.id}/edit?success=${encodeURIComponent(
-      id ? "ÄÃ£ cáº­p nháº­t cÃ´ng cá»¥." : "ÄÃ£ táº¡o cÃ´ng cá»¥."
+      id ? "Đã cập nhật công cụ." : "Đã tạo công cụ."
     )}`
   )
 }
 
 export async function deleteToolAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/tools", { error: "Ban khong co quyen xoa cong cu." }))
+    redirect(adminRedirect("/admin/tools", { error: "Bạn không có quyền xóa công cụ." }))
   }
 
   const id = text(formData, "id")
   try {
     await prisma.tool.delete({ where: { id } })
   } catch {
-    redirect(adminRedirect("/admin/tools", { error: deleteErrorMessage("cong cu") }))
+    redirect(adminRedirect("/admin/tools", { error: deleteErrorMessage("công cụ") }))
   }
   revalidatePath("/admin/tools")
   revalidatePath("/tools")
-  redirect(adminRedirect("/admin/tools", { success: "Da xoa cong cu." }))
-}export async function bulkToolAction(formData: FormData) {
+  redirect(adminRedirect("/admin/tools", { success: "Đã xóa công cụ." }))
+}
+
+export async function bulkToolAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect("/admin/tools?error=Báº¡n khÃ´ng cÃ³ quyá»n cáº­p nháº­t cÃ´ng cá»¥.")
+    redirect(adminRedirect("/admin/tools", { error: "Bạn không có quyền cập nhật công cụ." }))
   }
 
   const action = text(formData, "bulkAction")
   const ids = formData.getAll("ids").map(String).filter(Boolean)
 
   if (ids.length === 0) {
-    redirect("/admin/tools?error=Vui lÃ²ng chá»n Ã­t nháº¥t má»™t cÃ´ng cá»¥.")
+    redirect(adminRedirect("/admin/tools", { error: "Vui lòng chọn ít nhất một công cụ." }))
   }
 
   if (action === "delete") {
-    await prisma.tool.deleteMany({ where: { id: { in: ids } } })
+    try {
+      await prisma.tool.deleteMany({ where: { id: { in: ids } } })
+    } catch {
+      redirect(adminRedirect("/admin/tools", { error: deleteErrorMessage("công cụ") }))
+    }
   }
 
   if (action === "publish") {
@@ -181,5 +187,5 @@ export async function deleteToolAction(formData: FormData) {
 
   revalidatePath("/admin/tools")
   revalidatePath("/tools")
-  redirect("/admin/tools?success=ÄÃ£ cáº­p nháº­t hÃ ng loáº¡t.")
+  redirect(adminRedirect("/admin/tools", { success: "Đã cập nhật hàng loạt." }))
 }

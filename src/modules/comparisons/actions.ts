@@ -56,7 +56,7 @@ export async function saveComparisonAction(
   formData: FormData
 ): Promise<ComparisonFormState> {
   if (!(await ensureAdmin())) {
-    return { ok: false, message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u comparison." }
+    return { ok: false, message: "Bạn không có quyền lưu comparison." }
   }
 
   const id = nullableText(formData, "id")
@@ -75,14 +75,14 @@ export async function saveComparisonAction(
   ]
   const errors: ComparisonFormState["errors"] = {}
 
-  if (!title) errors.title = "Vui lÃ²ng nháº­p tiÃªu Ä‘á»."
-  if (!slug) errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
-  if (!text(formData, "itemAName")) errors.itemAName = "Vui lÃ²ng nháº­p tÃªn item A."
-  if (!text(formData, "itemBName")) errors.itemBName = "Vui lÃ²ng nháº­p tÃªn item B."
-  if (!validStatuses.has(status)) errors.status = "Tráº¡ng thÃ¡i khÃ´ng há»£p lá»‡."
+  if (!title) errors.title = "Vui lòng nhập tiêu đề."
+  if (!slug) errors.slug = "Vui lòng nhập slug hợp lệ."
+  if (!text(formData, "itemAName")) errors.itemAName = "Vui lòng nhập tên item A."
+  if (!text(formData, "itemBName")) errors.itemBName = "Vui lòng nhập tên item B."
+  if (!validStatuses.has(status)) errors.status = "Trạng thái không hợp lệ."
   for (const key of urlKeys) {
     if (!isValidOptionalUrl(nullableText(formData, key))) {
-      errors[key] = `${key} khÃ´ng há»£p lá»‡.`
+      errors[key] = `${key} không hợp lệ.`
     }
   }
 
@@ -90,18 +90,18 @@ export async function saveComparisonAction(
   try {
     comparisonTable = parseComparisonTable(text(formData, "comparisonTable"))
   } catch {
-    errors.comparisonTable = "Comparison table pháº£i lÃ  JSON array há»£p lá»‡."
+    errors.comparisonTable = "Comparison table phải là JSON array hợp lệ."
   }
 
   const existingSlug = slug
     ? await prisma.comparison.findUnique({ where: { slug }, select: { id: true } })
     : null
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
-    return { ok: false, message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin comparison.", errors }
+    return { ok: false, message: "Vui lòng kiểm tra lại thông tin comparison.", errors }
   }
 
   const current = id
@@ -153,14 +153,14 @@ export async function saveComparisonAction(
   revalidatePath(`/compare/${comparison.slug}`)
   redirect(
     `/admin/comparisons/${comparison.id}/edit?success=${encodeURIComponent(
-      id ? "ÄÃ£ cáº­p nháº­t comparison." : "ÄÃ£ táº¡o comparison."
+      id ? "Đã cập nhật comparison." : "Đã tạo comparison."
     )}`
   )
 }
 
 export async function deleteComparisonAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/comparisons", { error: "Ban khong co quyen xoa comparison." }))
+    redirect(adminRedirect("/admin/comparisons", { error: "Bạn không có quyền xóa comparison." }))
   }
 
   const id = text(formData, "id")
@@ -171,5 +171,5 @@ export async function deleteComparisonAction(formData: FormData) {
   }
   revalidatePath("/admin/comparisons")
   revalidatePath("/compare")
-  redirect(adminRedirect("/admin/comparisons", { success: "Da xoa comparison." }))
+  redirect(adminRedirect("/admin/comparisons", { success: "Đã xóa comparison." }))
 }

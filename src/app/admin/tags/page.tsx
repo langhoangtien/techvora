@@ -31,8 +31,6 @@ export default async function TagsPage({ searchParams }: PageProps) {
   const params = (await searchParams) ?? {}
   const query = value(params, "q") ?? ""
   const editId = value(params, "edit")
-  const success = value(params, "success")
-  const error = value(params, "error")
   const [tags, tag] = await Promise.all([
     getTagsForAdmin(query),
     getTagForEdit(editId),
@@ -49,8 +47,6 @@ export default async function TagsPage({ searchParams }: PageProps) {
         </div>
         <SearchFilter defaultValue={query} placeholder="Tìm thẻ" />
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
-      {error ? <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div> : null}
       <TagForm tag={tag} />
       <DataTable
         data={tags}

@@ -26,7 +26,7 @@ export function SlugFields({
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <Field data-invalid={Boolean(nameError)}>
-        <FieldLabel htmlFor="name">{nameLabel}</FieldLabel>
+        <FieldLabel htmlFor="name" required>{nameLabel}</FieldLabel>
         <Input
           id="name"
           name="name"
@@ -45,7 +45,7 @@ export function SlugFields({
         {nameError ? <FieldError>{nameError}</FieldError> : null}
       </Field>
       <Field data-invalid={Boolean(slugError)}>
-        <FieldLabel htmlFor="slug">Slug</FieldLabel>
+        <FieldLabel htmlFor="slug" required>Slug</FieldLabel>
         <Input
           id="slug"
           name="slug"
@@ -62,4 +62,3 @@ export function SlugFields({
     </div>
   )
 }
-

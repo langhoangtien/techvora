@@ -13,20 +13,16 @@ export const metadata: Metadata = {
 
 export default async function EditSaaSPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   await requireAdmin()
-  const [{ id }, query] = await Promise.all([params, searchParams])
+  const { id } = await params
   const product = await getSaaSForEdit(id)
 
   if (!product) {
     notFound()
   }
-
-  const success = Array.isArray(query?.success) ? query?.success[0] : query?.success
 
   return (
     <div className="space-y-6">
@@ -36,7 +32,6 @@ export default async function EditSaaSPage({
           Cập nhật nội dung, pricing, rating, SEO và CTA affiliate.
         </p>
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
       <SaaSForm product={product} />
     </div>
   )

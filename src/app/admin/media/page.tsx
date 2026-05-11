@@ -29,8 +29,6 @@ export default async function MediaPage({ searchParams }: PageProps) {
     mimeType: value(params, "mimeType") ?? "",
     sort: value(params, "sort") ?? "newest",
   }
-  const success = value(params, "success")
-  const error = value(params, "error")
   const [media, mimeTypes] = await Promise.all([
     getMediaForAdmin(filters),
     getMediaMimeTypes(),
@@ -74,7 +72,7 @@ export default async function MediaPage({ searchParams }: PageProps) {
           Lọc
         </Button>
       </form>
-      <MediaLibrary media={media} success={success} error={error} />
+      <MediaLibrary media={media} />
     </div>
   )
 }

@@ -32,8 +32,6 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
   const params = (await searchParams) ?? {}
   const query = value(params, "q") ?? ""
   const editId = value(params, "edit")
-  const success = value(params, "success")
-  const error = value(params, "error")
   const [authors, author] = await Promise.all([
     getAuthorsForAdmin(query),
     getAuthorForEdit(editId),
@@ -50,8 +48,6 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
         </div>
         <SearchFilter defaultValue={query} placeholder="Tìm tác giả" />
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
-      {error ? <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div> : null}
       <AuthorForm author={author} />
       <DataTable
         data={authors}

@@ -65,7 +65,7 @@ export async function saveSaaSAction(
   formData: FormData
 ): Promise<SaaSFormState> {
   if (!(await ensureAdmin())) {
-    return { ok: false, message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u SaaS product." }
+    return { ok: false, message: "Bạn không có quyền lưu SaaS product." }
   }
 
   const id = nullableText(formData, "id")
@@ -81,17 +81,17 @@ export async function saveSaaSAction(
   const rating = optionalNumber(formData, "rating")
   const errors: SaaSFormState["errors"] = {}
 
-  if (!name) errors.name = "Vui lÃ²ng nháº­p tÃªn sáº£n pháº©m."
-  if (!slug) errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
-  if (!validStatuses.has(status)) errors.status = "Tráº¡ng thÃ¡i khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(logoUrl)) errors.logoUrl = "Logo URL khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(websiteUrl)) errors.websiteUrl = "Website URL khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(affiliateUrl)) errors.affiliateUrl = "Affiliate URL khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(canonicalUrl)) errors.canonicalUrl = "Canonical URL khÃ´ng há»£p lá»‡."
-  if (!isValidOptionalUrl(ogImageUrl)) errors.ogImageUrl = "OG image URL khÃ´ng há»£p lá»‡."
-  if (Number.isNaN(pricingFrom)) errors.pricingFrom = "GiÃ¡ khá»Ÿi Ä‘iá»ƒm khÃ´ng há»£p lá»‡."
+  if (!name) errors.name = "Vui lòng nhập tên sản phẩm."
+  if (!slug) errors.slug = "Vui lòng nhập slug hợp lệ."
+  if (!validStatuses.has(status)) errors.status = "Trạng thái không hợp lệ."
+  if (!isValidOptionalUrl(logoUrl)) errors.logoUrl = "Logo URL không hợp lệ."
+  if (!isValidOptionalUrl(websiteUrl)) errors.websiteUrl = "Website URL không hợp lệ."
+  if (!isValidOptionalUrl(affiliateUrl)) errors.affiliateUrl = "Affiliate URL không hợp lệ."
+  if (!isValidOptionalUrl(canonicalUrl)) errors.canonicalUrl = "Canonical URL không hợp lệ."
+  if (!isValidOptionalUrl(ogImageUrl)) errors.ogImageUrl = "OG image URL không hợp lệ."
+  if (Number.isNaN(pricingFrom)) errors.pricingFrom = "Giá khởi điểm không hợp lệ."
   if (Number.isNaN(rating) || (rating != null && (rating < 0 || rating > 5))) {
-    errors.rating = "Rating pháº£i náº±m trong khoáº£ng 0 Ä‘áº¿n 5."
+    errors.rating = "Rating phải nằm trong khoảng 0 đến 5."
   }
 
   const existingSlug = slug
@@ -102,13 +102,13 @@ export async function saveSaaSAction(
     : null
 
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       ok: false,
-      message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin SaaS product.",
+      message: "Vui lòng kiểm tra lại thông tin SaaS product.",
       errors,
     }
   }
@@ -157,14 +157,14 @@ export async function saveSaaSAction(
   revalidatePath(`/saas/${product.slug}`)
   redirect(
     `/admin/saas/${product.id}/edit?success=${encodeURIComponent(
-      id ? "ÄÃ£ cáº­p nháº­t SaaS product." : "ÄÃ£ táº¡o SaaS product."
+      id ? "Đã cập nhật SaaS product." : "Đã tạo SaaS product."
     )}`
   )
 }
 
 export async function deleteSaaSAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/saas", { error: "Ban khong co quyen xoa SaaS product." }))
+    redirect(adminRedirect("/admin/saas", { error: "Bạn không có quyền xóa SaaS product." }))
   }
 
   const id = text(formData, "id")
@@ -175,5 +175,5 @@ export async function deleteSaaSAction(formData: FormData) {
   }
   revalidatePath("/admin/saas")
   revalidatePath("/saas")
-  redirect(adminRedirect("/admin/saas", { success: "Da xoa SaaS product." }))
+  redirect(adminRedirect("/admin/saas", { success: "Đã xóa SaaS product." }))
 }

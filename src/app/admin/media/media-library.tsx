@@ -33,15 +33,7 @@ function formatDate(date: Date) {
   }).format(date)
 }
 
-export function MediaLibrary({
-  media,
-  success,
-  error,
-}: {
-  media: Media[]
-  success?: string
-  error?: string
-}) {
+export function MediaLibrary({ media }: { media: Media[] }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [selected, setSelected] = useState<Media | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -87,14 +79,9 @@ export function MediaLibrary({
   return (
     <>
       <div className="flex flex-col gap-3">
-        {success ? (
-          <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            {success}
-          </div>
-        ) : null}
-        {error || uploadError ? (
+        {uploadError ? (
           <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">
-            {error ?? uploadError}
+            {uploadError}
           </div>
         ) : null}
         <div className="flex flex-wrap gap-2">

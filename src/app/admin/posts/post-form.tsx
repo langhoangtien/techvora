@@ -196,7 +196,7 @@ export function PostForm({
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.title)}>
-                <FieldLabel htmlFor="title">Tiêu đề</FieldLabel>
+                <FieldLabel htmlFor="title" required>Tiêu đề</FieldLabel>
                 <Input
                   id="title"
                   name="title"
@@ -213,7 +213,7 @@ export function PostForm({
               </Field>
               <div className="grid gap-4 md:grid-cols-[1fr_auto]">
                 <Field data-invalid={Boolean(state.errors?.slug)}>
-                  <FieldLabel htmlFor="slug">Slug</FieldLabel>
+                  <FieldLabel htmlFor="slug" required>Slug</FieldLabel>
                   <Input
                     id="slug"
                     name="slug"
@@ -251,7 +251,7 @@ export function PostForm({
                 />
               </Field>
               <Field data-invalid={Boolean(state.errors?.content)}>
-                <FieldLabel>Nội dung</FieldLabel>
+                <FieldLabel required>Nội dung</FieldLabel>
                 <TiptapEditor value={content} onChange={setContent} />
                 {state.errors?.content ? <FieldError>{state.errors.content}</FieldError> : null}
               </Field>
@@ -318,14 +318,14 @@ export function PostForm({
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.status)}>
-                <FieldLabel htmlFor="status">Trạng thái</FieldLabel>
+                <FieldLabel htmlFor="status" required>Trạng thái</FieldLabel>
                 <select id="status" name="status" defaultValue={post?.status ?? "DRAFT"} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
                   {statuses.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
                 </select>
                 {state.errors?.status ? <FieldError>{state.errors.status}</FieldError> : null}
               </Field>
               <Field data-invalid={Boolean(state.errors?.type)}>
-                <FieldLabel htmlFor="type">Loại nội dung</FieldLabel>
+                <FieldLabel htmlFor="type" required>Loại nội dung</FieldLabel>
                 <select id="type" name="type" defaultValue={post?.type ?? "ARTICLE"} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
                   {postTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
                 </select>

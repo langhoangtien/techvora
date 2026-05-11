@@ -46,7 +46,7 @@ async function deletePublicFile(publicUrl: string | null | undefined) {
 
 export async function updateMediaAltTextAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/media", { error: "Ban khong co quyen cap nhat media." }))
+    redirect(adminRedirect("/admin/media", { error: "Bạn không có quyền cập nhật media." }))
   }
 
   const id = text(formData, "id")
@@ -61,7 +61,7 @@ export async function updateMediaAltTextAction(formData: FormData) {
   })
 
   revalidatePath("/admin/media")
-  redirect(adminRedirect("/admin/media", { success: "Da cap nhat alt text." }))
+  redirect(adminRedirect("/admin/media", { success: "Đã cập nhật alt text." }))
 }
 export async function getMediaReferenceWarnings(mediaId: string) {
   const media = await prisma.media.findUnique({
@@ -110,18 +110,18 @@ export async function getMediaReferenceWarnings(mediaId: string) {
     media._count.toolLogos +
     media._count.toolOgImages
 
-  if (relationCount > 0) warnings.push("Media Ä‘ang Ä‘Æ°á»£c tham chiáº¿u báº±ng quan há»‡ trong database.")
-  if (postContent > 0) warnings.push(`URL xuáº¥t hiá»‡n trong ná»™i dung ${postContent} bÃ i viáº¿t.`)
-  if (postCover > 0) warnings.push(`URL Ä‘ang lÃ  cover image cá»§a ${postCover} bÃ i viáº¿t.`)
-  if (authors > 0) warnings.push(`URL Ä‘ang lÃ  avatar cá»§a ${authors} tÃ¡c giáº£.`)
-  if (settings > 0) warnings.push("URL xuáº¥t hiá»‡n trong Site Settings.")
+  if (relationCount > 0) warnings.push("Media đang được tham chiếu bằng quan hệ trong database.")
+  if (postContent > 0) warnings.push(`URL xuất hiện trong nội dung ${postContent} bài viết.`)
+  if (postCover > 0) warnings.push(`URL đang là cover image của ${postCover} bài viết.`)
+  if (authors > 0) warnings.push(`URL đang là avatar của ${authors} tác giả.`)
+  if (settings > 0) warnings.push("URL xuất hiện trong Site Settings.")
 
   return warnings
 }
 
 export async function deleteMediaAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/media", { error: "Ban khong co quyen xoa media." }))
+    redirect(adminRedirect("/admin/media", { error: "Bạn không có quyền xóa media." }))
   }
 
   const id = text(formData, "id")
@@ -129,7 +129,7 @@ export async function deleteMediaAction(formData: FormData) {
   const media = await prisma.media.findUnique({ where: { id } })
 
   if (!media) {
-    redirect(adminRedirect("/admin/media", { error: "Khong tim thay media." }))
+    redirect(adminRedirect("/admin/media", { error: "Không tìm thấy media." }))
   }
 
   const warnings = await getMediaReferenceWarnings(id)
@@ -137,7 +137,7 @@ export async function deleteMediaAction(formData: FormData) {
   if (warnings.length > 0 && !force) {
     redirect(
       adminRedirect("/admin/media", {
-        error: "Media dang duoc su dung. Bat force delete neu van muon xoa.",
+        error: "Media đang được sử dụng. Bật force delete nếu vẫn muốn xóa.",
       })
     )
   }
@@ -181,5 +181,5 @@ export async function deleteMediaAction(formData: FormData) {
   await Promise.all([deletePublicFile(media.url), deletePublicFile(media.thumbnailUrl)])
 
   revalidatePath("/admin/media")
-  redirect(adminRedirect("/admin/media", { success: "Da xoa media." }))
+  redirect(adminRedirect("/admin/media", { success: "Đã xóa media." }))
 }

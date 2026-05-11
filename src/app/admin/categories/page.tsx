@@ -35,8 +35,6 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
   const params = (await searchParams) ?? {}
   const query = value(params, "q") ?? ""
   const editId = value(params, "edit")
-  const success = value(params, "success")
-  const error = value(params, "error")
   const [categories, categoryOptions, category] = await Promise.all([
     getCategoriesForAdmin(query),
     getCategoryOptions(),
@@ -54,8 +52,6 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
         </div>
         <SearchFilter defaultValue={query} placeholder="Tìm danh mục" />
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
-      {error ? <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div> : null}
       <CategoryForm category={category} categories={categoryOptions} />
       <DataTable
         data={categories}

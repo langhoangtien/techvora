@@ -63,7 +63,7 @@ export function ToolForm({ tool, categories }: ToolFormProps) {
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.name)}>
-                <FieldLabel htmlFor="name">Tên công cụ</FieldLabel>
+                <FieldLabel htmlFor="name" required>Tên công cụ</FieldLabel>
                 <Input
                   id="name"
                   name="name"
@@ -79,7 +79,7 @@ export function ToolForm({ tool, categories }: ToolFormProps) {
               </Field>
               <div className="grid gap-4 md:grid-cols-[1fr_auto]">
                 <Field data-invalid={Boolean(state.errors?.slug)}>
-                  <FieldLabel htmlFor="slug">Slug</FieldLabel>
+                  <FieldLabel htmlFor="slug" required>Slug</FieldLabel>
                   <Input
                     id="slug"
                     name="slug"
@@ -188,7 +188,7 @@ export function ToolForm({ tool, categories }: ToolFormProps) {
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.status)}>
-                <FieldLabel htmlFor="status">Trạng thái</FieldLabel>
+                <FieldLabel htmlFor="status" required>Trạng thái</FieldLabel>
                 <select
                   id="status"
                   name="status"

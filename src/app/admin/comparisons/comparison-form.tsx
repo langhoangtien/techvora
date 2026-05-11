@@ -40,13 +40,13 @@ export function ComparisonForm({ comparison }: { comparison?: Comparison | null 
           <CardHeader><CardTitle>Thông tin cơ bản</CardTitle><CardDescription>Tiêu đề, summary, verdict và winner.</CardDescription></CardHeader>
           <CardContent><FieldGroup>
             <Field data-invalid={Boolean(state.errors?.title)}>
-              <FieldLabel htmlFor="title">Tiêu đề</FieldLabel>
+              <FieldLabel htmlFor="title" required>Tiêu đề</FieldLabel>
               <Input id="title" name="title" value={title} onChange={(event) => { const next = event.target.value; setTitle(next); if (!slugTouched) setSlug(slugify(next)) }} required />
               {state.errors?.title ? <FieldError>{state.errors.title}</FieldError> : null}
             </Field>
             <div className="grid gap-4 md:grid-cols-[1fr_auto]">
               <Field data-invalid={Boolean(state.errors?.slug)}>
-                <FieldLabel htmlFor="slug">Slug</FieldLabel>
+                <FieldLabel htmlFor="slug" required>Slug</FieldLabel>
                 <Input id="slug" name="slug" value={slug} onChange={(event) => { setSlugTouched(true); setSlug(slugify(event.target.value)) }} required />
                 {state.errors?.slug ? <FieldError>{state.errors.slug}</FieldError> : null}
               </Field>
@@ -63,7 +63,7 @@ export function ComparisonForm({ comparison }: { comparison?: Comparison | null 
             <CardHeader><CardTitle>Item {side}</CardTitle><CardDescription>Thông tin, CTA và pros/cons của item {side}.</CardDescription></CardHeader>
             <CardContent><FieldGroup>
               <Field data-invalid={Boolean(state.errors?.[`item${side}Name`])}>
-                <FieldLabel htmlFor={`item${side}Name`}>Tên item {side}</FieldLabel>
+                <FieldLabel htmlFor={`item${side}Name`} required>Tên item {side}</FieldLabel>
                 <Input id={`item${side}Name`} name={`item${side}Name`} defaultValue={String(comparison?.[`item${side}Name` as keyof Comparison] ?? "")} required />
                 {state.errors?.[`item${side}Name`] ? <FieldError>{state.errors[`item${side}Name`]}</FieldError> : null}
               </Field>
@@ -106,7 +106,7 @@ export function ComparisonForm({ comparison }: { comparison?: Comparison | null 
       <aside className="space-y-6">
         <Card><CardHeader><CardTitle>Xuất bản</CardTitle><CardDescription>Trạng thái và thứ tự hiển thị.</CardDescription></CardHeader>
           <CardContent><FieldGroup>
-            <Field data-invalid={Boolean(state.errors?.status)}><FieldLabel htmlFor="status">Trạng thái</FieldLabel><select id="status" name="status" defaultValue={comparison?.status ?? "DRAFT"} className="h-9 rounded-lg border bg-background px-3 text-sm">{statuses.map((status) => <option key={status.value} value={status.value}>{status.label}</option>)}</select>{state.errors?.status ? <FieldError>{state.errors.status}</FieldError> : null}</Field>
+            <Field data-invalid={Boolean(state.errors?.status)}><FieldLabel htmlFor="status" required>Trạng thái</FieldLabel><select id="status" name="status" defaultValue={comparison?.status ?? "DRAFT"} className="h-9 rounded-lg border bg-background px-3 text-sm">{statuses.map((status) => <option key={status.value} value={status.value}>{status.label}</option>)}</select>{state.errors?.status ? <FieldError>{state.errors.status}</FieldError> : null}</Field>
             <Field><FieldLabel htmlFor="order">Thứ tự</FieldLabel><Input id="order" name="order" type="number" defaultValue={comparison?.order ?? 0} /></Field>
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isFeatured" defaultChecked={comparison?.isFeatured ?? false} />Nổi bật</label>
           </FieldGroup></CardContent>

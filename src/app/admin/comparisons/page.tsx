@@ -39,8 +39,6 @@ export default async function AdminComparisonsPage({ searchParams }: PageProps) 
     featured: value(params, "featured") ?? "",
     page,
   }
-  const success = value(params, "success")
-  const error = value(params, "error")
   const { comparisons, totalPages } = await getComparisonList(filters)
 
   return (
@@ -49,8 +47,6 @@ export default async function AdminComparisonsPage({ searchParams }: PageProps) 
         <div><h1 className="text-2xl font-semibold tracking-tight">Comparisons</h1><p className="mt-1 text-sm text-muted-foreground">Quản lý trang so sánh sản phẩm, SaaS, hosting và công cụ.</p></div>
         <Button asChild><Link href="/admin/comparisons/new"><PlusIcon />Tạo comparison</Link></Button>
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
-      {error ? <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div> : null}
       <form className="grid gap-2 rounded-lg border bg-card p-4 md:grid-cols-4">
         <Input name="q" defaultValue={filters.q} placeholder="Tìm title hoặc item" />
         <select name="status" defaultValue={filters.status} className="h-8 rounded-lg border bg-background px-2.5 text-sm">

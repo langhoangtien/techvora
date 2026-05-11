@@ -14,10 +14,8 @@ export const metadata: Metadata = {
 
 export default async function EditPostPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   await requireAdmin()
   const { id } = await params
@@ -30,8 +28,6 @@ export default async function EditPostPage({
   if (!post) {
     notFound()
   }
-  const query = (await searchParams) ?? {}
-  const success = Array.isArray(query.success) ? query.success[0] : query.success
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,11 +37,6 @@ export default async function EditPostPage({
           Cập nhật nội dung, trạng thái xuất bản và SEO.
         </p>
       </div>
-      {success ? (
-        <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-          {success}
-        </div>
-      ) : null}
       <PostForm
         post={post}
         options={options}

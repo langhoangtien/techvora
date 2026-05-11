@@ -13,20 +13,16 @@ export const metadata: Metadata = {
 
 export default async function EditHostingPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   await requireAdmin()
-  const [{ id }, query] = await Promise.all([params, searchParams])
+  const { id } = await params
   const provider = await getHostingForEdit(id)
 
   if (!provider) {
     notFound()
   }
-
-  const success = Array.isArray(query?.success) ? query?.success[0] : query?.success
 
   return (
     <div className="space-y-6">
@@ -36,7 +32,6 @@ export default async function EditHostingPage({
           Cập nhật nội dung, rating, SEO và CTA affiliate.
         </p>
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
       <HostingForm provider={provider} />
     </div>
   )

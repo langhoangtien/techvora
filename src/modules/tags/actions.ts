@@ -36,7 +36,7 @@ export async function saveTagAction(
   if (!(await ensureAdmin())) {
     return {
       ok: false,
-      message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u tháº».",
+      message: "Bạn không có quyền lưu thẻ.",
     }
   }
 
@@ -47,11 +47,11 @@ export async function saveTagAction(
   const errors: TagFormState["errors"] = {}
 
   if (!name) {
-    errors.name = "Vui lÃ²ng nháº­p tÃªn tháº»."
+    errors.name = "Vui lòng nhập tên thẻ."
   }
 
   if (!slug) {
-    errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
+    errors.slug = "Vui lòng nhập slug hợp lệ."
   }
 
   const existingSlug = slug
@@ -69,13 +69,13 @@ export async function saveTagAction(
     : null
 
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       ok: false,
-      message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin tháº».",
+      message: "Vui lòng kiểm tra lại thông tin thẻ.",
       errors,
     }
   }
@@ -104,43 +104,20 @@ export async function saveTagAction(
 
   return {
     ok: true,
-    message: id ? "ÄÃ£ cáº­p nháº­t tháº»." : "ÄÃ£ táº¡o tháº».",
+    message: id ? "Đã cập nhật thẻ." : "Đã tạo thẻ.",
   }
 }
 
 export async function deleteTagAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/tags", { error: "Ban khong co quyen xoa the." }))
+    redirect(adminRedirect("/admin/tags", { error: "Bạn không có quyền xóa thẻ." }))
   }
 
   const id = text(formData, "id")
-  const tag = await prisma.tag.findUnique({
-    where: { id },
-    include: {
-      _count: {
-        select: {
-          posts: true,
-        },
-      },
-    },
-  })
-
-  if (!tag) {
-    redirect(adminRedirect("/admin/tags", { error: "Khong tim thay the." }))
-  }
-
-  if (tag._count.posts > 0) {
-    redirect(adminRedirect("/admin/tags", { error: "Khong the xoa the dang duoc gan vao bai viet." }))
-  }
-
-  try {
-    await prisma.tag.delete({
-      where: { id },
-    })
-  } catch {
-    redirect(adminRedirect("/admin/tags", { error: deleteErrorMessage("the") }))
-  }
-
+  const tag = await prisma.tag.findUnique({ where: { id }, include: { _count: { select: { posts: true } } } })
+  if (!tag) redirect(adminRedirect("/admin/tags", { error: "Không tìm thấy thẻ." }))
+  if (tag._count.posts > 0) redirect(adminRedirect("/admin/tags", { error: "Không thể xóa thẻ đang được gắn vào bài viết." }))
+  try { await prisma.tag.delete({ where: { id } }) } catch { redirect(adminRedirect("/admin/tags", { error: deleteErrorMessage("thẻ") })) }
   revalidatePath("/admin/tags")
-  redirect(adminRedirect("/admin/tags", { success: "Da xoa the." }))
+  redirect(adminRedirect("/admin/tags", { success: "Đã xóa thẻ." }))
 }

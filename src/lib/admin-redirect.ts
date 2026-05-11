@@ -4,5 +4,5 @@ export function adminRedirect(path: string, params: Record<string, string>) {
 }
 
 export function deleteErrorMessage(resource: string) {
-  return `Khong the xoa ${resource}. Muc nay co the da bi xoa hoac dang duoc du lieu khac su dung.`
+  return `Không thể xóa ${resource}. Mục này có thể đã bị xóa hoặc đang được dữ liệu khác sử dụng.`
 }

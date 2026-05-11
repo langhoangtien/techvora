@@ -36,7 +36,7 @@ export async function saveAuthorAction(
   if (!(await ensureAdmin())) {
     return {
       ok: false,
-      message: "Báº¡n khÃ´ng cÃ³ quyá»n lÆ°u tÃ¡c giáº£.",
+      message: "Bạn không có quyền lưu tác giả.",
     }
   }
 
@@ -46,11 +46,11 @@ export async function saveAuthorAction(
   const errors: AuthorFormState["errors"] = {}
 
   if (!name) {
-    errors.name = "Vui lÃ²ng nháº­p tÃªn tÃ¡c giáº£."
+    errors.name = "Vui lòng nhập tên tác giả."
   }
 
   if (!slug) {
-    errors.slug = "Vui lÃ²ng nháº­p slug há»£p lá»‡."
+    errors.slug = "Vui lòng nhập slug hợp lệ."
   }
 
   const existingSlug = slug
@@ -68,13 +68,13 @@ export async function saveAuthorAction(
     : null
 
   if (existingSlug && existingSlug.id !== id) {
-    errors.slug = "Slug nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng."
+    errors.slug = "Slug này đã được sử dụng."
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       ok: false,
-      message: "Vui lÃ²ng kiá»ƒm tra láº¡i thÃ´ng tin tÃ¡c giáº£.",
+      message: "Vui lòng kiểm tra lại thông tin tác giả.",
       errors,
     }
   }
@@ -107,43 +107,20 @@ export async function saveAuthorAction(
 
   return {
     ok: true,
-    message: id ? "ÄÃ£ cáº­p nháº­t tÃ¡c giáº£." : "ÄÃ£ táº¡o tÃ¡c giáº£.",
+    message: id ? "Đã cập nhật tác giả." : "Đã tạo tác giả.",
   }
 }
 
 export async function deleteAuthorAction(formData: FormData) {
   if (!(await ensureAdmin())) {
-    redirect(adminRedirect("/admin/authors", { error: "Ban khong co quyen xoa tac gia." }))
+    redirect(adminRedirect("/admin/authors", { error: "Bạn không có quyền xóa tác giả." }))
   }
 
   const id = text(formData, "id")
-  const author = await prisma.author.findUnique({
-    where: { id },
-    include: {
-      _count: {
-        select: {
-          posts: true,
-        },
-      },
-    },
-  })
-
-  if (!author) {
-    redirect(adminRedirect("/admin/authors", { error: "Khong tim thay tac gia." }))
-  }
-
-  if (author._count.posts > 0) {
-    redirect(adminRedirect("/admin/authors", { error: "Khong the xoa tac gia dang co bai viet." }))
-  }
-
-  try {
-    await prisma.author.delete({
-      where: { id },
-    })
-  } catch {
-    redirect(adminRedirect("/admin/authors", { error: deleteErrorMessage("tac gia") }))
-  }
-
+  const author = await prisma.author.findUnique({ where: { id }, include: { _count: { select: { posts: true } } } })
+  if (!author) redirect(adminRedirect("/admin/authors", { error: "Không tìm thấy tác giả." }))
+  if (author._count.posts > 0) redirect(adminRedirect("/admin/authors", { error: "Không thể xóa tác giả đang có bài viết." }))
+  try { await prisma.author.delete({ where: { id } }) } catch { redirect(adminRedirect("/admin/authors", { error: deleteErrorMessage("tác giả") })) }
   revalidatePath("/admin/authors")
-  redirect(adminRedirect("/admin/authors", { success: "Da xoa tac gia." }))
+  redirect(adminRedirect("/admin/authors", { success: "Đã xóa tác giả." }))
 }

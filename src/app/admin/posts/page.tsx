@@ -57,8 +57,6 @@ export default async function PostsPage({ searchParams }: PageProps) {
     authorId: value(params, "authorId") ?? "",
     page,
   }
-  const success = value(params, "success")
-  const error = value(params, "error")
   const [{ posts, totalPages }, options] = await Promise.all([
     getPostList(filters),
     getPostEditorOptions(),
@@ -80,8 +78,6 @@ export default async function PostsPage({ searchParams }: PageProps) {
           </Link>
         </Button>
       </div>
-      {success ? <div className="rounded-lg border bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
-      {error ? <div className="rounded-lg border bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div> : null}
       <form className="grid gap-2 rounded-lg border bg-card p-4 md:grid-cols-5">
         <Input name="q" defaultValue={filters.q} placeholder="Tìm bài viết" />
         <select name="status" defaultValue={filters.status} className="h-8 rounded-lg border bg-background px-2.5 text-sm">

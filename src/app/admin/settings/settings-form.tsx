@@ -1,7 +1,8 @@
 "use client"
 
-import { useActionState, useRef, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import { SaveIcon } from "lucide-react"
+import { toast } from "sonner"
 
 import { updateSettingsAction, type SettingsFormState } from "@/app/admin/settings/actions"
 import type { SettingsMap } from "@/lib/settings"
@@ -58,7 +59,7 @@ function TextInput({
 }) {
   return (
     <Field data-invalid={Boolean(error)}>
-      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      <FieldLabel htmlFor={name} required={required}>{label}</FieldLabel>
       <Input
         id={name}
         name={name}
@@ -172,6 +173,7 @@ function TextArea({
   defaultValue,
   error,
   placeholder,
+  required,
   rows = 3,
 }: {
   label: string
@@ -179,16 +181,18 @@ function TextArea({
   defaultValue?: string
   error?: string
   placeholder?: string
+  required?: boolean
   rows?: number
 }) {
   return (
     <Field data-invalid={Boolean(error)}>
-      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      <FieldLabel htmlFor={name} required={required}>{label}</FieldLabel>
       <textarea
         id={name}
         name={name}
         defaultValue={defaultValue}
         placeholder={placeholder}
+        required={required}
         rows={rows}
         aria-invalid={Boolean(error)}
         className={cn(
@@ -302,21 +306,20 @@ export function SettingsForm({ settings }: { settings: SettingsMap }) {
     initialState
   )
 
+  useEffect(() => {
+    if (!state.message) {
+      return
+    }
+
+    if (state.ok) {
+      toast.success(state.message)
+    } else {
+      toast.error(state.message)
+    }
+  }, [state])
+
   return (
     <form action={formAction} className="space-y-6">
-      {state.message ? (
-        <div
-          className={cn(
-            "rounded-lg border px-4 py-3 text-sm",
-            state.ok
-              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300"
-              : "border-destructive/20 bg-destructive/10 text-destructive"
-          )}
-        >
-          {state.message}
-        </div>
-      ) : null}
-
       <SettingsSection
         title="Tổng quan"
         description="Thông tin nhận diện cơ bản của website."
@@ -378,6 +381,7 @@ export function SettingsForm({ settings }: { settings: SettingsMap }) {
           name="defaultSeoDescription"
           defaultValue={settings.seo.defaultSeoDescription}
           error={state.errors?.defaultSeoDescription}
+          required
           rows={3}
         />
         <TextInput
