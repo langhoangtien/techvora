@@ -17,6 +17,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getSitemapComparisons(),
   ])
 
+  const staticPages = [
+    { path: "/about", priority: 0.6 },
+    { path: "/contact", priority: 0.6 },
+    { path: "/privacy-policy", priority: 0.4 },
+    { path: "/terms", priority: 0.4 },
+  ]
+
   return [
     {
       url: site.url,
@@ -54,6 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "hourly",
       priority: 0.8,
     },
+    ...staticPages.map((page) => ({
+      url: new URL(page.path, site.url).toString(),
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: page.priority,
+    })),
     ...articles.map((article) => ({
       url: new URL(`/articles/${article.slug}`, site.url).toString(),
       lastModified: article.updatedAt,

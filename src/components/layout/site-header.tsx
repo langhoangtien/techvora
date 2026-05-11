@@ -12,6 +12,10 @@ const navItems = [
   { title: "Hosting", href: "/hosting" },
   { title: "SaaS", href: "/saas" },
   { title: "Compare", href: "/compare" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
+  { title: "Privacy", href: "/privacy-policy" },
+  { title: "Terms", href: "/terms" },
 ]
 
 export function SiteHeader({
@@ -50,7 +54,7 @@ export function SiteHeader({
           )}
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+        <nav className="hidden items-center gap-4 text-sm text-muted-foreground lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -62,7 +66,7 @@ export function SiteHeader({
           ))}
         </nav>
 
-        <details className="group md:hidden">
+        <details className="group lg:hidden">
           <summary className="flex size-9 cursor-pointer list-none items-center justify-center rounded-lg border bg-background text-foreground [&::-webkit-details-marker]:hidden">
             <MenuIcon className="size-4" />
             <span className="sr-only">Open navigation</span>
