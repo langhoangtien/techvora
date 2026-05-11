@@ -71,6 +71,11 @@ export const adminNavItems = [
       { title: "Cài đặt site", url: "/admin/settings" },
     ],
   },
+  {
+    title: "Tài khoản",
+    url: "/admin/profile",
+    icon: <UserRoundIcon />,
+  },
 ]
 
 export const adminQuickLinks = [

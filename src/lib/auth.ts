@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image,
+          image: user.avatarUrl ?? user.image,
           role: user.role,
         }
       },
@@ -69,4 +69,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 }
-

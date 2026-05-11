@@ -16,17 +16,35 @@ import {
 } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { authOptions } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 import { getSiteConfig } from "@/lib/settings"
 import { getThemeStyle } from "@/lib/theme"
 
 export async function AdminShell({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)
   const siteConfig = await getSiteConfig()
+  const user = session?.user?.id
+    ? await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: {
+          name: true,
+          email: true,
+          avatarUrl: true,
+          image: true,
+        },
+      })
+    : null
 
   return (
     <SidebarProvider style={getThemeStyle(siteConfig.theme)}>
       <AdminToasts />
-      <AdminSidebar user={session?.user} />
+      <AdminSidebar
+        user={{
+          name: user?.name ?? session?.user?.name ?? null,
+          email: user?.email ?? session?.user?.email ?? null,
+          image: user?.avatarUrl ?? user?.image ?? session?.user?.image ?? null,
+        }}
+      />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center border-b bg-background/80 backdrop-blur-xl">
           <div className="flex items-center gap-2 px-4">

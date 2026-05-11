@@ -1,7 +1,5 @@
 "use client"
 
-import type { Session } from "next-auth"
-
 import { adminNavItems, siteConfig } from "@/config/site"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -20,7 +18,11 @@ export function AdminSidebar({
   user,
   ...props
 }: React.ComponentProps<typeof Sidebar> & {
-  user?: Session["user"]
+  user?: {
+    name?: string | null
+    email?: string | null
+    image?: string | null
+  }
 }) {
   return (
     <Sidebar collapsible="icon" {...props}>

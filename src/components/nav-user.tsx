@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { signOut } from "next-auth/react"
 import {
   Avatar,
@@ -23,11 +24,8 @@ import {
 } from "@/components/ui/sidebar"
 import {
   BadgeCheckIcon,
-  BellIcon,
   ChevronsUpDownIcon,
-  CreditCardIcon,
   LogOutIcon,
-  SparklesIcon,
 } from "lucide-react"
 
 export function NavUser({
@@ -40,6 +38,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const fallback = user.name.slice(0, 2).toUpperCase()
 
   return (
     <SidebarMenu>
@@ -52,7 +51,7 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">QT</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -71,7 +70,7 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">QT</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -81,24 +80,11 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <SparklesIcon />
-                Gói sử dụng
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheckIcon />
-                Tài khoản
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Thanh toán
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Thông báo
+              <DropdownMenuItem asChild>
+                <Link href="/admin/profile">
+                  <BadgeCheckIcon />
+                  Tài khoản
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -114,4 +100,3 @@ export function NavUser({
     </SidebarMenu>
   )
 }
-
