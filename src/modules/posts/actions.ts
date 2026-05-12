@@ -8,6 +8,10 @@ import { isAdminSession } from "@/lib/admin-auth"
 import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/slugify"
+import {
+  createAutoRedirectIfSlugChanged,
+} from "@/modules/redirects/actions"
+import { pathForContentSlug } from "@/modules/redirects/paths"
 
 export type PostFormState = {
   ok: boolean
@@ -20,6 +24,13 @@ const locale = "en"
 const validStatuses = new Set(["DRAFT", "PUBLISHED", "SCHEDULED", "ARCHIVED"])
 const validTypes = new Set(["ARTICLE", "TOOL", "SAAS", "COMPARISON", "PAGE"])
 const validFormats = new Set(["HTML", "MARKDOWN", "MDX"])
+
+function postPath(type: PostType, slug: string) {
+  if (type === "TOOL") return pathForContentSlug("tool", slug)
+  if (type === "SAAS") return pathForContentSlug("service", slug)
+  if (type === "COMPARISON") return pathForContentSlug("comparison", slug)
+  return pathForContentSlug("article", slug)
+}
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim()
@@ -132,7 +143,10 @@ export async function savePostAction(
   }
 
   const current = id
-    ? await prisma.post.findUnique({ where: { id }, select: { publishedAt: true } })
+    ? await prisma.post.findUnique({
+        where: { id },
+        select: { publishedAt: true, slug: true, type: true },
+      })
     : null
   const publishedAt =
     status === "PUBLISHED" && !current?.publishedAt ? new Date() : current?.publishedAt
@@ -161,6 +175,14 @@ export async function savePostAction(
     ? await prisma.post.update({ where: { id }, data })
     : await prisma.post.create({ data })
 
+  if (current && current.slug !== post.slug) {
+    await createAutoRedirectIfSlugChanged({
+      oldPath: postPath(current.type, current.slug),
+      newPath: postPath(post.type, post.slug),
+    })
+    revalidatePath(postPath(current.type, current.slug))
+  }
+
   await prisma.postTag.deleteMany({ where: { postId: post.id } })
 
   if (selectedTags.length > 0) {
@@ -172,6 +194,7 @@ export async function savePostAction(
 
   revalidatePath("/admin/posts")
   revalidatePath(`/admin/posts/${post.id}/edit`)
+  revalidatePath(postPath(post.type, post.slug))
   redirect(
     `/admin/posts/${post.id}/edit?success=${encodeURIComponent(
       id ? "Đã cập nhật bài viết." : "Đã tạo bài viết."

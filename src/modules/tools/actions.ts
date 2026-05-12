@@ -8,6 +8,8 @@ import { isAdminSession } from "@/lib/admin-auth"
 import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/slugify"
+import { createAutoRedirectIfSlugChanged } from "@/modules/redirects/actions"
+import { pathForContentSlug } from "@/modules/redirects/paths"
 import {
   toolComponentKeys,
   type ToolComponentKey,
@@ -96,7 +98,10 @@ export async function saveToolAction(
   }
 
   const current = id
-    ? await prisma.tool.findUnique({ where: { id }, select: { publishedAt: true } })
+    ? await prisma.tool.findUnique({
+        where: { id },
+        select: { publishedAt: true, slug: true },
+      })
     : null
   const publishedAt =
     status === "PUBLISHED" && !current?.publishedAt ? new Date() : current?.publishedAt
@@ -124,6 +129,14 @@ export async function saveToolAction(
   const tool = id
     ? await prisma.tool.update({ where: { id }, data })
     : await prisma.tool.create({ data })
+
+  if (current && current.slug !== tool.slug) {
+    await createAutoRedirectIfSlugChanged({
+      oldPath: pathForContentSlug("tool", current.slug),
+      newPath: pathForContentSlug("tool", tool.slug),
+    })
+    revalidatePath(pathForContentSlug("tool", current.slug))
+  }
 
   revalidatePath("/admin/tools")
   revalidatePath("/tools")

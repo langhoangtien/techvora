@@ -9,6 +9,8 @@ import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/slugify"
 import { parseComparisonTable } from "@/modules/comparisons/utils"
+import { createAutoRedirectIfSlugChanged } from "@/modules/redirects/actions"
+import { pathForContentSlug } from "@/modules/redirects/paths"
 
 export type ComparisonFormState = {
   ok: boolean
@@ -105,7 +107,10 @@ export async function saveComparisonAction(
   }
 
   const current = id
-    ? await prisma.comparison.findUnique({ where: { id }, select: { publishedAt: true } })
+    ? await prisma.comparison.findUnique({
+        where: { id },
+        select: { publishedAt: true, slug: true },
+      })
     : null
   const publishedAt =
     status === "PUBLISHED" && !current?.publishedAt ? new Date() : current?.publishedAt
@@ -147,6 +152,14 @@ export async function saveComparisonAction(
   const comparison = id
     ? await prisma.comparison.update({ where: { id }, data })
     : await prisma.comparison.create({ data })
+
+  if (current && current.slug !== comparison.slug) {
+    await createAutoRedirectIfSlugChanged({
+      oldPath: pathForContentSlug("comparison", current.slug),
+      newPath: pathForContentSlug("comparison", comparison.slug),
+    })
+    revalidatePath(pathForContentSlug("comparison", current.slug))
+  }
 
   revalidatePath("/admin/comparisons")
   revalidatePath("/compare")

@@ -8,6 +8,8 @@ import { isAdminSession } from "@/lib/admin-auth"
 import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/slugify"
+import { createAutoRedirectIfSlugChanged } from "@/modules/redirects/actions"
+import { pathForContentSlug } from "@/modules/redirects/paths"
 
 export type ServiceFormState = {
   ok: boolean
@@ -114,7 +116,10 @@ export async function saveServiceAction(
   }
 
   const current = id
-    ? await prisma.serviceProduct.findUnique({ where: { id }, select: { publishedAt: true } })
+    ? await prisma.serviceProduct.findUnique({
+        where: { id },
+        select: { publishedAt: true, slug: true },
+      })
     : null
   const publishedAt =
     status === "PUBLISHED" && !current?.publishedAt ? new Date() : current?.publishedAt
@@ -151,6 +156,14 @@ export async function saveServiceAction(
   const product = id
     ? await prisma.serviceProduct.update({ where: { id }, data })
     : await prisma.serviceProduct.create({ data })
+
+  if (current && current.slug !== product.slug) {
+    await createAutoRedirectIfSlugChanged({
+      oldPath: pathForContentSlug("service", current.slug),
+      newPath: pathForContentSlug("service", product.slug),
+    })
+    revalidatePath(pathForContentSlug("service", current.slug))
+  }
 
   revalidatePath("/admin/services")
   revalidatePath("/services")
