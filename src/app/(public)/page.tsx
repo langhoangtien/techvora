@@ -68,7 +68,7 @@ function homepageJsonLd(site: SiteConfigFromSettings) {
     description: site.seoDescription || site.tagline,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${absoluteUrl(site, "/articles")}?q={search_term_string}`,
+      target: `${absoluteUrl(site, "/search")}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   }
@@ -117,7 +117,7 @@ export default async function HomePage() {
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
               {site.seoDescription}
             </p>
-            <form action="/articles" className="mt-8 max-w-2xl">
+            <form action="/search" className="mt-8 max-w-2xl">
               <div className="flex items-center gap-2 rounded-lg border bg-background p-2 shadow-sm">
                 <SearchIcon className="ml-2 size-4 shrink-0 text-muted-foreground" />
                 <Input

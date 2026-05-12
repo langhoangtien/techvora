@@ -1,7 +1,9 @@
 import Link from "next/link"
-import { MenuIcon } from "lucide-react"
+import { MenuIcon, SearchIcon } from "lucide-react"
 
 import { Container } from "@/components/layout/container"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { siteConfig as fallbackSiteConfig } from "@/config/site"
 import type { SiteConfigFromSettings } from "@/lib/settings"
 import { cn } from "@/lib/utils"
@@ -54,7 +56,18 @@ export function SiteHeader({
           )}
         </Link>
 
-        <nav className="hidden items-center gap-4 text-sm text-muted-foreground lg:flex">
+        <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
+          <form action="/search" className="w-full max-w-56">
+            <div className="flex h-9 items-center gap-2 rounded-lg border bg-background px-2">
+              <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
+              <Input
+                name="q"
+                placeholder="Search"
+                className="h-8 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
+              />
+            </div>
+          </form>
+          <nav className="flex items-center gap-4 text-sm text-muted-foreground">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -64,7 +77,8 @@ export function SiteHeader({
               {item.title}
             </Link>
           ))}
-        </nav>
+          </nav>
+        </div>
 
         <details className="group lg:hidden">
           <summary className="flex size-9 cursor-pointer list-none items-center justify-center rounded-lg border bg-background text-foreground [&::-webkit-details-marker]:hidden">
@@ -73,6 +87,12 @@ export function SiteHeader({
           </summary>
           <div className="absolute inset-x-4 top-14 rounded-lg border bg-background p-2 shadow-lg">
             <nav className="grid text-sm">
+              <Button asChild variant="outline" className="mb-2 justify-start">
+                <Link href="/search">
+                  <SearchIcon className="size-4" />
+                  Search
+                </Link>
+              </Button>
               {navItems.map((item) => (
                 <Link
                   key={item.href}
