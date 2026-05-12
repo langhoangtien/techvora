@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 
 import { ArticleGrid } from "@/components/article/article-grid"
 import { Container } from "@/components/layout/container"
@@ -66,7 +66,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
             <SectionHeader
               eyebrow="Articles"
               title={category ? `${category.name} Articles` : "Latest Articles"}
-              description="Independent research and practical guidance for software, SaaS, and infrastructure decisions."
+              description="Independent research and practical guidance for software, Services, and infrastructure decisions."
             />
             <form className="flex gap-2 md:w-80">
               {categorySlug ? <input type="hidden" name="category" value={categorySlug} /> : null}

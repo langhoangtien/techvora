@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+﻿import { NextResponse } from "next/server"
 
 import {
   minSearchQueryLength,
@@ -17,8 +17,7 @@ export async function GET(request: Request) {
       results: {
         articles: [],
         tools: [],
-        hosting: [],
-        saas: [],
+        services: [],
         comparisons: [],
       },
     })

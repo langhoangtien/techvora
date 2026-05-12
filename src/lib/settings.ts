@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client"
+﻿import type { Prisma } from "@prisma/client"
 
 import { siteConfig } from "@/config/site"
 import { prisma } from "@/lib/prisma"
@@ -101,7 +101,7 @@ export const defaultSettings: SettingsMap = {
   general: {
     siteName: siteConfig.name,
     siteUrl: siteConfig.url,
-    tagline: "Tech tools, SaaS, hosting and VPS intelligence.",
+    tagline: "Tech tools and online Services intelligence.",
     defaultLocale: "en",
     logoUrl: "",
     faviconUrl: "/favicon.ico",

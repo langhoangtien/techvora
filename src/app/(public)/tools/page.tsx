@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/layout/section-header"
@@ -11,7 +11,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: "Tools",
-  description: "Free technical tools for developers, operators, and SaaS teams.",
+  description: "Free technical tools for developers, operators, and Services teams.",
 }
 
 export default async function ToolsPage() {
@@ -25,7 +25,7 @@ export default async function ToolsPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Tools",
-    description: "Free technical tools for developers, operators, and SaaS teams.",
+    description: "Free technical tools for developers, operators, and Services teams.",
     url: pageUrl,
   }
 

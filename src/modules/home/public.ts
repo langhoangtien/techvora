@@ -1,11 +1,11 @@
-import { prisma } from "@/lib/prisma"
+﻿import { prisma } from "@/lib/prisma"
 
 const publishedWhere = {
   status: "PUBLISHED" as const,
 }
 
 export async function getHomepageContent() {
-  const [tools, articles, hostingProviders, saasProducts, comparisons, categories] =
+  const [tools, articles, services, comparisons, categories] =
     await Promise.all([
       prisma.tool.findMany({
         where: publishedWhere,
@@ -40,26 +40,7 @@ export async function getHomepageContent() {
         orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
         take: 6,
       }),
-      prisma.hostingProvider.findMany({
-        where: publishedWhere,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          logoUrl: true,
-          shortDescription: true,
-          rating: true,
-          pricingFrom: true,
-          currency: true,
-          bestFor: true,
-          affiliateUrl: true,
-          websiteUrl: true,
-          isFeatured: true,
-        },
-        orderBy: [{ isFeatured: "desc" }, { order: "asc" }, { rating: "desc" }],
-        take: 4,
-      }),
-      prisma.saaSProduct.findMany({
+      prisma.serviceProduct.findMany({
         where: publishedWhere,
         select: {
           id: true,
@@ -112,8 +93,7 @@ export async function getHomepageContent() {
   return {
     tools,
     articles,
-    hostingProviders,
-    saasProducts,
+    services,
     comparisons,
     categories,
   }

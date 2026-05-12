@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 
 import {
   PolicySection,
@@ -61,7 +61,7 @@ export default async function TermsPage() {
         <PolicySection title="Editorial content and disclaimers">
           <p>
             Content is provided for informational purposes only. We aim for
-            accuracy, but software products, hosting plans, prices, features,
+            accuracy, but software products, service plans, prices, features,
             and policies can change. You should verify important details with
             the relevant provider before making a decision.
           </p>

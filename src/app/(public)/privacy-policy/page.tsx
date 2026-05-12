@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 
 import {
   PolicySection,
@@ -98,7 +98,7 @@ export default async function PrivacyPolicyPage() {
           <p>
             The website may link to or integrate with third-party services such
             as analytics providers, advertising networks, affiliate platforms,
-            social networks, hosting providers, and embedded content providers.
+            social networks, service providers, and embedded content providers.
             Their privacy practices are governed by their own policies.
           </p>
         </PolicySection>

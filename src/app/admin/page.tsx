@@ -1,4 +1,4 @@
-import { ActivityIcon, FileTextIcon, FolderTreeIcon, LinkIcon } from "lucide-react"
+﻿import { ActivityIcon, FileTextIcon, FolderTreeIcon, LinkIcon } from "lucide-react"
 
 import { DataTable } from "@/components/admin/data-table"
 import { StatusBadge } from "@/components/admin/status-badge"
@@ -14,16 +14,16 @@ import {
 import { Button } from "@/components/ui/button"
 
 const stats = [
-  { label: "Nội dung", value: "0", icon: <FileTextIcon /> },
-  { label: "Danh mục", value: "0", icon: <FolderTreeIcon /> },
+  { label: "Ná»™i dung", value: "0", icon: <FileTextIcon /> },
+  { label: "Danh má»¥c", value: "0", icon: <FolderTreeIcon /> },
   { label: "Redirect", value: "0", icon: <LinkIcon /> },
-  { label: "Tác vụ chờ", value: "0", icon: <ActivityIcon /> },
+  { label: "TÃ¡c vá»¥ chá»", value: "0", icon: <ActivityIcon /> },
 ]
 
 const readinessRows = [
-  { area: "Schema nội dung", status: "PUBLISHED", note: "Đã định nghĩa" },
-  { area: "SEO metadata", status: "PUBLISHED", note: "Sẵn sàng mở rộng" },
-  { area: "CRUD quản trị", status: "DRAFT", note: "Chưa triển khai ở bước này" },
+  { area: "Schema ná»™i dung", status: "PUBLISHED", note: "ÄÃ£ Ä‘á»‹nh nghÄ©a" },
+  { area: "SEO metadata", status: "PUBLISHED", note: "Sáºµn sÃ ng má»Ÿ rá»™ng" },
+  { area: "CRUD quáº£n trá»‹", status: "DRAFT", note: "ChÆ°a triá»ƒn khai á»Ÿ bÆ°á»›c nÃ y" },
 ]
 
 export default function AdminPage() {
@@ -31,15 +31,15 @@ export default function AdminPage() {
     <>
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Tổng quan</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Tá»•ng quan</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Nền tảng quản trị nội dung Tekvora cho bài viết, công cụ, SaaS,
-            hosting và SEO.
+            Ná»n táº£ng quáº£n trá»‹ ná»™i dung Tekvora cho bÃ i viáº¿t, cÃ´ng cá»¥, Services
+            vÃ  SEO.
           </p>
         </div>
         <div className="flex gap-2">
-          <SearchBox placeholder="Tìm trong admin" className="hidden w-64 md:block" />
-          <Button variant="outline">Kiểm tra site</Button>
+          <SearchBox placeholder="TÃ¬m trong admin" className="hidden w-64 md:block" />
+          <Button variant="outline">Kiá»ƒm tra site</Button>
         </div>
       </div>
 
@@ -62,9 +62,9 @@ export default function AdminPage() {
       <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Trạng thái nền tảng</CardTitle>
+            <CardTitle>Tráº¡ng thÃ¡i ná»n táº£ng</CardTitle>
             <CardDescription>
-              Các phần đã sẵn sàng trong bước kiến trúc đầu tiên.
+              CÃ¡c pháº§n Ä‘Ã£ sáºµn sÃ ng trong bÆ°á»›c kiáº¿n trÃºc Ä‘áº§u tiÃªn.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -73,17 +73,17 @@ export default function AdminPage() {
               columns={[
                 {
                   key: "area",
-                  header: "Khu vực",
+                  header: "Khu vá»±c",
                   cell: (row) => <span className="font-medium">{row.area}</span>,
                 },
                 {
                   key: "status",
-                  header: "Trạng thái",
+                  header: "Tráº¡ng thÃ¡i",
                   cell: (row) => <StatusBadge status={row.status} />,
                 },
                 {
                   key: "note",
-                  header: "Ghi chú",
+                  header: "Ghi chÃº",
                   cell: (row) => (
                     <span className="text-muted-foreground">{row.note}</span>
                   ),
@@ -94,15 +94,15 @@ export default function AdminPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Hàng đợi biên tập</CardTitle>
+            <CardTitle>HÃ ng Ä‘á»£i biÃªn táº­p</CardTitle>
             <CardDescription>
-              CRUD và auth sẽ được triển khai ở milestone sau.
+              CRUD vÃ  auth sáº½ Ä‘Æ°á»£c triá»ƒn khai á»Ÿ milestone sau.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <EmptyState
-              title="Chưa có nội dung"
-              description="Dữ liệu thật sẽ xuất hiện sau khi bật các module quản trị."
+              title="ChÆ°a cÃ³ ná»™i dung"
+              description="Dá»¯ liá»‡u tháº­t sáº½ xuáº¥t hiá»‡n sau khi báº­t cÃ¡c module quáº£n trá»‹."
             />
           </CardContent>
         </Card>

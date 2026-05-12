@@ -1,4 +1,4 @@
-import Link from "next/link"
+﻿import Link from "next/link"
 import { ArrowRightIcon, MenuIcon, SearchIcon } from "lucide-react"
 
 import { Container } from "@/components/layout/container"
@@ -69,7 +69,7 @@ export function SiteHeader({
                 <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
                 <Input
                   name="q"
-                  placeholder="Search tools, SaaS, hosting..."
+                  placeholder="Search tools and Services..."
                   className="h-9 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
                 />
               </div>
@@ -96,7 +96,7 @@ export function SiteHeader({
                   <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
                   <Input
                     name="q"
-                    placeholder="Search tools, SaaS, hosting..."
+                    placeholder="Search tools and Services..."
                     className="h-10 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
                   />
                 </div>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useActionState, useMemo, useRef, useState } from "react"
 import Link from "next/link"
@@ -40,17 +40,16 @@ type EditorOptions = {
 const initialState: PostFormState = { ok: false }
 
 const statuses = [
-  { value: "DRAFT", label: "Nháp" },
-  { value: "PUBLISHED", label: "Xuất bản" },
-  { value: "SCHEDULED", label: "Lên lịch" },
-  { value: "ARCHIVED", label: "Lưu trữ" },
+  { value: "DRAFT", label: "NhÃ¡p" },
+  { value: "PUBLISHED", label: "Xuáº¥t báº£n" },
+  { value: "SCHEDULED", label: "LÃªn lá»‹ch" },
+  { value: "ARCHIVED", label: "LÆ°u trá»¯" },
 ]
 
 const postTypes = [
   { value: "ARTICLE", label: "Article" },
   { value: "TOOL", label: "Tool" },
-  { value: "HOSTING", label: "Hosting" },
-  { value: "SAAS", label: "SaaS" },
+  { value: "SAAS", label: "Services" },
   { value: "COMPARISON", label: "Comparison" },
   { value: "PAGE", label: "Page" },
 ]
@@ -153,13 +152,13 @@ export function PostForm({
       const data = await response.json()
 
       if (!response.ok) {
-        setCoverUploadError(data.error ?? "Không thể tải ảnh lên.")
+        setCoverUploadError(data.error ?? "KhÃ´ng thá»ƒ táº£i áº£nh lÃªn.")
         return
       }
 
       setCoverImageUrl(data.url)
     } catch {
-      setCoverUploadError("Không thể tải ảnh lên. Vui lòng thử lại.")
+      setCoverUploadError("KhÃ´ng thá»ƒ táº£i áº£nh lÃªn. Vui lÃ²ng thá»­ láº¡i.")
     } finally {
       setCoverUploading(false)
     }
@@ -188,15 +187,15 @@ export function PostForm({
         ) : null}
         <Card>
           <CardHeader>
-            <CardTitle>Nội dung chính</CardTitle>
+            <CardTitle>Ná»™i dung chÃ­nh</CardTitle>
             <CardDescription>
-              Tiêu đề, slug, excerpt và nội dung rich text của bài viết.
+              TiÃªu Ä‘á», slug, excerpt vÃ  ná»™i dung rich text cá»§a bÃ i viáº¿t.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.title)}>
-                <FieldLabel htmlFor="title" required>Tiêu đề</FieldLabel>
+                <FieldLabel htmlFor="title" required>TiÃªu Ä‘á»</FieldLabel>
                 <Input
                   id="title"
                   name="title"
@@ -236,7 +235,7 @@ export function PostForm({
                     setSlugTouched(true)
                   }}
                 >
-                  Tạo lại slug
+                  Táº¡o láº¡i slug
                 </Button>
               </div>
               <Field>
@@ -251,7 +250,7 @@ export function PostForm({
                 />
               </Field>
               <Field data-invalid={Boolean(state.errors?.content)}>
-                <FieldLabel required>Nội dung</FieldLabel>
+                <FieldLabel required>Ná»™i dung</FieldLabel>
                 <TiptapEditor value={content} onChange={setContent} />
                 {state.errors?.content ? <FieldError>{state.errors.content}</FieldError> : null}
               </Field>
@@ -262,7 +261,7 @@ export function PostForm({
           <CardHeader>
             <CardTitle>SEO</CardTitle>
             <CardDescription>
-              Nếu bỏ trống, hệ thống dùng fallback từ Site Settings.
+              Náº¿u bá» trá»‘ng, há»‡ thá»‘ng dÃ¹ng fallback tá»« Site Settings.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -297,7 +296,7 @@ export function PostForm({
               </div>
               <Field orientation="horizontal" className="items-center rounded-lg border p-3">
                 <Input id="noindex" name="noindex" type="checkbox" defaultChecked={post?.noIndex ?? false} className="size-4" />
-                <FieldLabel htmlFor="noindex">Không index bài viết này</FieldLabel>
+                <FieldLabel htmlFor="noindex">KhÃ´ng index bÃ i viáº¿t nÃ y</FieldLabel>
               </Field>
               <div className="rounded-lg border bg-muted/30 p-4">
                 <p className="text-sm text-primary">{seoTitle || defaultSeoTitle || title}</p>
@@ -313,19 +312,19 @@ export function PostForm({
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Xuất bản</CardTitle>
+            <CardTitle>Xuáº¥t báº£n</CardTitle>
           </CardHeader>
           <CardContent>
             <FieldGroup>
               <Field data-invalid={Boolean(state.errors?.status)}>
-                <FieldLabel htmlFor="status" required>Trạng thái</FieldLabel>
+                <FieldLabel htmlFor="status" required>Tráº¡ng thÃ¡i</FieldLabel>
                 <select id="status" name="status" defaultValue={post?.status ?? "DRAFT"} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
                   {statuses.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
                 </select>
                 {state.errors?.status ? <FieldError>{state.errors.status}</FieldError> : null}
               </Field>
               <Field data-invalid={Boolean(state.errors?.type)}>
-                <FieldLabel htmlFor="type" required>Loại nội dung</FieldLabel>
+                <FieldLabel htmlFor="type" required>Loáº¡i ná»™i dung</FieldLabel>
                 <select id="type" name="type" defaultValue={post?.type ?? "ARTICLE"} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
                   {postTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
                 </select>
@@ -360,7 +359,7 @@ export function PostForm({
                     onClick={() => coverInputRef.current?.click()}
                     disabled={coverUploading}
                   >
-                    {coverUploading ? "Đang tải..." : "Tải ảnh cover"}
+                    {coverUploading ? "Äang táº£i..." : "Táº£i áº£nh cover"}
                   </Button>
                   {coverImageUrl ? (
                     <Button
@@ -368,7 +367,7 @@ export function PostForm({
                       variant="ghost"
                       onClick={() => setCoverImageUrl("")}
                     >
-                      Xóa ảnh
+                      XÃ³a áº£nh
                     </Button>
                   ) : null}
                 </div>
@@ -384,33 +383,33 @@ export function PostForm({
                     </Link>
                   </Button>
                 ) : null}
-                <SubmitButton>Lưu bài viết</SubmitButton>
+                <SubmitButton>LÆ°u bÃ i viáº¿t</SubmitButton>
               </div>
             </FieldGroup>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Phân loại</CardTitle>
+            <CardTitle>PhÃ¢n loáº¡i</CardTitle>
           </CardHeader>
           <CardContent>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="categoryId">Danh mục</FieldLabel>
+                <FieldLabel htmlFor="categoryId">Danh má»¥c</FieldLabel>
                 <select id="categoryId" name="categoryId" value={categoryId} onChange={(event) => setCategoryId(event.target.value)} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-                  <option value="">Không chọn</option>
+                  <option value="">KhÃ´ng chá»n</option>
                   {options.categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
                 </select>
               </Field>
               <Field>
-                <FieldLabel htmlFor="authorId">Tác giả</FieldLabel>
+                <FieldLabel htmlFor="authorId">TÃ¡c giáº£</FieldLabel>
                 <select id="authorId" name="authorId" defaultValue={post?.authorId ?? ""} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-                  <option value="">Không chọn</option>
+                  <option value="">KhÃ´ng chá»n</option>
                   {options.authors.map((author) => <option key={author.id} value={author.id}>{author.name}</option>)}
                 </select>
               </Field>
               <Field>
-                <FieldLabel>Thẻ</FieldLabel>
+                <FieldLabel>Tháº»</FieldLabel>
                 <div className="max-h-48 space-y-2 overflow-auto rounded-lg border p-3">
                   {tagOptions.map((tag) => (
                     <label key={tag.id} className="flex items-center gap-2 text-sm">
@@ -430,9 +429,9 @@ export function PostForm({
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <Input value={newTagName} onChange={(event) => setNewTagName(event.target.value)} placeholder="Tạo thẻ mới" />
+                  <Input value={newTagName} onChange={(event) => setNewTagName(event.target.value)} placeholder="Táº¡o tháº» má»›i" />
                   <Button type="button" variant="outline" onClick={() => void createTag()}>
-                    Tạo thẻ
+                    Táº¡o tháº»
                   </Button>
                 </div>
                 {tagMessage ? <p className="text-sm text-muted-foreground">{tagMessage}</p> : null}
@@ -443,7 +442,7 @@ export function PostForm({
         <Card>
           <CardHeader>
             <CardTitle>SEO checker</CardTitle>
-            <CardDescription>Điểm hiện tại: {seo.score}%</CardDescription>
+            <CardDescription>Äiá»ƒm hiá»‡n táº¡i: {seo.score}%</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -467,7 +466,7 @@ export function PostForm({
               <AdminBadge variant={seo.score >= 80 ? "green" : seo.score >= 50 ? "amber" : "neutral"}>
                 {seo.score}% SEO
               </AdminBadge>
-              <AdminBadge>{seo.wordCount} từ</AdminBadge>
+              <AdminBadge>{seo.wordCount} tá»«</AdminBadge>
             </div>
           </CardContent>
         </Card>

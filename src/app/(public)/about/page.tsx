@@ -1,8 +1,7 @@
-import Link from "next/link"
+﻿import Link from "next/link"
 import type { Metadata } from "next"
 import {
   BookOpenIcon,
-  CloudIcon,
   GitCompareIcon,
   Layers3Icon,
   WrenchIcon,
@@ -27,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     site,
     path,
     title: "About",
-    description: `Learn about ${site.name}, an independent platform for practical software, SaaS, hosting, and tooling research.`,
+    description: `Learn about ${site.name}, an independent platform for practical software, Services, and tooling research.`,
   })
 }
 
@@ -45,15 +44,9 @@ const offerings = [
     icon: BookOpenIcon,
   },
   {
-    title: "Hosting reviews",
-    description: "Independent notes on VPS providers, hosting tradeoffs, performance, and support.",
-    href: "/hosting",
-    icon: CloudIcon,
-  },
-  {
-    title: "SaaS reviews",
-    description: "Concise evaluations of software products, pricing models, and use cases.",
-    href: "/saas",
+    title: "Services reviews",
+    description: "Concise evaluations of online services, pricing models, and use cases.",
+    href: "/services",
     icon: Layers3Icon,
   },
   {
@@ -89,8 +82,8 @@ export default async function AboutPage() {
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
               {site.name} focuses on useful, readable guidance for builders,
               operators, and technical buyers. The goal is to reduce research
-              friction by organizing tools, tutorials, hosting providers, SaaS
-              products, and comparisons in one consistent public library.
+              friction by organizing tools, tutorials, Services, and
+              comparisons in one consistent public library.
             </p>
           </section>
 

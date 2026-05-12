@@ -1,10 +1,9 @@
-import { prisma } from "@/lib/prisma"
+﻿import { prisma } from "@/lib/prisma"
 
 export type SearchResultType =
   | "article"
   | "tool"
-  | "hosting"
-  | "saas"
+  | "service"
   | "comparison"
 
 export type SearchResult = {
@@ -24,8 +23,7 @@ export type SearchResult = {
 export type GroupedSearchResults = {
   articles: SearchResult[]
   tools: SearchResult[]
-  hosting: SearchResult[]
-  saas: SearchResult[]
+  services: SearchResult[]
   comparisons: SearchResult[]
 }
 
@@ -45,8 +43,7 @@ function containsQuery(query: string) {
 const emptyResults: GroupedSearchResults = {
   articles: [],
   tools: [],
-  hosting: [],
-  saas: [],
+  services: [],
   comparisons: [],
 }
 
@@ -65,7 +62,7 @@ export async function searchPublicContent(
 
   const match = containsQuery(query)
 
-  const [articles, tools, hosting, saas, comparisons] = await Promise.all([
+  const [articles, tools, services, comparisons] = await Promise.all([
     prisma.post.findMany({
       where: {
         status: "PUBLISHED",
@@ -106,24 +103,7 @@ export async function searchPublicContent(
         updatedAt: true,
       },
     }),
-    prisma.hostingProvider.findMany({
-      where: {
-        status: "PUBLISHED",
-        noindex: false,
-        OR: [{ name: match }, { shortDescription: match }, { description: match }],
-      },
-      orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
-      take: 5,
-      select: {
-        name: true,
-        slug: true,
-        shortDescription: true,
-        logoUrl: true,
-        publishedAt: true,
-        updatedAt: true,
-      },
-    }),
-    prisma.saaSProduct.findMany({
+    prisma.serviceProduct.findMany({
       where: {
         status: "PUBLISHED",
         noindex: false,
@@ -186,19 +166,11 @@ export async function searchPublicContent(
       imageUrl: null,
       date: tool.publishedAt ?? tool.updatedAt,
     })),
-    hosting: hosting.map((provider) => ({
-      title: provider.name,
-      description: provider.shortDescription,
-      url: `/hosting/${provider.slug}`,
-      type: "hosting",
-      imageUrl: provider.logoUrl,
-      date: provider.publishedAt ?? provider.updatedAt,
-    })),
-    saas: saas.map((product) => ({
+    services: services.map((product) => ({
       title: product.name,
       description: product.shortDescription,
-      url: `/saas/${product.slug}`,
-      type: "saas",
+      url: `/services/${product.slug}`,
+      type: "service",
       imageUrl: product.logoUrl,
       date: product.publishedAt ?? product.updatedAt,
     })),

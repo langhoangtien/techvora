@@ -18,7 +18,7 @@ export type PostFormState = {
 
 const locale = "en"
 const validStatuses = new Set(["DRAFT", "PUBLISHED", "SCHEDULED", "ARCHIVED"])
-const validTypes = new Set(["ARTICLE", "TOOL", "HOSTING", "SAAS", "COMPARISON", "PAGE"])
+const validTypes = new Set(["ARTICLE", "TOOL", "SAAS", "COMPARISON", "PAGE"])
 const validFormats = new Set(["HTML", "MARKDOWN", "MDX"])
 
 function text(formData: FormData, key: string) {

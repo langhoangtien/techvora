@@ -1,4 +1,4 @@
-import Link from "next/link"
+﻿import Link from "next/link"
 import { ArrowUpRightIcon, SearchIcon } from "lucide-react"
 
 import { Container } from "@/components/layout/container"
@@ -165,10 +165,7 @@ export function SiteFooter({ config }: { config?: SiteConfigFromSettings }) {
 
         <div className="mt-12 flex flex-col gap-4 border-t pt-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{copyrightText}</p>
-          <p>
-            Independent research for software, SaaS, hosting, and
-            infrastructure.
-          </p>
+          <p>Independent research for software, Services, and infrastructure.</p>
         </div>
       </Container>
     </footer>

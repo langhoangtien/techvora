@@ -1,19 +1,17 @@
-import type { MetadataRoute } from "next"
+﻿import type { MetadataRoute } from "next"
 
 import { getSiteConfig } from "@/lib/settings"
 import { getSitemapComparisons } from "@/modules/comparisons/public"
-import { getSitemapHostingProviders } from "@/modules/hosting/public"
 import { getSitemapArticles } from "@/modules/posts/public"
-import { getSitemapSaaSProducts } from "@/modules/saas/public"
+import { getSitemapServices } from "@/modules/services/public"
 import { getSitemapTools } from "@/modules/tools/public"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [site, articles, tools, hosting, saas, comparisons] = await Promise.all([
+  const [site, articles, tools, services, comparisons] = await Promise.all([
     getSiteConfig(),
     getSitemapArticles(),
     getSitemapTools(),
-    getSitemapHostingProviders(),
-    getSitemapSaaSProducts(),
+    getSitemapServices(),
     getSitemapComparisons(),
   ])
 
@@ -44,13 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: new URL("/hosting", site.url).toString(),
-      lastModified: new Date(),
-      changeFrequency: "hourly",
-      priority: 0.8,
-    },
-    {
-      url: new URL("/saas", site.url).toString(),
+      url: new URL("/services", site.url).toString(),
       lastModified: new Date(),
       changeFrequency: "hourly",
       priority: 0.8,
@@ -79,14 +71,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
-    ...hosting.map((provider) => ({
-      url: new URL(`/hosting/${provider.slug}`, site.url).toString(),
-      lastModified: provider.updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    })),
-    ...saas.map((product) => ({
-      url: new URL(`/saas/${product.slug}`, site.url).toString(),
+    ...services.map((product) => ({
+      url: new URL(`/services/${product.slug}`, site.url).toString(),
       lastModified: product.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.7,

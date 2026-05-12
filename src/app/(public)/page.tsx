@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import Link from "next/link"
 import {
   ArrowRightIcon,
@@ -14,12 +14,11 @@ import {
 
 import { ArticleCard } from "@/components/article/article-card"
 import { ComparisonCard } from "@/components/comparisons/comparison-card"
-import { HostingCard } from "@/components/hosting/hosting-card"
 import { CategoryCard } from "@/components/layout/category-card"
 import { Container } from "@/components/layout/container"
 import { EmptyState } from "@/components/layout/empty-state"
 import { SectionHeader } from "@/components/layout/section-header"
-import { SaaSCard } from "@/components/saas/saas-card"
+import { ServiceCard } from "@/components/services/service-card"
 import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import { ToolCard } from "@/components/tools/tool-card"
 import { Button } from "@/components/ui/button"
@@ -201,16 +200,10 @@ export default async function HomePage() {
               href="/tools"
             />
             <HomeHeroCard
-              icon={<ServerIcon className="size-6" />}
-              title="Hosting and VPS"
-              description="Infrastructure guides for developers, teams, and small businesses."
-              href="/hosting"
-            />
-            <HomeHeroCard
               icon={<TrendingUpIcon className="size-6" />}
-              title="SaaS stack"
-              description="Software buying guides focused on operations, growth, and delivery."
-              href="/saas"
+              title="Services stack"
+              description="Online services for hosting, VPS, VPN, domains, cloud, AI, analytics, and SaaS."
+              href="/services"
             />
           </div>
         </Container>
@@ -229,7 +222,7 @@ export default async function HomePage() {
               </h2>
               <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
                 The first release defines the information architecture for
-                articles, tools, SaaS, hosting, comparisons, taxonomies, media,
+                articles, tools, Services, comparisons, taxonomies, media,
                 redirects, and SEO.
               </p>
             </div>
@@ -324,59 +317,23 @@ export default async function HomePage() {
         </Container>
       </HomeSection>
 
-      <HomeSection>
-        <Container>
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <SectionHeader
-              eyebrow="Hosting"
-              title="Hosting and VPS guides"
-              description="Published hosting providers with featured reviews shown first."
-            />
-            <SectionLink href="/hosting">View hosting guides</SectionLink>
-          </div>
-          {content.hostingProviders.length > 0 ? (
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {content.hostingProviders.map((provider) => (
-                <HostingCard
-                  key={provider.id}
-                  name={provider.name}
-                  href={`/hosting/${provider.slug}`}
-                  logoUrl={provider.logoUrl}
-                  shortDescription={provider.shortDescription}
-                  rating={provider.rating?.toString()}
-                  pricingFrom={provider.pricingFrom?.toString()}
-                  currency={provider.currency}
-                  bestFor={provider.bestFor}
-                  affiliateUrl={provider.affiliateUrl ?? provider.websiteUrl}
-                  featured={provider.isFeatured}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-8">
-              <EmptyState title="No published hosting guides found" />
-            </div>
-          )}
-        </Container>
-      </HomeSection>
-
       <HomeSection className="bg-muted/30">
         <Container>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <SectionHeader
-              eyebrow="SaaS"
-              title="SaaS directory"
-              description="Published SaaS products with featured profiles shown first."
+              eyebrow="Services"
+              title="Services directory"
+              description="Published services with featured profiles shown first."
             />
-            <SectionLink href="/saas">Browse SaaS</SectionLink>
+            <SectionLink href="/services">Browse Services</SectionLink>
           </div>
-          {content.saasProducts.length > 0 ? (
+          {content.services.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {content.saasProducts.map((product) => (
-                <SaaSCard
+              {content.services.map((product) => (
+                <ServiceCard
                   key={product.id}
                   name={product.name}
-                  href={`/saas/${product.slug}`}
+                  href={`/services/${product.slug}`}
                   logoUrl={product.logoUrl}
                   shortDescription={product.shortDescription}
                   category={product.category}
@@ -391,7 +348,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No published SaaS products found" />
+              <EmptyState title="No published services found" />
             </div>
           )}
         </Container>

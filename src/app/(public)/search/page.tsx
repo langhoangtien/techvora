@@ -1,14 +1,13 @@
-import Link from "next/link"
+﻿import Link from "next/link"
 import type { Metadata } from "next"
 import { SearchIcon } from "lucide-react"
 
 import { ArticleCard } from "@/components/article/article-card"
 import { ComparisonCard } from "@/components/comparisons/comparison-card"
-import { HostingCard } from "@/components/hosting/hosting-card"
 import { Container } from "@/components/layout/container"
 import { EmptyState } from "@/components/layout/empty-state"
 import { SectionHeader } from "@/components/layout/section-header"
-import { SaaSCard } from "@/components/saas/saas-card"
+import { ServiceCard } from "@/components/services/service-card"
 import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import { ToolCard } from "@/components/tools/tool-card"
 import { Button } from "@/components/ui/button"
@@ -108,36 +107,15 @@ function ToolResultGroup({ results }: { results: SearchResult[] }) {
   )
 }
 
-function HostingResultGroup({ results }: { results: SearchResult[] }) {
+function ServicesResultGroup({ results }: { results: SearchResult[] }) {
   if (results.length === 0) return null
 
   return (
     <section className="space-y-4">
-      <GroupHeader title="Hosting" href="/hosting" />
+      <GroupHeader title="Services" href="/services" />
       <div className="grid gap-4 md:grid-cols-2">
         {results.map((result) => (
-          <HostingCard
-            key={result.url}
-            name={result.title}
-            href={result.url}
-            logoUrl={result.imageUrl}
-            shortDescription={result.description}
-          />
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function SaaSResultGroup({ results }: { results: SearchResult[] }) {
-  if (results.length === 0) return null
-
-  return (
-    <section className="space-y-4">
-      <GroupHeader title="SaaS" href="/saas" />
-      <div className="grid gap-4 md:grid-cols-2">
-        {results.map((result) => (
-          <SaaSCard
+          <ServiceCard
             key={result.url}
             name={result.title}
             href={result.url}
@@ -206,7 +184,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
           <SectionHeader
             eyebrow="Search"
             title="Search the public library"
-            description="Find published articles, tools, hosting providers, SaaS products, and comparisons."
+            description="Find published articles, tools, services, and comparisons."
           />
           <form action="/search" className="mt-8">
             <div className="flex items-center gap-2 rounded-lg border bg-background p-2 shadow-sm">
@@ -214,7 +192,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <Input
                 name="q"
                 defaultValue={query}
-                placeholder="Search tools, tutorials, SaaS, hosting..."
+                placeholder="Search tools, tutorials, Services..."
                 className="h-11 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
                 autoFocus
               />
@@ -255,8 +233,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
             <div className="mt-10 space-y-12">
               <ArticleResultGroup results={results.articles} />
               <ToolResultGroup results={results.tools} />
-              <HostingResultGroup results={results.hosting} />
-              <SaaSResultGroup results={results.saas} />
+              <ServicesResultGroup results={results.services} />
               <ComparisonResultGroup results={results.comparisons} />
             </div>
           ) : null}
