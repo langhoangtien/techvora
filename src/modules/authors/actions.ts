@@ -104,11 +104,7 @@ export async function saveAuthorAction(
   }
 
   revalidatePath("/admin/authors")
-
-  return {
-    ok: true,
-    message: id ? "Đã cập nhật tác giả." : "Đã tạo tác giả.",
-  }
+  redirect(adminRedirect("/admin/authors", { success: id ? "Đã cập nhật tác giả." : "Đã tạo tác giả." }))
 }
 
 export async function deleteAuthorAction(formData: FormData) {

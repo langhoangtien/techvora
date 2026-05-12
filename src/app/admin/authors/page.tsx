@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { EditIcon, Trash2Icon } from "lucide-react"
+import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react"
 
 import { deleteAuthorAction } from "@/modules/authors/actions"
 import { getAuthorForEdit, getAuthorsForAdmin } from "@/modules/authors/queries"
@@ -27,13 +27,25 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
   return Array.isArray(raw) ? raw[0] : raw
 }
 
+function pageHref(page: number, params: Record<string, string | string[] | undefined>) {
+  const search = new URLSearchParams()
+  for (const [key, raw] of Object.entries(params)) {
+    if (key === "page" || key === "edit") continue
+    const next = Array.isArray(raw) ? raw[0] : raw
+    if (next) search.set(key, next)
+  }
+  search.set("page", String(page))
+  return `/admin/authors?${search.toString()}`
+}
+
 export default async function AuthorsPage({ searchParams }: PageProps) {
   await requireAdmin()
   const params = (await searchParams) ?? {}
   const query = value(params, "q") ?? ""
+  const page = Number(value(params, "page") ?? 1)
   const editId = value(params, "edit")
-  const [authors, author] = await Promise.all([
-    getAuthorsForAdmin(query),
+  const [{ authors, totalPages }, author] = await Promise.all([
+    getAuthorsForAdmin(query, page),
     getAuthorForEdit(editId),
   ])
 
@@ -46,9 +58,19 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
             Quản lý hồ sơ tác giả cho hệ thống nội dung.
           </p>
         </div>
-        <SearchFilter defaultValue={query} placeholder="Tìm tác giả" />
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <SearchFilter defaultValue={query} placeholder="Tìm tác giả" />
+          <AuthorForm
+            trigger={
+              <Button>
+                <PlusIcon />
+                Tạo tác giả
+              </Button>
+            }
+          />
+        </div>
       </div>
-      <AuthorForm author={author} />
+      {author ? <AuthorForm key={author.id} author={author} /> : null}
       <DataTable
         data={authors}
         emptyTitle="Chưa có tác giả"
@@ -118,6 +140,20 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
           },
         ]}
       />
+      {totalPages > 1 ? (
+        <div className="flex justify-end gap-2">
+          {page > 1 ? (
+            <Button asChild variant="outline">
+              <Link href={pageHref(page - 1, params)}>Trang trước</Link>
+            </Button>
+          ) : null}
+          {page < totalPages ? (
+            <Button asChild variant="outline">
+              <Link href={pageHref(page + 1, params)}>Trang sau</Link>
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   )
 }

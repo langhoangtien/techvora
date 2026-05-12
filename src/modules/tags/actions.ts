@@ -101,11 +101,7 @@ export async function saveTagAction(
   }
 
   revalidatePath("/admin/tags")
-
-  return {
-    ok: true,
-    message: id ? "Đã cập nhật thẻ." : "Đã tạo thẻ.",
-  }
+  redirect(adminRedirect("/admin/tags", { success: id ? "Đã cập nhật thẻ." : "Đã tạo thẻ." }))
 }
 
 export async function deleteTagAction(formData: FormData) {

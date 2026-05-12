@@ -1,28 +1,44 @@
 import { prisma } from "@/lib/prisma"
 
-export async function getAuthorsForAdmin(query = "") {
-  const search = query.trim()
+const pageSize = 10
 
-  return prisma.author.findMany({
-    where: search
-      ? {
-          OR: [
-            { name: { contains: search, mode: "insensitive" } },
-            { slug: { contains: search, mode: "insensitive" } },
-            { bio: { contains: search, mode: "insensitive" } },
-          ],
-        }
-      : undefined,
-    include: {
-      _count: {
-        select: {
-          posts: true,
-          tools: true,
+export async function getAuthorsForAdmin(query = "", pageValue = 1) {
+  const search = query.trim()
+  const page = Math.max(pageValue, 1)
+  const where = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: "insensitive" as const } },
+          { slug: { contains: search, mode: "insensitive" as const } },
+          { bio: { contains: search, mode: "insensitive" as const } },
+        ],
+      }
+    : undefined
+
+  const [authors, total] = await Promise.all([
+    prisma.author.findMany({
+      where,
+      include: {
+        _count: {
+          select: {
+            posts: true,
+            tools: true,
+          },
         },
       },
-    },
-    orderBy: { name: "asc" },
-  })
+      orderBy: { name: "asc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.author.count({ where }),
+  ])
+
+  return {
+    authors,
+    total,
+    page,
+    totalPages: Math.max(Math.ceil(total / pageSize), 1),
+  }
 }
 
 export async function getAuthorForEdit(id?: string) {

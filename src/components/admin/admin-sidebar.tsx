@@ -1,6 +1,6 @@
 "use client"
 
-import { adminNavItems, siteConfig } from "@/config/site"
+import {  nav, siteConfig } from "@/config/site"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -13,6 +13,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavSecondary } from "../nav-secondary";
+
 
 export function AdminSidebar({
   user,
@@ -46,7 +48,8 @@ export function AdminSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={adminNavItems} label="Quản trị" />
+        <NavMain items={nav.adminNavMain} label="Quản trị" />
+        <NavSecondary  className="mt-auto"  items={nav.adminNavSecondary} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser

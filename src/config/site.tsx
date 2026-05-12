@@ -1,11 +1,13 @@
 ﻿import {
   BarChart3Icon,
+  CircleQuestionMark,
   FileTextIcon,
   FolderTreeIcon,
   Globe2Icon,
   ImageIcon,
   LayoutDashboardIcon,
   LinkIcon,
+  Settings,
   SettingsIcon,
   TagsIcon,
   UserRoundIcon,
@@ -27,59 +29,80 @@ export const publicNavItems = [
   { title: "Compare", href: "/compare" },
 ]
 
+
 export const adminNavItems = [
   {
-    title: "Tá»•ng quan",
+    title: "Tổng quan",
     url: "/admin",
     icon: <LayoutDashboardIcon />,
   },
   {
-    title: "Ná»™i dung",
+    title: "Nội dung",
     url: "/admin/posts",
     icon: <FileTextIcon />,
     items: [
-      { title: "BÃ i viáº¿t", url: "/admin/posts" },
-      { title: "CÃ´ng cá»¥", url: "/admin/tools" },
+      { title: "Bài viết", url: "/admin/posts" },
+      { title: "Công cụ", url: "/admin/tools" },
       { title: "Services", url: "/admin/services" },
-      { title: "So sÃ¡nh", url: "/admin/comparisons" },
+      { title: "So sánh", url: "/admin/comparisons" },
     ],
   },
   {
-    title: "PhÃ¢n loáº¡i",
+    title: "Phân loại",
     url: "/admin/categories",
     icon: <FolderTreeIcon />,
     items: [
-      { title: "Danh má»¥c", url: "/admin/categories" },
-      { title: "Tháº»", url: "/admin/tags" },
-      { title: "TÃ¡c giáº£", url: "/admin/authors" },
+      { title: "Danh mục", url: "/admin/categories" },
+      { title: "Thẻ", url: "/admin/tags" },
+      { title: "Tác giả", url: "/admin/authors" },
     ],
   },
   {
-    title: "ThÆ° viá»‡n",
+    title: "Thư viện",
     url: "/admin/media",
     icon: <ImageIcon />,
   },
   {
-    title: "SEO & váº­n hÃ nh",
+    title: "SEO & vận hành",
     url: "/admin/seo",
     icon: <Globe2Icon />,
     items: [
-      { title: "Chuyá»ƒn hÆ°á»›ng", url: "/admin/redirects" },
-      { title: "CÃ i Ä‘áº·t site", url: "/admin/settings" },
+      { title: "Chuyển hướng", url: "/admin/redirects" },
+      { title: "Cài đặt site", url: "/admin/settings" },
     ],
   },
   {
-    title: "TÃ i khoáº£n",
+    title: "Tài khoản",
     url: "/admin/profile",
     icon: <UserRoundIcon />,
   },
 ]
 
+export const navSettings = [  
+  {
+    title: "Cài đặt",
+    url: "/admin/settings",
+    icon: Settings,
+ },
+ {
+    title: "Trợ giúp",
+    url: "/admin/help",
+    icon: CircleQuestionMark,
+    
+ }
+        
+]
+  
+export const nav = {
+  adminNavMain:adminNavItems,
+  adminNavSecondary: navSettings
+}
+
 export const adminQuickLinks = [
-  { name: "Cáº¥u hÃ¬nh SEO", href: "/admin/settings", icon: <SettingsIcon /> },
+  { name: "Cấu hình SEO", href: "/admin/settings", icon: <SettingsIcon /> },
   { name: "Redirects", href: "/admin/redirects", icon: <LinkIcon /> },
   { name: "Taxonomy", href: "/admin/categories", icon: <TagsIcon /> },
-  { name: "TÃ¡c giáº£", href: "/admin/authors", icon: <UserRoundIcon /> },
+  { name: "Tác giả", href: "/admin/authors", icon: <UserRoundIcon /> },
   { name: "Tools", href: "/admin/tools", icon: <WrenchIcon /> },
-  { name: "BÃ¡o cÃ¡o", href: "/admin/reports", icon: <BarChart3Icon /> },
+  { name: "Báo cáo", href: "/admin/reports", icon: <BarChart3Icon /> },
 ]

@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "BÃ i viáº¿t",
+  title: "Bài viết",
 }
 
 type PageProps = {
@@ -27,7 +27,7 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
 }
 
 function formatDate(date: Date | null) {
-  if (!date) return "ChÆ°a cÃ³"
+  if (!date) return "Chưa có"
   return new Intl.DateTimeFormat("vi-VN", {
     dateStyle: "medium",
     timeStyle: "short",
@@ -66,29 +66,29 @@ export default async function PostsPage({ searchParams }: PageProps) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">BÃ i viáº¿t</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Bài viết</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Quáº£n lÃ½ ná»™i dung CMS, tráº¡ng thÃ¡i xuáº¥t báº£n vÃ  preview.
+            Quản lý nội dung CMS, trạng thái xuất bản và preview.
           </p>
         </div>
         <Button asChild>
           <Link href="/admin/posts/new">
             <PlusIcon />
-            Táº¡o bÃ i viáº¿t
+            Tạo bài viết
           </Link>
         </Button>
       </div>
       <form className="grid gap-2 rounded-lg border bg-card p-4 md:grid-cols-5">
-        <Input name="q" defaultValue={filters.q} placeholder="TÃ¬m bÃ i viáº¿t" />
+        <Input name="q" defaultValue={filters.q} placeholder="Tìm bài viết" />
         <select name="status" defaultValue={filters.status} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-          <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
-          <option value="DRAFT">NhÃ¡p</option>
-          <option value="PUBLISHED">Xuáº¥t báº£n</option>
-          <option value="SCHEDULED">LÃªn lá»‹ch</option>
-          <option value="ARCHIVED">LÆ°u trá»¯</option>
+          <option value="">Tất cả trạng thái</option>
+          <option value="DRAFT">Nháp</option>
+          <option value="PUBLISHED">Xuất bản</option>
+          <option value="SCHEDULED">Lên lịch</option>
+          <option value="ARCHIVED">Lưu trữ</option>
         </select>
         <select name="type" defaultValue={filters.type} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-          <option value="">Táº¥t cáº£ loáº¡i</option>
+          <option value="">Tất cả loại</option>
           <option value="ARTICLE">Article</option>
           <option value="TOOL">Tool</option>
           <option value="SAAS">Services</option>
@@ -96,28 +96,28 @@ export default async function PostsPage({ searchParams }: PageProps) {
           <option value="PAGE">Page</option>
         </select>
         <select name="categoryId" defaultValue={filters.categoryId} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-          <option value="">Táº¥t cáº£ danh má»¥c</option>
+          <option value="">Tất cả danh mục</option>
           {options.categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
         </select>
         <div className="flex gap-2">
           <select name="authorId" defaultValue={filters.authorId} className="h-8 min-w-0 flex-1 rounded-lg border bg-background px-2.5 text-sm">
-            <option value="">Táº¥t cáº£ tÃ¡c giáº£</option>
+            <option value="">Tất cả tác giả</option>
             {options.authors.map((author) => <option key={author.id} value={author.id}>{author.name}</option>)}
           </select>
-          <Button type="submit" variant="outline">Lá»c</Button>
+          <Button type="submit" variant="outline">Lọc</Button>
         </div>
       </form>
       <form id="bulk-posts-form" action={bulkPostAction} className="flex flex-wrap gap-2">
         <select name="bulkAction" className="h-8 rounded-lg border bg-background px-2.5 text-sm">
-            <option value="publish">Xuáº¥t báº£n</option>
-            <option value="draft">Chuyá»ƒn nhÃ¡p</option>
-            <option value="delete">XÃ³a</option>
+            <option value="publish">Xuất bản</option>
+            <option value="draft">Chuyển nháp</option>
+            <option value="delete">Xóa</option>
         </select>
-        <Button type="submit" variant="outline">Ãp dá»¥ng hÃ ng loáº¡t</Button>
+        <Button type="submit" variant="outline">Áp dụng hàng loạt</Button>
       </form>
       <DataTable
         data={posts}
-        emptyTitle="ChÆ°a cÃ³ bÃ i viáº¿t"
+        emptyTitle="Chưa có bài viết"
         columns={[
             {
               key: "select",
@@ -134,7 +134,7 @@ export default async function PostsPage({ searchParams }: PageProps) {
             },
             {
               key: "title",
-              header: "TiÃªu Ä‘á»",
+              header: "Tiêu đề",
               cell: (row) => (
                 <div>
                   <div className="font-medium">{row.title}</div>
@@ -144,31 +144,31 @@ export default async function PostsPage({ searchParams }: PageProps) {
             },
             {
               key: "status",
-              header: "Tráº¡ng thÃ¡i",
+              header: "Trạng thái",
               cell: (row) => <StatusBadge status={row.status} />,
             },
             {
               key: "type",
-              header: "Loáº¡i",
+              header: "Loại",
               cell: (row) => row.type,
             },
             {
               key: "taxonomy",
-              header: "PhÃ¢n loáº¡i",
+              header: "Phân loại",
               cell: (row) => (
                 <span className="text-muted-foreground">
-                  {row.category?.name ?? "KhÃ´ng danh má»¥c"} Â· {row.author?.name ?? "KhÃ´ng tÃ¡c giáº£"}
+                  {row.category?.name ?? "Không danh mục"} · {row.author?.name ?? "Không tác giả"}
                 </span>
               ),
             },
             {
               key: "dates",
-              header: "NgÃ y",
+              header: "Ngày",
               cell: (row) => (
                 <span className="text-xs text-muted-foreground">
-                  Xuáº¥t báº£n: {formatDate(row.publishedAt)}
+                  Xuất bản: {formatDate(row.publishedAt)}
                   <br />
-                  Cáº­p nháº­t: {formatDate(row.updatedAt)}
+                  Cập nhật: {formatDate(row.updatedAt)}
                 </span>
               ),
             },
@@ -187,7 +187,7 @@ export default async function PostsPage({ searchParams }: PageProps) {
                   <Button asChild size="icon-sm" variant="ghost">
                     <Link href={`/admin/posts/${row.id}/edit`}>
                       <EditIcon />
-                      <span className="sr-only">Sá»­a</span>
+                      <span className="sr-only">Sửa</span>
                     </Link>
                   </Button>
                   <DeletePostButton id={row.id} />
@@ -198,7 +198,7 @@ export default async function PostsPage({ searchParams }: PageProps) {
       />
       {totalPages > 1 ? (
         <div className="flex justify-end gap-2">
-          {page > 1 ? <Button asChild variant="outline"><Link href={pageHref(page - 1, params)}>Trang trÆ°á»›c</Link></Button> : null}
+          {page > 1 ? <Button asChild variant="outline"><Link href={pageHref(page - 1, params)}>Trang trước</Link></Button> : null}
           {page < totalPages ? <Button asChild variant="outline"><Link href={pageHref(page + 1, params)}>Trang sau</Link></Button> : null}
         </div>
       ) : null}

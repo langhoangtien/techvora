@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { EditIcon, Trash2Icon } from "lucide-react"
+import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react"
 
 import { deleteCategoryAction } from "@/modules/categories/actions"
 import {
@@ -30,13 +30,25 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
   return Array.isArray(raw) ? raw[0] : raw
 }
 
+function pageHref(page: number, params: Record<string, string | string[] | undefined>) {
+  const search = new URLSearchParams()
+  for (const [key, raw] of Object.entries(params)) {
+    if (key === "page" || key === "edit") continue
+    const next = Array.isArray(raw) ? raw[0] : raw
+    if (next) search.set(key, next)
+  }
+  search.set("page", String(page))
+  return `/admin/categories?${search.toString()}`
+}
+
 export default async function CategoriesPage({ searchParams }: PageProps) {
   await requireAdmin()
   const params = (await searchParams) ?? {}
   const query = value(params, "q") ?? ""
+  const page = Number(value(params, "page") ?? 1)
   const editId = value(params, "edit")
-  const [categories, categoryOptions, category] = await Promise.all([
-    getCategoriesForAdmin(query),
+  const [{ categories, totalPages }, categoryOptions, category] = await Promise.all([
+    getCategoriesForAdmin(query, page),
     getCategoryOptions(),
     getCategoryForEdit(editId),
   ])
@@ -50,9 +62,26 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
             Tạo và quản lý phân cấp danh mục cho nội dung public.
           </p>
         </div>
-        <SearchFilter defaultValue={query} placeholder="Tìm danh mục" />
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <SearchFilter defaultValue={query} placeholder="Tìm danh mục" />
+          <CategoryForm
+            categories={categoryOptions}
+            trigger={
+              <Button>
+                <PlusIcon />
+                Tạo danh mục
+              </Button>
+            }
+          />
+        </div>
       </div>
-      <CategoryForm category={category} categories={categoryOptions} />
+      {category ? (
+        <CategoryForm
+          key={category.id}
+          category={category}
+          categories={categoryOptions}
+        />
+      ) : null}
       <DataTable
         data={categories}
         emptyTitle="Chưa có danh mục"
@@ -115,6 +144,20 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
           },
         ]}
       />
+      {totalPages > 1 ? (
+        <div className="flex justify-end gap-2">
+          {page > 1 ? (
+            <Button asChild variant="outline">
+              <Link href={pageHref(page - 1, params)}>Trang trước</Link>
+            </Button>
+          ) : null}
+          {page < totalPages ? (
+            <Button asChild variant="outline">
+              <Link href={pageHref(page + 1, params)}>Trang sau</Link>
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   )
 }

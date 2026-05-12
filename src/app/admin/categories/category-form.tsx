@@ -1,7 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
-import Link from "next/link"
+import { useActionState, useState } from "react"
 import type { Category } from "@prisma/client"
 
 import {
@@ -12,12 +11,15 @@ import { SlugFields } from "@/components/admin/slug-fields"
 import { SubmitButton } from "@/components/admin/submit-button"
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import {
   Field,
   FieldError,
@@ -35,21 +37,35 @@ type CategoryOption = Pick<Category, "id" | "name" | "parentId">
 export function CategoryForm({
   category,
   categories,
+  trigger,
 }: {
   category?: Category | null
   categories: CategoryOption[]
+  trigger?: React.ReactNode
 }) {
   const [state, formAction] = useActionState(saveCategoryAction, initialState)
+  const [open, setOpen] = useState(Boolean(category))
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen)
+
+    if (!nextOpen && category) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete("edit")
+      window.history.replaceState(null, "", `${url.pathname}${url.search}`)
+    }
+  }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{category ? "Sửa danh mục" : "Tạo danh mục"}</CardTitle>
-        <CardDescription>
-          Quản lý phân cấp danh mục cho nội dung, công cụ và các trang public.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{category ? "Sửa danh mục" : "Tạo danh mục"}</DialogTitle>
+          <DialogDescription>
+            Quản lý phân cấp danh mục cho nội dung, công cụ và các trang public.
+          </DialogDescription>
+        </DialogHeader>
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="id" value={category?.id ?? ""} />
           {state.message ? (
@@ -121,17 +137,17 @@ export function CategoryForm({
                 <FieldLabel htmlFor="isFeatured">Nổi bật</FieldLabel>
               </Field>
             </div>
-            <div className="flex justify-end gap-2">
-              {category ? (
-                <Button asChild variant="outline">
-                  <Link href="/admin/categories">Hủy sửa</Link>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Hủy
                 </Button>
-              ) : null}
+              </DialogClose>
               <SubmitButton>{category ? "Lưu danh mục" : "Tạo danh mục"}</SubmitButton>
-            </div>
+            </DialogFooter>
           </FieldGroup>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   )
 }

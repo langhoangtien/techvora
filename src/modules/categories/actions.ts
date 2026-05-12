@@ -156,11 +156,7 @@ export async function saveCategoryAction(
   }
 
   revalidatePath("/admin/categories")
-
-  return {
-    ok: true,
-    message: id ? "Đã cập nhật danh mục." : "Đã tạo danh mục.",
-  }
+  redirect(adminRedirect("/admin/categories", { success: id ? "Đã cập nhật danh mục." : "Đã tạo danh mục." }))
 }
 
 export async function deleteCategoryAction(formData: FormData) {

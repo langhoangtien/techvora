@@ -1,7 +1,6 @@
 "use client"
 
 import { useActionState, useRef, useState } from "react"
-import Link from "next/link"
 import type { Author } from "@prisma/client"
 
 import {
@@ -10,15 +9,18 @@ import {
 } from "@/modules/authors/actions"
 import { SlugFields } from "@/components/admin/slug-fields"
 import { SubmitButton } from "@/components/admin/submit-button"
-import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
@@ -26,12 +28,29 @@ const initialState: AuthorFormState = {
   ok: false,
 }
 
-export function AuthorForm({ author }: { author?: Author | null }) {
+export function AuthorForm({
+  author,
+  trigger,
+}: {
+  author?: Author | null
+  trigger?: React.ReactNode
+}) {
   const [state, formAction] = useActionState(saveAuthorAction, initialState)
+  const [open, setOpen] = useState(Boolean(author))
   const inputRef = useRef<HTMLInputElement>(null)
   const [avatarUrl, setAvatarUrl] = useState(author?.avatarUrl ?? "")
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen)
+
+    if (!nextOpen && author) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete("edit")
+      window.history.replaceState(null, "", `${url.pathname}${url.search}`)
+    }
+  }
 
   async function uploadAvatar(file: File) {
     setUploading(true)
@@ -62,14 +81,15 @@ export function AuthorForm({ author }: { author?: Author | null }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{author ? "Sửa tác giả" : "Tạo tác giả"}</CardTitle>
-        <CardDescription>
-          Hồ sơ tác giả dùng cho bài viết, review và trang nội dung public.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{author ? "Sửa tác giả" : "Tạo tác giả"}</DialogTitle>
+          <DialogDescription>
+            Hồ sơ tác giả dùng cho bài viết, review và trang nội dung public.
+          </DialogDescription>
+        </DialogHeader>
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="id" value={author?.id ?? ""} />
           {state.message ? (
@@ -151,17 +171,17 @@ export function AuthorForm({ author }: { author?: Author | null }) {
                 <Input id="linkedinUrl" name="linkedinUrl" defaultValue={author?.linkedinUrl ?? ""} />
               </Field>
             </div>
-            <div className="flex justify-end gap-2">
-              {author ? (
-                <Button asChild variant="outline">
-                  <Link href="/admin/authors">Hủy sửa</Link>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Hủy
                 </Button>
-              ) : null}
+              </DialogClose>
               <SubmitButton>{author ? "Lưu tác giả" : "Tạo tác giả"}</SubmitButton>
-            </div>
+            </DialogFooter>
           </FieldGroup>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   )
 }
