@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react"
+import { useRouter } from "next/navigation"
 import type { Tag } from "@prisma/client"
 
 import { saveTagAction, type TagFormState } from "@/modules/tags/actions"
@@ -30,6 +31,7 @@ export function TagForm({
   tag?: Tag | null
   trigger?: React.ReactNode
 }) {
+  const router = useRouter()
   const [state, formAction] = useActionState(saveTagAction, initialState)
   const [open, setOpen] = useState(Boolean(tag))
 
@@ -39,7 +41,7 @@ export function TagForm({
     if (!nextOpen && tag) {
       const url = new URL(window.location.href)
       url.searchParams.delete("edit")
-      window.history.replaceState(null, "", `${url.pathname}${url.search}`)
+      router.replace(`${url.pathname}${url.search}`, { scroll: false })
     }
   }
 

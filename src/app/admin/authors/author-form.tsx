@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import type { Author } from "@prisma/client"
 
 import {
@@ -35,6 +36,7 @@ export function AuthorForm({
   author?: Author | null
   trigger?: React.ReactNode
 }) {
+  const router = useRouter()
   const [state, formAction] = useActionState(saveAuthorAction, initialState)
   const [open, setOpen] = useState(Boolean(author))
   const inputRef = useRef<HTMLInputElement>(null)
@@ -48,7 +50,7 @@ export function AuthorForm({
     if (!nextOpen && author) {
       const url = new URL(window.location.href)
       url.searchParams.delete("edit")
-      window.history.replaceState(null, "", `${url.pathname}${url.search}`)
+      router.replace(`${url.pathname}${url.search}`, { scroll: false })
     }
   }
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react"
+import { useRouter } from "next/navigation"
 import type { Category } from "@prisma/client"
 
 import {
@@ -43,6 +44,7 @@ export function CategoryForm({
   categories: CategoryOption[]
   trigger?: React.ReactNode
 }) {
+  const router = useRouter()
   const [state, formAction] = useActionState(saveCategoryAction, initialState)
   const [open, setOpen] = useState(Boolean(category))
 
@@ -52,7 +54,7 @@ export function CategoryForm({
     if (!nextOpen && category) {
       const url = new URL(window.location.href)
       url.searchParams.delete("edit")
-      window.history.replaceState(null, "", `${url.pathname}${url.search}`)
+      router.replace(`${url.pathname}${url.search}`, { scroll: false })
     }
   }
 
