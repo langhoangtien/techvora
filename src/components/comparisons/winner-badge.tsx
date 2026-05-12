@@ -1,4 +1,4 @@
-import { TrophyIcon } from "lucide-react"
+import { IconTrophy as TrophyIcon } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 

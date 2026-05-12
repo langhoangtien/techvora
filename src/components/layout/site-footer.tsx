@@ -1,5 +1,5 @@
 ﻿import Link from "next/link"
-import { ArrowUpRightIcon, SearchIcon } from "lucide-react"
+import { IconArrowUpRight as ArrowUpRightIcon, IconSearch as SearchIcon } from "@tabler/icons-react"
 
 import { Container } from "@/components/layout/container"
 import { publicNavItems, siteConfig as fallbackSiteConfig } from "@/config/site"

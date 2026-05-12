@@ -3,7 +3,12 @@
 import { useActionState, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import type { Author, Category, Post, PostTag, Tag } from "@prisma/client"
-import { CheckCircle2Icon, CircleAlertIcon, CircleXIcon, ExternalLinkIcon } from "lucide-react"
+import {
+  IconCircleCheck as CheckCircle2Icon,
+  IconAlertCircle as CircleAlertIcon,
+  IconCircleX as CircleXIcon,
+  IconExternalLink as ExternalLinkIcon,
+} from "@tabler/icons-react"
 
 import {
   createInlineTagAction,

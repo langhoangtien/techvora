@@ -23,10 +23,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import {
-  BadgeCheckIcon,
-  ChevronsUpDownIcon,
-  LogOutIcon,
-} from "lucide-react"
+  IconSelector as ChevronsUpDownIcon,
+  IconUser,
+  IconLogout as LogOutIcon,
+} from "@tabler/icons-react"
 
 export function NavUser({
   user,
@@ -82,7 +82,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href="/admin/profile">
-                  <BadgeCheckIcon />
+                  <IconUser />
                   Tài khoản
                 </Link>
               </DropdownMenuItem>

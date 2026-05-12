@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useRef, useState } from "react"
-import { SaveIcon } from "lucide-react"
+import { IconDeviceFloppy as SaveIcon } from "@tabler/icons-react"
 import { toast } from "sonner"
 
 import { updateSettingsAction, type SettingsFormState } from "@/app/admin/settings/actions"

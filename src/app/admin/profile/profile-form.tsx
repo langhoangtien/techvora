@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useRef, useState } from "react"
-import { SaveIcon, UploadIcon } from "lucide-react"
+import { IconDeviceFloppy as SaveIcon, IconUpload as UploadIcon } from "@tabler/icons-react"
 import { toast } from "sonner"
 import type { UserRole } from "@prisma/client"
 

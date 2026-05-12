@@ -1,6 +1,10 @@
 ﻿import Link from "next/link"
 import type { Metadata } from "next"
-import { EditIcon, ExternalLinkIcon, PlusIcon } from "lucide-react"
+import {
+  IconEdit as EditIcon,
+  IconExternalLink as ExternalLinkIcon,
+  IconPlus as PlusIcon,
+} from "@tabler/icons-react"
 
 import { DeleteServiceButton } from "@/app/admin/services/delete-service-button"
 import { requireAdmin } from "@/lib/admin-auth"

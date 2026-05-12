@@ -1,17 +1,17 @@
 import Link from "next/link"
 import {
-  ArrowUpRightIcon,
-  BarChart3Icon,
-  FileTextIcon,
-  GitCompareIcon,
-  LayoutDashboardIcon,
-  PlusIcon,
-  SearchIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  TriangleAlertIcon,
-  WrenchIcon,
-} from "lucide-react"
+  IconArrowUpRight as ArrowUpRightIcon,
+  IconChartBar as BarChart3Icon,
+  IconFileText as FileTextIcon,
+  IconGitCompare as GitCompareIcon,
+  IconLayoutDashboard as LayoutDashboardIcon,
+  IconPlus as PlusIcon,
+  IconSearch as SearchIcon,
+  IconServer as ServerIcon,
+  IconShieldCheck as ShieldCheckIcon,
+  IconAlertTriangle as TriangleAlertIcon,
+  IconTool as WrenchIcon,
+} from "@tabler/icons-react"
 
 import { getAdminDashboard } from "@/modules/admin/dashboard"
 import { requireAdmin } from "@/lib/admin-auth"

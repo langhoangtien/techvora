@@ -1,6 +1,5 @@
 "use client"
-
-import { SearchIcon } from "lucide-react"
+import { IconSearch as SearchIcon } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"

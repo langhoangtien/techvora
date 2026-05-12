@@ -1,4 +1,4 @@
-import { Trash2Icon } from "lucide-react"
+import { IconTrash as Trash2Icon } from "@tabler/icons-react"
 
 import { deleteToolAction } from "@/modules/tools/actions"
 import { Button } from "@/components/ui/button"

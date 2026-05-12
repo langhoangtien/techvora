@@ -17,7 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
+import { IconChevronRight as ChevronRightIcon } from "@tabler/icons-react"
 
 export function NavMain({
   items,

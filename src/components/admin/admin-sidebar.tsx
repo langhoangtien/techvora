@@ -1,6 +1,6 @@
 "use client"
 
-import {  nav, siteConfig } from "@/config/site"
+import { nav, siteConfig } from "@/config/site"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { NavSecondary } from "../nav-secondary";
+import { NavSecondary } from "@/components/nav-secondary"
 
 
 export function AdminSidebar({

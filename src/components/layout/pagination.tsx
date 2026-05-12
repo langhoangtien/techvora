@@ -1,5 +1,8 @@
 import Link from "next/link"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+import {
+  IconChevronLeft as ChevronLeftIcon,
+  IconChevronRight as ChevronRightIcon,
+} from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"

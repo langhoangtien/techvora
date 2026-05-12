@@ -1,10 +1,10 @@
 import Link from "next/link"
 import {
-  ArrowRightIcon,
-  ChevronDownIcon,
-  MenuIcon,
-  SearchIcon,
-} from "lucide-react"
+  IconArrowRight as ArrowRightIcon,
+  IconChevronDown as ChevronDownIcon,
+  IconMenu as MenuIcon,
+  IconSearch as SearchIcon,
+} from "@tabler/icons-react"
 
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"

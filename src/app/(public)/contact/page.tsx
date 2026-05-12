@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { MailIcon } from "lucide-react"
+import { IconMail  } from "@tabler/icons-react"
 
 import {
   SocialLinks,
@@ -82,7 +82,7 @@ export default async function ContactPage() {
                   required
                   rows={7}
                   placeholder="Write your message..."
-                  className="w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0 focus-visible:ring-ring/50"
                 />
               </Field>
               <Button type="button" disabled>
@@ -94,7 +94,7 @@ export default async function ContactPage() {
 
         <aside className="space-y-6">
           <section className="rounded-lg border bg-muted/30 p-6">
-            <MailIcon className="size-5 text-primary" />
+            <IconMail className="size-5 text-primary" />
             <h2 className="mt-4 font-semibold">Email</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               A public contact email has not been configured yet. Use the social

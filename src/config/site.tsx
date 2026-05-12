@@ -1,18 +1,17 @@
-﻿import {
-  BarChart3Icon,
-  CircleQuestionMark,
-  FileTextIcon,
-  FolderTreeIcon,
-  Globe2Icon,
-  ImageIcon,
-  LayoutDashboardIcon,
-  LinkIcon,
-  Settings,
-  SettingsIcon,
-  TagsIcon,
-  UserRoundIcon,
-  WrenchIcon,
-} from "lucide-react"
+import {
+  IconChartBar,
+  IconFileText,
+  IconLayoutDashboard,
+  IconLink,
+  IconListTree,
+  IconPhoto,
+  IconQuestionMark,
+  IconSettings,
+  IconTags,
+  IconTool,
+  IconUserCircle,
+  IconWorld,
+} from "@tabler/icons-react"
 
 export const siteConfig = {
   name: "Tekvora",
@@ -29,17 +28,16 @@ export const publicNavItems = [
   { title: "Compare", href: "/compare" },
 ]
 
-
 export const adminNavItems = [
   {
     title: "Tổng quan",
     url: "/admin",
-    icon: <LayoutDashboardIcon />,
+    icon: <IconLayoutDashboard />,
   },
   {
     title: "Nội dung",
     url: "/admin/posts",
-    icon: <FileTextIcon />,
+    icon: <IconFileText />,
     items: [
       { title: "Bài viết", url: "/admin/posts" },
       { title: "Công cụ", url: "/admin/tools" },
@@ -50,7 +48,7 @@ export const adminNavItems = [
   {
     title: "Phân loại",
     url: "/admin/categories",
-    icon: <FolderTreeIcon />,
+    icon: <IconListTree />,
     items: [
       { title: "Danh mục", url: "/admin/categories" },
       { title: "Thẻ", url: "/admin/tags" },
@@ -60,12 +58,12 @@ export const adminNavItems = [
   {
     title: "Thư viện",
     url: "/admin/media",
-    icon: <ImageIcon />,
+    icon: <IconPhoto />,
   },
   {
     title: "SEO & vận hành",
     url: "/admin/seo",
-    icon: <Globe2Icon />,
+    icon: <IconWorld />,
     items: [
       { title: "Chuyển hướng", url: "/admin/redirects" },
       { title: "Cài đặt site", url: "/admin/settings" },
@@ -74,35 +72,57 @@ export const adminNavItems = [
   {
     title: "Tài khoản",
     url: "/admin/profile",
-    icon: <UserRoundIcon />,
+    icon: <IconUserCircle />,
   },
 ]
 
-export const navSettings = [  
+export const navSettings = [
   {
     title: "Cài đặt",
     url: "/admin/settings",
-    icon: Settings,
- },
- {
+    icon: IconSettings,
+  },
+  {
     title: "Trợ giúp",
     url: "/admin/help",
-    icon: CircleQuestionMark,
-    
- }
-        
+    icon: IconQuestionMark,
+  },
 ]
-  
+
 export const nav = {
-  adminNavMain:adminNavItems,
-  adminNavSecondary: navSettings
+  adminNavMain: adminNavItems,
+  adminNavSecondary: navSettings,
 }
 
 export const adminQuickLinks = [
-  { name: "Cấu hình SEO", href: "/admin/settings", icon: <SettingsIcon /> },
-  { name: "Redirects", href: "/admin/redirects", icon: <LinkIcon /> },
-  { name: "Taxonomy", href: "/admin/categories", icon: <TagsIcon /> },
-  { name: "Tác giả", href: "/admin/authors", icon: <UserRoundIcon /> },
-  { name: "Tools", href: "/admin/tools", icon: <WrenchIcon /> },
-  { name: "Báo cáo", href: "/admin/reports", icon: <BarChart3Icon /> },
+  {
+    name: "Cấu hình SEO",
+    href: "/admin/settings",
+    icon: <IconSettings />,
+  },
+  {
+    name: "Redirects",
+    href: "/admin/redirects",
+    icon: <IconLink />,
+  },
+  {
+    name: "Taxonomy",
+    href: "/admin/categories",
+    icon: <IconTags />,
+  },
+  {
+    name: "Tác giả",
+    href: "/admin/authors",
+    icon: <IconUserCircle />,
+  },
+  {
+    name: "Tools",
+    href: "/admin/tools",
+    icon: <IconTool />,
+  },
+  {
+    name: "Báo cáo",
+    href: "/admin/reports",
+    icon: <IconChartBar />,
+  },
 ]

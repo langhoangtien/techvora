@@ -8,27 +8,27 @@ import Underline from "@tiptap/extension-underline"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import {
-  AlignCenterIcon,
-  AlignLeftIcon,
-  AlignRightIcon,
-  BoldIcon,
-  CodeIcon,
-  Heading1Icon,
-  Heading2Icon,
-  Heading3Icon,
-  Heading4Icon,
-  ImageIcon,
-  ItalicIcon,
-  LinkIcon,
-  ListIcon,
-  ListOrderedIcon,
-  PilcrowIcon,
-  QuoteIcon,
-  Redo2Icon,
-  RemoveFormattingIcon,
-  UnderlineIcon,
-  Undo2Icon,
-} from "lucide-react"
+  IconAlignCenter as AlignCenterIcon,
+  IconAlignLeft as AlignLeftIcon,
+  IconAlignRight as AlignRightIcon,
+  IconBold as BoldIcon,
+  IconCode as CodeIcon,
+  IconH1 as Heading1Icon,
+  IconH2 as Heading2Icon,
+  IconH3 as Heading3Icon,
+  IconH4 as Heading4Icon,
+  IconPhoto as ImageIcon,
+  IconItalic as ItalicIcon,
+  IconLink as LinkIcon,
+  IconList as ListIcon,
+  IconListNumbers as ListOrderedIcon,
+  IconPilcrow as PilcrowIcon,
+  IconQuote as QuoteIcon,
+  IconArrowForwardUp as Redo2Icon,
+  IconClearFormatting as RemoveFormattingIcon,
+  IconUnderline as UnderlineIcon,
+  IconArrowBackUp as Undo2Icon,
+} from "@tabler/icons-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

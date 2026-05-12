@@ -3,13 +3,13 @@
 import { useRef, useState } from "react"
 import type { Media } from "@prisma/client"
 import {
-  ClipboardIcon,
-  CopyIcon,
-  ImageIcon,
-  Trash2Icon,
-  UploadIcon,
-  XIcon,
-} from "lucide-react"
+  IconClipboard as ClipboardIcon,
+  IconCopy as CopyIcon,
+  IconPhoto as ImageIcon,
+  IconTrash as Trash2Icon,
+  IconUpload as UploadIcon,
+  IconX as XIcon,
+} from "@tabler/icons-react"
 
 import {
   deleteMediaAction,

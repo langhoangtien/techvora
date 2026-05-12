@@ -1,11 +1,11 @@
 ﻿import Link from "next/link"
 import type { Metadata } from "next"
 import {
-  BookOpenIcon,
-  GitCompareIcon,
-  Layers3Icon,
-  WrenchIcon,
-} from "lucide-react"
+  IconBook2 as BookOpenIcon,
+  IconGitCompare as GitCompareIcon,
+  IconLayersIntersect as Layers3Icon,
+  IconTool as WrenchIcon,
+} from "@tabler/icons-react"
 
 import {
   SocialLinks,

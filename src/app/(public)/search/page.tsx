@@ -1,6 +1,6 @@
 ﻿import Link from "next/link"
 import type { Metadata } from "next"
-import { SearchIcon } from "lucide-react"
+import { IconSearch as SearchIcon } from "@tabler/icons-react"
 
 import { ArticleCard } from "@/components/article/article-card"
 import { ComparisonCard } from "@/components/comparisons/comparison-card"

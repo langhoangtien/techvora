@@ -13,7 +13,18 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import {
+  IconActivity,
+  IconBook2,
+  IconChartPie,
+  IconFrame,
+  IconMap,
+  IconRobot,
+  IconSettings2,
+  IconStack2,
+  IconTerminal,
+  IconTerminal2,
+} from "@tabler/icons-react"
 
 // This is sample data.
 const data = {
@@ -25,26 +36,17 @@ const data = {
   teams: [
     {
       name: "Acme Inc",
-      logo: (
-        <GalleryVerticalEndIcon
-        />
-      ),
+      logo: <IconStack2 />,
       plan: "Enterprise",
     },
     {
       name: "Acme Corp.",
-      logo: (
-        <AudioLinesIcon
-        />
-      ),
+      logo: <IconActivity />,
       plan: "Startup",
     },
     {
       name: "Evil Corp.",
-      logo: (
-        <TerminalIcon
-        />
-      ),
+      logo: <IconTerminal />,
       plan: "Free",
     },
   ],
@@ -52,10 +54,7 @@ const data = {
     {
       title: "Playground",
       url: "#",
-      icon: (
-        <TerminalSquareIcon
-        />
-      ),
+      icon: <IconTerminal2 />,
       isActive: true,
       items: [
         {
@@ -75,10 +74,7 @@ const data = {
     {
       title: "Models",
       url: "#",
-      icon: (
-        <BotIcon
-        />
-      ),
+      icon: <IconRobot />,
       items: [
         {
           title: "Genesis",
@@ -97,10 +93,7 @@ const data = {
     {
       title: "Documentation",
       url: "#",
-      icon: (
-        <BookOpenIcon
-        />
-      ),
+      icon: <IconBook2 />,
       items: [
         {
           title: "Introduction",
@@ -123,10 +116,7 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: (
-        <Settings2Icon
-        />
-      ),
+      icon: <IconSettings2 />,
       items: [
         {
           title: "General",
@@ -151,26 +141,17 @@ const data = {
     {
       name: "Design Engineering",
       url: "#",
-      icon: (
-        <FrameIcon
-        />
-      ),
+      icon: <IconFrame />,
     },
     {
       name: "Sales & Marketing",
       url: "#",
-      icon: (
-        <PieChartIcon
-        />
-      ),
+      icon: <IconChartPie />,
     },
     {
       name: "Travel",
       url: "#",
-      icon: (
-        <MapIcon
-        />
-      ),
+      icon: <IconMap />,
     },
   ],
 }
@@ -181,13 +162,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   )

@@ -1,4 +1,4 @@
-﻿import { CheckIcon, XIcon } from "lucide-react"
+import { IconCheck as CheckIcon, IconX as XIcon } from "@tabler/icons-react"
 
 function listItems(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String).filter(Boolean) : []

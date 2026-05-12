@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
+import { IconArrowRight as ArrowRightIcon } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 

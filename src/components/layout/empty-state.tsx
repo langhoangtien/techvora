@@ -1,4 +1,4 @@
-import { FileSearchIcon } from "lucide-react"
+import { IconFileSearch as FileSearchIcon } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 

@@ -1,4 +1,4 @@
-import { SearchIcon } from "lucide-react"
+import { IconSearch as SearchIcon } from "@tabler/icons-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

@@ -1,16 +1,16 @@
 ﻿import type { Metadata } from "next"
 import Link from "next/link"
 import {
-  ArrowRightIcon,
-  FileTextIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  SparklesIcon,
-  StarIcon,
-  TrendingUpIcon,
-  UsersIcon,
-  WrenchIcon,
-} from "lucide-react"
+  IconArrowRight as ArrowRightIcon,
+  IconFileText as FileTextIcon,
+  IconServer as ServerIcon,
+  IconShieldCheck as ShieldCheckIcon,
+  IconSparkles as SparklesIcon,
+  IconStar as StarIcon,
+  IconTrendingUp as TrendingUpIcon,
+  IconUsers as UsersIcon,
+  IconTool as WrenchIcon,
+} from "@tabler/icons-react"
 
 import { ArticleCard } from "@/components/article/article-card"
 import { ComparisonCard } from "@/components/comparisons/comparison-card"

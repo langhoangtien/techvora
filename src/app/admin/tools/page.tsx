@@ -1,6 +1,10 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { EditIcon, ExternalLinkIcon, PlusIcon } from "lucide-react"
+import {
+  IconEdit as EditIcon,
+  IconExternalLink as ExternalLinkIcon,
+  IconPlus as PlusIcon,
+} from "@tabler/icons-react"
 
 import { DeleteToolButton } from "@/app/admin/tools/delete-tool-button"
 import { bulkToolAction } from "@/modules/tools/actions"

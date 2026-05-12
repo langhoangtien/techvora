@@ -1,6 +1,10 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import {
+  IconEdit as EditIcon,
+  IconPlus as PlusIcon,
+  IconTrash as Trash2Icon,
+} from "@tabler/icons-react"
 
 import { deleteTagAction } from "@/modules/tags/actions"
 import { getTagForEdit, getTagsForAdmin } from "@/modules/tags/queries"

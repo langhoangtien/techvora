@@ -1,4 +1,4 @@
-﻿import { StarIcon } from "lucide-react"
+import { IconStar as StarIcon } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 
