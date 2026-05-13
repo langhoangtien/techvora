@@ -10,6 +10,7 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
+    "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
+    "prisma": "6.19.3",
     "@tabler/icons-react": "^3.44.0",
     "@tiptap/extension-image": "^3.23.1",
     "@tiptap/extension-link": "^3.23.1",
@@ -53,7 +55,6 @@
     "postcss": "^8",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "prisma": "6.19.3",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   }

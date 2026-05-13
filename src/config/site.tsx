@@ -11,6 +11,7 @@ import {
   IconTool,
   IconUserCircle,
   IconWorld,
+  IconUsers,
 } from "@tabler/icons-react"
 
 export const siteConfig = {
@@ -68,6 +69,11 @@ export const adminNavItems = [
       { title: "Chuyển hướng", url: "/admin/redirects" },
       { title: "Cài đặt site", url: "/admin/settings" },
     ],
+  },
+  {
+    title: "Quản lý người dùng",
+    url: "/admin/users",
+    icon: <IconUsers />,
   },
   {
     title: "Tài khoản",

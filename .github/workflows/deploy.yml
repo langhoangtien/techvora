@@ -111,5 +111,7 @@ jobs:
 
           docker compose --env-file .env.production -f docker-compose.yml pull app
           docker compose --env-file .env.production -f docker-compose.yml up -d --remove-orphans
+          docker compose --env-file .env.production -f docker-compose.yml exec -T app npx prisma@6.19.3 migrate deploy
+          docker compose --env-file .env.production -f docker-compose.yml restart app
           docker image prune -af --filter "until=168h"
           EOF
