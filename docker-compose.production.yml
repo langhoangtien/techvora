@@ -27,7 +27,7 @@ services:
     ports:
       - "127.0.0.1:${APP_PORT:-3008}:3008"
     volumes:
-      - opt/tekvora/uploads/:/app/public/uploads
+      - /opt/tekvora/uploads:/app/public/uploads
     healthcheck:
       test:
         [
