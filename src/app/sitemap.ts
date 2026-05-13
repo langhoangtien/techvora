@@ -6,6 +6,8 @@ import { getSitemapArticles } from "@/modules/posts/public"
 import { getSitemapServices } from "@/modules/services/public"
 import { getSitemapTools } from "@/modules/tools/public"
 
+export const dynamic = "force-dynamic"
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [site, articles, tools, services, comparisons] = await Promise.all([
     getSiteConfig(),

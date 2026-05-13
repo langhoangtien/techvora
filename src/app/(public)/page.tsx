@@ -29,9 +29,68 @@ import { getHomepageContent } from "@/modules/home/public"
 import { formatPublicDate } from "@/modules/posts/public"
 
 export const revalidate = 1800
+export const dynamic = "force-dynamic"
 
 function absoluteUrl(site: SiteConfigFromSettings, path = "/") {
   return new URL(path, site.url).toString()
+}
+
+type HomeTool = {
+  id: string
+  name: string
+  slug: string
+  tagline: string | null
+  shortDescription: string | null
+  pricingSummary: string | null
+  isFeatured: boolean
+  category: { name: string } | null
+}
+
+type HomeArticle = {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  coverImageUrl: string | null
+  publishedAt: Date | null
+  category: { name: string } | null
+  author: { name: string } | null
+}
+
+type HomeService = {
+  id: string
+  name: string
+  slug: string
+  logoUrl: string | null
+  shortDescription: string | null
+  category: string | null
+  rating: { toString(): string } | string | number | null
+  pricingFrom: { toString(): string } | string | number | null
+  pricingModel: string | null
+  currency: string
+  affiliateUrl: string | null
+  websiteUrl: string | null
+  isFeatured: boolean
+}
+
+type HomeComparison = {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  itemAName: string
+  itemBName: string
+  itemALogoUrl: string | null
+  itemBLogoUrl: string | null
+  winner: string | null
+  isFeatured: boolean
+}
+
+type HomeCategory = {
+  id: string
+  name: string
+  slug: string
+  description: string | null
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -263,7 +322,7 @@ export default async function HomePage() {
           </div>
           {content.tools.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {content.tools.map((tool) => (
+              {content.tools.map((tool: HomeTool) => (
                 <ToolCard
                   key={tool.id}
                   name={tool.name}
@@ -296,7 +355,7 @@ export default async function HomePage() {
           </div>
           {content.articles.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {content.articles.map((article) => (
+              {content.articles.map((article: HomeArticle) => (
                 <ArticleCard
                   key={article.id}
                   title={article.title}
@@ -329,7 +388,7 @@ export default async function HomePage() {
           </div>
           {content.services.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {content.services.map((product) => (
+              {content.services.map((product: HomeService) => (
                 <ServiceCard
                   key={product.id}
                   name={product.name}
@@ -366,7 +425,7 @@ export default async function HomePage() {
           </div>
           {content.comparisons.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {content.comparisons.map((comparison) => (
+              {content.comparisons.map((comparison: HomeComparison) => (
                 <ComparisonCard
                   key={comparison.id}
                   title={comparison.title}
@@ -398,7 +457,7 @@ export default async function HomePage() {
           />
           {content.categories.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {content.categories.map((category) => (
+              {content.categories.map((category: HomeCategory) => (
                 <CategoryCard
                   key={category.id}
                   name={category.name}

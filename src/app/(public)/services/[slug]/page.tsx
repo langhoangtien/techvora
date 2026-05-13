@@ -12,18 +12,33 @@ import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import { getSiteConfig } from "@/lib/settings"
 import {
   getPublishedServiceBySlug,
-  getPublishedServiceStaticParams,
   getRelatedServices,
   serviceMetadata,
 } from "@/modules/services/public"
 import { jsonArray, priceLabel } from "@/modules/services/utils"
 
+type ServiceCardItem = {
+  id: string
+  name: string
+  slug: string
+  logoUrl: string | null
+  shortDescription: string | null
+  category: string | null
+  rating: { toString(): string } | string | number | null
+  pricingFrom: { toString(): string } | string | number | null
+  pricingModel: string | null
+  currency: string
+  affiliateUrl: string | null
+  websiteUrl: string | null
+  isFeatured: boolean
+}
+
 export const revalidate = 86400
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const products = await getPublishedServiceStaticParams()
-  return products.map((product) => ({ slug: product.slug }))
+  return []
 }
 
 export async function generateMetadata({
@@ -213,7 +228,7 @@ export default async function ServiceDetailPage({
           <section className="mt-16 border-t pt-12">
             <h2 className="text-2xl font-semibold tracking-tight">Ähnliche Services</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {related.map((item) => (
+              {related.map((item: ServiceCardItem) => (
                 <ServiceCard
                   key={item.id}
                   name={item.name}

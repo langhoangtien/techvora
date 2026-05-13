@@ -12,11 +12,11 @@ import { getSiteConfig } from "@/lib/settings"
 import {
   collectionMetadata,
   getAuthorBySlug,
-  getAuthorStaticParams,
   getPublishedArticleList,
 } from "@/modules/posts/public"
 
 export const revalidate = 3600
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 type PageProps = {
@@ -30,8 +30,7 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
 }
 
 export async function generateStaticParams() {
-  const authors = await getAuthorStaticParams()
-  return authors.map((author) => ({ slug: author.slug }))
+  return []
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

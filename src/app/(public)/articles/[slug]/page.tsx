@@ -16,16 +16,15 @@ import {
   extractTableOfContents,
   formatPublicDate,
   getPublishedArticleBySlug,
-  getPublishedArticleStaticParams,
   getRelatedArticles,
 } from "@/modules/posts/public"
 
 export const revalidate = 86400
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const posts = await getPublishedArticleStaticParams()
-  return posts.map((post) => ({ slug: post.slug }))
+  return []
 }
 
 export async function generateMetadata({
@@ -70,7 +69,7 @@ export default async function ArticleDetailPage({
   const related = await getRelatedArticles(
     post.id,
     post.categoryId,
-    post.tags.map((item) => item.tagId)
+    post.tags.map((item: { tagId: string }) => item.tagId)
   )
   const articleUrl = new URL(`/articles/${post.slug}`, site.url).toString()
   const breadcrumbJsonLd = {
@@ -156,7 +155,7 @@ export default async function ArticleDetailPage({
               <PublicAdSlot ads={site.ads} label="Anzeige" className="my-8" />
               {post.tags.length > 0 ? (
                 <div className="mt-8 flex flex-wrap gap-2">
-                  {post.tags.map(({ tag }) => (
+                  {post.tags.map(({ tag }: { tag: { id: string; slug: string; name: string } }) => (
                     <Link
                       key={tag.id}
                       href={`/tags/${tag.slug}`}

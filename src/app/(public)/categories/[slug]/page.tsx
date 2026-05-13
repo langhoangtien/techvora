@@ -11,11 +11,11 @@ import { getSiteConfig } from "@/lib/settings"
 import {
   collectionMetadata,
   getCategoryBySlug,
-  getCategoryStaticParams,
   getPublishedArticleList,
 } from "@/modules/posts/public"
 
 export const revalidate = 3600
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 type PageProps = {
@@ -29,8 +29,7 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
 }
 
 export async function generateStaticParams() {
-  const categories = await getCategoryStaticParams()
-  return categories.map((category) => ({ slug: category.slug }))
+  return []
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -56,7 +55,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
   if (!category) notFound()
 
-  const categoryIds = [category.id, ...category.children.map((child) => child.id)]
+  const categoryIds = [
+    category.id,
+    ...category.children.map((child: { id: string }) => child.id),
+  ]
   const { posts, totalPages } = await getPublishedArticleList({ page, categoryIds })
 
   return (
@@ -85,7 +87,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         />
         {category.children.length > 0 ? (
           <div className="mt-6 flex flex-wrap gap-2">
-            {category.children.map((child) => (
+            {category.children.map((child: { id: string; slug: string; name: string }) => (
               <a
                 key={child.id}
                 href={`/categories/${child.slug}`}

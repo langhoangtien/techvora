@@ -12,17 +12,26 @@ import { getSiteConfig } from "@/lib/settings"
 import { getToolRegistryItem } from "@/modules/tools/registry"
 import {
   getPublishedToolBySlug,
-  getPublishedToolStaticParams,
   getRelatedTools,
   toolMetadata,
 } from "@/modules/tools/public"
 
+type ToolCardItem = {
+  id: string
+  name: string
+  slug: string
+  shortDescription: string | null
+  tagline: string | null
+  isFeatured: boolean
+  category: { name: string } | null
+}
+
 export const revalidate = 86400
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const tools = await getPublishedToolStaticParams()
-  return tools.map((tool) => ({ slug: tool.slug }))
+  return []
 }
 
 export async function generateMetadata({
@@ -139,7 +148,7 @@ export default async function ToolDetailPage({
           <section className="mt-16 border-t pt-12">
             <h2 className="text-2xl font-semibold tracking-tight">Ähnliche Tools</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {related.map((item) => (
+              {related.map((item: ToolCardItem) => (
                 <ToolCard
                   key={item.id}
                   name={item.name}

@@ -4,6 +4,8 @@ import { getSiteConfig } from "@/lib/settings"
 import { getThemeStyle } from "@/lib/theme"
 import { getFeaturedHeaderCategories } from "@/modules/categories/public"
 
+export const dynamic = "force-dynamic"
+
 export default async function PublicLayout({
   children,
 }: {

@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   },
 }
 
+export const dynamic = "force-dynamic"
+
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }

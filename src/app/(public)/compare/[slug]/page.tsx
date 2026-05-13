@@ -12,15 +12,28 @@ import { Container } from "@/components/layout/container"
 import { PublicAdSlot } from "@/components/layout/public-ad-slot"
 import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import { getSiteConfig } from "@/lib/settings"
-import { comparisonMetadata, getPublishedComparisonBySlug, getPublishedComparisonStaticParams, getRelatedComparisons } from "@/modules/comparisons/public"
+import { comparisonMetadata, getPublishedComparisonBySlug, getRelatedComparisons } from "@/modules/comparisons/public"
 import { jsonArray } from "@/modules/comparisons/utils"
 
+type ComparisonCardItem = {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  itemAName: string
+  itemBName: string
+  itemALogoUrl: string | null
+  itemBLogoUrl: string | null
+  winner: string | null
+  isFeatured: boolean
+}
+
 export const revalidate = 86400
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const comparisons = await getPublishedComparisonStaticParams()
-  return comparisons.map((comparison) => ({ slug: comparison.slug }))
+  return []
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -108,7 +121,7 @@ export default async function ComparisonDetailPage({ params }: { params: Promise
           </div>
           <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start"><PublicAdSlot ads={site.ads} label="Sidebar-Anzeige" /></aside>
         </div>
-        {related.length > 0 ? <section className="mt-16 border-t pt-12"><h2 className="text-2xl font-semibold tracking-tight">Ähnliche Vergleiche</h2><div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{related.map((item) => <ComparisonCard key={item.id} title={item.title} href={`/compare/${item.slug}`} excerpt={item.excerpt} itemAName={item.itemAName} itemBName={item.itemBName} itemALogoUrl={item.itemALogoUrl} itemBLogoUrl={item.itemBLogoUrl} winner={item.winner} featured={item.isFeatured} />)}</div></section> : null}
+        {related.length > 0 ? <section className="mt-16 border-t pt-12"><h2 className="text-2xl font-semibold tracking-tight">Ähnliche Vergleiche</h2><div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{related.map((item: ComparisonCardItem) => <ComparisonCard key={item.id} title={item.title} href={`/compare/${item.slug}`} excerpt={item.excerpt} itemAName={item.itemAName} itemBName={item.itemBName} itemALogoUrl={item.itemALogoUrl} itemBLogoUrl={item.itemBLogoUrl} winner={item.winner} featured={item.isFeatured} />)}</div></section> : null}
       </Container>
     </>
   )

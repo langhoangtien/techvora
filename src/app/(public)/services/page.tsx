@@ -2,7 +2,10 @@
 
 import { Container } from "@/components/layout/container"
 import { SectionHeader } from "@/components/layout/section-header"
-import { ServicesDirectory } from "@/components/services/services-directory"
+import {
+  ServicesDirectory,
+  type DirectoryProduct,
+} from "@/components/services/services-directory"
 import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import { getSiteConfig } from "@/lib/settings"
 import {
@@ -11,6 +14,7 @@ import {
 } from "@/modules/services/public"
 
 export const revalidate = 3600
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Service-Verzeichnis",
@@ -42,7 +46,7 @@ export default async function ServicesPage() {
           description="Vergleichen Sie Services nach Kategorie, Preismodell, Bewertung, Stärken, Grenzen und passenden Einsatzfällen."
         />
         <ServicesDirectory
-          products={products.map((product) => ({
+          products={products.map((product: DirectoryProduct) => ({
             ...product,
             pricingFrom: product.pricingFrom?.toString() ?? null,
             rating: product.rating?.toString() ?? null,

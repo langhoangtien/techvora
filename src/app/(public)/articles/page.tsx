@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 export const revalidate = 3600
+export const dynamic = "force-dynamic"
 
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>

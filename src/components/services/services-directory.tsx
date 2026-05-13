@@ -5,7 +5,7 @@ import { useMemo, useState } from "react"
 import { EmptyState } from "@/components/layout/empty-state"
 import { ServiceCard } from "@/components/services/service-card"
 
-type DirectoryProduct = {
+export type DirectoryProduct = {
   id: string
   name: string
   slug: string
