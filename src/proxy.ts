@@ -2,10 +2,53 @@ import { getToken } from "next-auth/jwt"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit"
 import { shouldSkipRuntimeRedirect } from "@/modules/redirects/paths"
+
+const rateLimitRules = {
+  auth: { key: "auth", limit: 10, windowMs: 60_000 },
+  api: { key: "api", limit: 120, windowMs: 60_000 },
+  admin: { key: "admin", limit: 90, windowMs: 60_000 },
+  search: { key: "search", limit: 60, windowMs: 60_000 },
+} as const
+
+function getRateLimitRule(pathname: string) {
+  if (pathname === "/api/health" || pathname === "/api/redirects/lookup") {
+    return null
+  }
+
+  if (pathname === "/admin/login" || pathname.startsWith("/api/auth")) {
+    return rateLimitRules.auth
+  }
+
+  if (pathname === "/search" || pathname.startsWith("/api/search")) {
+    return rateLimitRules.search
+  }
+
+  if (pathname.startsWith("/api")) {
+    return rateLimitRules.api
+  }
+
+  if (pathname.startsWith("/admin")) {
+    return rateLimitRules.admin
+  }
+
+  return null
+}
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
+  const rateLimitRule = getRateLimitRule(pathname)
+
+  if (rateLimitRule) {
+    const result = checkRateLimit(request, rateLimitRule)
+
+    if (!result.allowed) {
+      return rateLimitResponse(result)
+    }
+  }
+
+  if (pathname.startsWith("/api")) return NextResponse.next()
 
   if (!pathname.startsWith("/admin") && !shouldSkipRuntimeRedirect(pathname)) {
     const lookupUrl = new URL("/api/redirects/lookup", request.url)
@@ -48,5 +91,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|uploads|favicon.ico|robots.txt|sitemap.xml).*)"],
+  matcher: [
+    "/((?!_next|uploads|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)",
+  ],
 }
