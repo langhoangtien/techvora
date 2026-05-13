@@ -28,6 +28,7 @@ services:
       - "127.0.0.1:${APP_PORT:-3008}:3008"
     volumes:
       - /opt/tekvora/uploads:/app/public/uploads
+    command: sh -c "npx prisma migrate deploy && npm start"
     healthcheck:
       test:
         [

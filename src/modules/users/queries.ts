@@ -66,6 +66,7 @@ export async function getUserForEdit(id?: string) {
       name: true,
       image: true,
       avatarUrl: true,
+      passwordHash: true,
       role: true,
       createdAt: true,
       updatedAt: true,

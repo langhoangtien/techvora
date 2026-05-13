@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import bcrypt from "bcryptjs"
+import type { Prisma, UserRole } from "@prisma/client"
 
 import { isAdminSession } from "@/lib/admin-auth"
 import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
@@ -43,13 +44,17 @@ export async function saveUserAction(
   const name = nullableText(formData, "name")
   const password = nullableText(formData, "password")
   const avatarUrl = nullableText(formData, "avatarUrl")
-  const role = text(formData, "role") || "EDITOR"
+  const role = (text(formData, "role") || "EDITOR") as UserRole
   const errors: UserFormState["errors"] = {}
 
   if (!email) {
     errors.email = "Vui lòng nhập email."
   } else if (!email.includes("@")) {
     errors.email = "Email không hợp lệ."
+  }
+
+  if (role !== "ADMIN" && role !== "EDITOR") {
+    errors.role = "Vai trò không hợp lệ."
   }
 
   if (id && !password) {
@@ -79,44 +84,50 @@ export async function saveUserAction(
     }
   }
 
-  try {
-    const data: any = {
-      email,
-      name,
-      role,
-      avatarUrl,
-    }
+  const successMessage = id ? "Đã cập nhật người dùng." : "Đã tạo người dùng."
 
-    if (password) {
-      data.passwordHash = await bcrypt.hash(password, 10)
-    }
+  try {
+    const passwordHash = password ? await bcrypt.hash(password, 10) : undefined
 
     if (id) {
+      const data: Prisma.UserUncheckedUpdateInput = {
+        email,
+        name,
+        role,
+        avatarUrl,
+      }
+
+      if (passwordHash) {
+        data.passwordHash = passwordHash
+      }
+
       await prisma.user.update({
         where: { id },
         data,
       })
     } else {
+      const data: Prisma.UserUncheckedCreateInput = {
+        email,
+        name,
+        role,
+        avatarUrl,
+        passwordHash: passwordHash ?? null,
+      }
+
       await prisma.user.create({
         data,
       })
     }
 
     revalidatePath("/admin/users")
-    redirect(
-      adminRedirect(
-        "/admin/users",
-        {
-          success: id ? "Đã cập nhật người dùng." : "Đã tạo người dùng.",
-        }
-      )
-    )
-  } catch (error) {
+  } catch {
     return {
       ok: false,
       message: "Có lỗi xảy ra khi lưu người dùng.",
     }
   }
+
+  redirect(adminRedirect("/admin/users", { success: successMessage }))
 }
 
 export async function deleteUserAction(formData: FormData) {
@@ -136,9 +147,6 @@ export async function deleteUserAction(formData: FormData) {
   }
 
   try {
-    // Xóa author nếu có
-    await prisma.author.deleteMany({ where: { userId: id } })
-    // Xóa user
     await prisma.user.delete({ where: { id } })
   } catch {
     redirect(adminRedirect("/admin/users", { error: deleteErrorMessage("người dùng") }))

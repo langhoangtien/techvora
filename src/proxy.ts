@@ -6,7 +6,7 @@ import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit"
 import { shouldSkipRuntimeRedirect } from "@/modules/redirects/paths"
 
 const rateLimitRules = {
-  auth: { key: "auth", limit: 10, windowMs: 60_000 },
+  auth: { key: "auth", limit: 20, windowMs: 60_000 },
   api: { key: "api", limit: 120, windowMs: 60_000 },
   admin: { key: "admin", limit: 90, windowMs: 60_000 },
   search: { key: "search", limit: 60, windowMs: 60_000 },

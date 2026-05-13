@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useRef, useState } from "react"
+import { useActionState, useEffect, useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import type { User } from "@prisma/client"
 import {
@@ -28,11 +28,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
 const initialState: UserFormState = {
   ok: false,
+}
+
+type UserFormUser = Partial<User> & {
+  author?: {
+    id: string
+    slug: string
+  } | null
 }
 
 function initials(name: string | null | undefined, email: string | null | undefined) {
@@ -44,19 +51,36 @@ export function UserForm({
   user,
   trigger,
 }: {
-  user?: (User & { author?: { id: string; slug: string } | null }) | null
+  user?: UserFormUser | null
   trigger?: React.ReactNode
 }) {
   const router = useRouter()
   const [state, formAction] = useActionState(saveUserAction, initialState)
-  const [deleteState, deleteAction] = useActionState(deleteUserAction, undefined as any)
+  const [, deleteAction] = useActionState(
+    async (_previousState: void, formData: FormData) => {
+      await deleteUserAction(formData)
+    },
+    undefined
+  )
+  const [isDeletePending, startDeleteTransition] = useTransition()
   const [open, setOpen] = useState(Boolean(user))
   const [showPassword, setShowPassword] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl ?? user?.image ?? "")
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!state.message) {
+      return
+    }
+
+    if (state.ok) {
+      toast.success(state.message)
+    } else {
+      toast.error(state.message)
+    }
+  }, [state])
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen)
@@ -100,10 +124,11 @@ export function UserForm({
 
   function handleDelete() {
     if (window.confirm("Bạn chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác.")) {
-      setIsDeleting(true)
       const formData = new FormData()
       formData.append("id", user?.id ?? "")
-      deleteAction(formData)
+      startDeleteTransition(() => {
+        deleteAction(formData)
+      })
     }
   }
 
@@ -123,18 +148,6 @@ export function UserForm({
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="id" value={user?.id ?? ""} />
           <input type="hidden" name="avatarUrl" value={avatarUrl} />
-
-          {state.message ? (
-            <div
-              className={
-                state.ok
-                  ? "text-sm text-emerald-600"
-                  : "text-sm text-destructive"
-              }
-            >
-              {state.message}
-            </div>
-          ) : null}
 
           <FieldGroup>
             <Field>
@@ -179,47 +192,50 @@ export function UserForm({
               </div>
             </Field>
 
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+            <Field data-invalid={Boolean(state.errors?.email)}>
+              <FieldLabel htmlFor="email" required>Email</FieldLabel>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 defaultValue={user?.email ?? ""}
                 placeholder="user@example.com"
+                aria-invalid={Boolean(state.errors?.email)}
                 required
               />
               {state.errors?.email ? (
-                <div className="text-xs text-destructive">{state.errors.email}</div>
+                <FieldError>{state.errors.email}</FieldError>
               ) : null}
             </Field>
 
-            <Field>
+            <Field data-invalid={Boolean(state.errors?.name)}>
               <FieldLabel htmlFor="name">Tên hiển thị</FieldLabel>
               <Input
                 id="name"
                 name="name"
                 defaultValue={user?.name ?? ""}
                 placeholder="Nhập tên người dùng"
+                aria-invalid={Boolean(state.errors?.name)}
               />
               {state.errors?.name ? (
-                <div className="text-xs text-destructive">{state.errors.name}</div>
+                <FieldError>{state.errors.name}</FieldError>
               ) : null}
             </Field>
 
-            <Field>
-              <FieldLabel htmlFor="role">Vai trò</FieldLabel>
+            <Field data-invalid={Boolean(state.errors?.role)}>
+              <FieldLabel htmlFor="role" required>Vai trò</FieldLabel>
               <select
                 id="role"
                 name="role"
                 defaultValue={user?.role ?? "EDITOR"}
                 className="h-8 rounded-lg border bg-background px-3 text-sm"
+                aria-invalid={Boolean(state.errors?.role)}
               >
                 <option value="EDITOR">Biên tập viên</option>
                 <option value="ADMIN">Quản trị viên</option>
               </select>
               {state.errors?.role ? (
-                <div className="text-xs text-destructive">{state.errors.role}</div>
+                <FieldError>{state.errors.role}</FieldError>
               ) : null}
             </Field>
 
@@ -232,8 +248,8 @@ export function UserForm({
               </Field>
             )}
 
-            <Field>
-              <FieldLabel htmlFor="password">
+            <Field data-invalid={Boolean(state.errors?.password)}>
+              <FieldLabel htmlFor="password" required={!user}>
                 {user ? "Mật khẩu mới (bỏ trống nếu không thay đổi)" : "Mật khẩu"}
               </FieldLabel>
               <div className="relative">
@@ -242,6 +258,7 @@ export function UserForm({
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder={user ? "Nhập mật khẩu mới..." : "Nhập mật khẩu"}
+                  aria-invalid={Boolean(state.errors?.password)}
                   required={!user}
                 />
                 <button
@@ -257,7 +274,7 @@ export function UserForm({
                 </button>
               </div>
               {state.errors?.password ? (
-                <div className="text-xs text-destructive">{state.errors.password}</div>
+                <FieldError>{state.errors.password}</FieldError>
               ) : null}
             </Field>
           </FieldGroup>
@@ -269,7 +286,7 @@ export function UserForm({
                 variant="destructive"
                 size="sm"
                 onClick={handleDelete}
-                disabled={isDeleting}
+                disabled={isDeletePending}
               >
                 <IconTrash className="h-4 w-4" />
                 Xóa
