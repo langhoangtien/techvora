@@ -16,6 +16,15 @@ services:
       retries: 5
       start_period: 20s
 
+  migrate:
+    image: ${DOCKER_IMAGE:?Set DOCKER_IMAGE in .env.production}
+    env_file:
+      - .env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "./node_modules/.bin/prisma migrate deploy"
+
   app:
     image: ${DOCKER_IMAGE:?Set DOCKER_IMAGE in .env.production}
     restart: unless-stopped
@@ -28,7 +37,6 @@ services:
       - "127.0.0.1:${APP_PORT:-3008}:3008"
     volumes:
       - /opt/tekvora/uploads:/app/public/uploads
-    command: sh -c "npx prisma migrate deploy && npm start"
     healthcheck:
       test:
         [
