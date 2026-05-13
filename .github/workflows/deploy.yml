@@ -106,7 +106,7 @@ jobs:
           IMAGE_SHA: ${{ steps.image.outputs.sha }}
           IMAGE_MIGRATE_SHA: ${{ steps.image.outputs.migrate_sha }}
         run: |
-          GHCR_PASSWORD_B64="$(printf '%s' "$GHCR_PASSWORD" | base64 -w0)
+          GHCR_PASSWORD_B64="$(printf '%s' "$GHCR_PASSWORD" | base64 -w0)"
 
           ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
             "GHCR_PASSWORD_B64='${GHCR_PASSWORD_B64}' GHCR_USERNAME='${{ github.actor }}' IMAGE_SHA='${IMAGE_SHA}' IMAGE_MIGRATE_SHA='${IMAGE_MIGRATE_SHA}' DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
