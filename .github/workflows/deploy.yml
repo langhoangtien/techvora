@@ -48,6 +48,8 @@ jobs:
           echo "name=${IMAGE_NAME_LOWER}" >> "$GITHUB_OUTPUT"
           echo "sha=${IMAGE_NAME_LOWER}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
           echo "latest=${IMAGE_NAME_LOWER}:latest" >> "$GITHUB_OUTPUT"
+          echo "migrate_sha=${IMAGE_NAME_LOWER}:${GITHUB_SHA}-migrate" >> "$GITHUB_OUTPUT"
+          echo "migrate_latest=${IMAGE_NAME_LOWER}:latest-migrate" >> "$GITHUB_OUTPUT"
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -59,14 +61,27 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push app image
         uses: docker/build-push-action@v6
         with:
           context: .
+          target: runner
           push: true
           tags: |
             ${{ steps.image.outputs.sha }}
             ${{ steps.image.outputs.latest }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push migrate image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: migrate
+          push: true
+          tags: |
+            ${{ steps.image.outputs.migrate_sha }}
+            ${{ steps.image.outputs.migrate_latest }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -89,11 +104,14 @@ jobs:
         env:
           GHCR_PASSWORD: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
           IMAGE_SHA: ${{ steps.image.outputs.sha }}
+          IMAGE_MIGRATE_SHA: ${{ steps.image.outputs.migrate_sha }}
         run: |
-          GHCR_PASSWORD_B64="$(printf '%s' "$GHCR_PASSWORD" | base64 -w0)"
+          GHCR_PASSWORD_B64="$(printf '%s' "$GHCR_PASSWORD" | base64 -w0)
+
           ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-            "GHCR_PASSWORD_B64='${GHCR_PASSWORD_B64}' GHCR_USERNAME='${{ github.actor }}' IMAGE_SHA='${IMAGE_SHA}' DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
+            "GHCR_PASSWORD_B64='${GHCR_PASSWORD_B64}' GHCR_USERNAME='${{ github.actor }}' IMAGE_SHA='${IMAGE_SHA}' IMAGE_MIGRATE_SHA='${IMAGE_MIGRATE_SHA}' DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
           set -euo pipefail
+
           cd "$DEPLOY_PATH"
 
           if [ ! -f .env.production ]; then
@@ -109,8 +127,17 @@ jobs:
             printf '\nDOCKER_IMAGE=%s\n' "$IMAGE_SHA" >> .env.production
           fi
 
+          if grep -q '^DOCKER_IMAGE_MIGRATE=' .env.production; then
+            sed -i "s|^DOCKER_IMAGE_MIGRATE=.*|DOCKER_IMAGE_MIGRATE=${IMAGE_MIGRATE_SHA}|" .env.production
+          else
+            printf '\nDOCKER_IMAGE_MIGRATE=%s\n' "$IMAGE_MIGRATE_SHA" >> .env.production
+          fi
+
           docker compose --env-file .env.production -f docker-compose.yml pull app migrate
+
           docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
+
           docker compose --env-file .env.production -f docker-compose.yml up -d app --remove-orphans
+
           docker image prune -af --filter "until=168h"
           EOF
