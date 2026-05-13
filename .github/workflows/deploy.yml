@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "22"
   DEPLOY_PATH: /opt/tekvora
   IMAGE_NAME: ${{ secrets.DOCKER_IMAGE || format('ghcr.io/{0}', github.repository) }}
 

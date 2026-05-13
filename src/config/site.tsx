@@ -15,7 +15,7 @@ import {
 
 export const siteConfig = {
   name: "Tekvora",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3008",
   description:
     "Independent reviews, comparisons, and practical guides for tech tools and online services.",
   locale: "en",

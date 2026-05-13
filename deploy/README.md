@@ -28,7 +28,7 @@ Không commit file này.
 
 ```bash
 cat > /opt/tekvora/.env.production <<'EOF'
-APP_PORT=3000
+APP_PORT=3008
 DOCKER_IMAGE=ghcr.io/OWNER/REPO:latest
 
 POSTGRES_DB=tekvora
@@ -85,7 +85,7 @@ sudo ufw enable
 sudo ufw status
 ```
 
-Không mở port `3000` public. Compose production chỉ bind `127.0.0.1:3000:3000`.
+Không mở port `3008` public. Compose production chỉ bind `127.0.0.1:3008:3008`.
 
 ## 7. Chạy lần đầu
 
@@ -104,7 +104,7 @@ docker compose --env-file .env.production -f docker-compose.yml ps
 cd /opt/tekvora
 docker compose --env-file .env.production -f docker-compose.yml logs -f app
 docker compose --env-file .env.production -f docker-compose.yml logs -f postgres
-curl -I http://127.0.0.1:3000/api/health
+curl -I http://127.0.0.1:3008/api/health
 sudo nginx -t
 sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
 ```
