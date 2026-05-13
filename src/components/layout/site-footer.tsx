@@ -7,22 +7,22 @@ import type { SiteConfigFromSettings, SocialSettings } from "@/lib/settings"
 
 const resourceLinks = [
   {
-    title: "Search library",
+    title: "Bibliothek durchsuchen",
     href: "/search",
     icon: <SearchIcon className="size-4" />,
   },
-  { title: "Latest articles", href: "/articles" },
-  { title: "Product comparisons", href: "/compare" },
+  { title: "Aktuelle Ratgeber", href: "/articles" },
+  { title: "Produktvergleiche", href: "/compare" },
 ]
 
 const companyLinks = [
-  { title: "About", href: "/about" },
-  { title: "Contact", href: "/contact" },
+  { title: "Über Tekvora", href: "/about" },
+  { title: "Kontakt", href: "/contact" },
 ]
 
 const legalLinks = [
-  { title: "Privacy Policy", href: "/privacy-policy" },
-  { title: "Terms", href: "/terms" },
+  { title: "Datenschutzerklärung", href: "/privacy-policy" },
+  { title: "Nutzungsbedingungen", href: "/terms" },
 ]
 
 const socialItems: Array<{
@@ -98,7 +98,7 @@ export function SiteFooter({ config }: { config?: SiteConfigFromSettings }) {
     config?.footer.footerDescription || fallbackSiteConfig.description
   const copyrightText =
     config?.footer.copyrightText ||
-    `Copyright ${new Date().getFullYear()} ${siteName}. All rights reserved.`
+    `Copyright ${new Date().getFullYear()} ${siteName}. Alle Rechte vorbehalten.`
   const socialLinks = config?.social
     ? socialItems
         .map((item) => ({
@@ -156,16 +156,16 @@ export function SiteFooter({ config }: { config?: SiteConfigFromSettings }) {
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <FooterGroup title="Content" links={publicNavItems} />
-            <FooterGroup title="Resources" links={resourceLinks} />
-            <FooterGroup title="Company" links={companyLinks} />
-            <FooterGroup title="Legal" links={legalLinks} />
+            <FooterGroup title="Inhalte" links={publicNavItems} />
+            <FooterGroup title="Ressourcen" links={resourceLinks} />
+            <FooterGroup title="Unternehmen" links={companyLinks} />
+            <FooterGroup title="Rechtliches" links={legalLinks} />
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t pt-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{copyrightText}</p>
-          <p>Independent research for software, Services, and infrastructure.</p>
+          <p>Unabhängige Recherche für Software, Services und Infrastruktur.</p>
         </div>
       </Container>
     </footer>

@@ -15,13 +15,13 @@ export function JsonFormatterTool() {
       return {
         ok: true,
         value: JSON.stringify(JSON.parse(input), null, indent),
-        message: "Valid JSON",
+        message: "Gültiges JSON",
       }
     } catch (error) {
       return {
         ok: false,
         value: "",
-        message: error instanceof Error ? error.message : "Invalid JSON",
+        message: error instanceof Error ? error.message : "Ungültiges JSON",
       }
     }
   }, [input, indent])
@@ -31,15 +31,15 @@ export function JsonFormatterTool() {
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <label className="text-sm font-medium" htmlFor="json-input">
-            JSON input
+            JSON-Eingabe
           </label>
           <select
             value={indent}
             onChange={(event) => setIndent(Number(event.target.value))}
             className="h-8 rounded-lg border bg-background px-2 text-sm"
           >
-            <option value={2}>2 spaces</option>
-            <option value={4}>4 spaces</option>
+            <option value={2}>2 Leerzeichen</option>
+            <option value={4}>4 Leerzeichen</option>
           </select>
         </div>
         <textarea
@@ -50,12 +50,12 @@ export function JsonFormatterTool() {
           spellCheck={false}
         />
         <Button type="button" variant="outline" onClick={() => setInput(sample)}>
-          Reset sample
+          Beispiel zurücksetzen
         </Button>
       </div>
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-sm font-medium">Formatted output</p>
+          <p className="text-sm font-medium">Formatierte Ausgabe</p>
           <span className={result.ok ? "text-xs text-emerald-600" : "text-xs text-destructive"}>
             {result.message}
           </span>

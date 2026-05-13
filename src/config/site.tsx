@@ -15,17 +15,17 @@ import {
 
 export const siteConfig = {
   name: "Tekvora",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3008",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://tekvora.de",
   description:
-    "Independent reviews, comparisons, and practical guides for tech tools and online services.",
-  locale: "en",
+    "Unabhängige Tests, Vergleiche und praxisnahe Leitfäden für Software, Tools und Online-Services.",
+  locale: "de-DE",
 }
 
 export const publicNavItems = [
-  { title: "Tools", href: "/tools" },
-  { title: "Articles", href: "/articles" },
+  { title: "Werkzeuge", href: "/tools" },
+  { title: "Ratgeber", href: "/articles" },
   { title: "Services", href: "/services" },
-  { title: "Compare", href: "/compare" },
+  { title: "Vergleiche", href: "/compare" },
 ]
 
 export const adminNavItems = [

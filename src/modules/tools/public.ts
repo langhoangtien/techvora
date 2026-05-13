@@ -4,9 +4,11 @@ import { prisma } from "@/lib/prisma"
 import type { SiteConfigFromSettings } from "@/lib/settings"
 
 const pageSize = 12
+const locale = "de-DE"
 
 const publishedToolWhere = {
   status: "PUBLISHED" as const,
+  locale,
 }
 
 export type PublicToolListFilters = {
@@ -71,6 +73,7 @@ export async function getPublishedToolBySlug(slug: string) {
 export async function getToolCategories() {
   return prisma.category.findMany({
     where: {
+      locale,
       tools: { some: publishedToolWhere },
     },
     orderBy: [{ order: "asc" }, { name: "asc" }],

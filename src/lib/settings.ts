@@ -101,8 +101,8 @@ export const defaultSettings: SettingsMap = {
   general: {
     siteName: siteConfig.name,
     siteUrl: siteConfig.url,
-    tagline: "Tech tools and online Services intelligence.",
-    defaultLocale: "en",
+    tagline: "Klare Orientierung für Software, Tools und digitale Services.",
+    defaultLocale: "de-DE",
     logoUrl: "",
     faviconUrl: "/favicon.ico",
   },
@@ -135,8 +135,8 @@ export const defaultSettings: SettingsMap = {
   },
   footer: {
     footerDescription:
-      "Research and practical buying guidance for technical software and infrastructure decisions.",
-    copyrightText: `Copyright ${new Date().getFullYear()} ${siteConfig.name}. All rights reserved.`,
+      "Praxisnahe Recherche und Kaufberatung für Software, Infrastruktur und digitale Services.",
+    copyrightText: `Copyright ${new Date().getFullYear()} ${siteConfig.name}. Alle Rechte vorbehalten.`,
   },
   media: {
     maxUploadSizeMB: 5,

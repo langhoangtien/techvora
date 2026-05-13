@@ -43,7 +43,7 @@ export function ServicesDirectory({
             className="rounded-md border px-3 py-1.5 text-sm hover:text-primary"
             onClick={() => setCategory("")}
           >
-            All
+            Alle
           </button>
           {categories.map((item) => (
             <button
@@ -78,7 +78,7 @@ export function ServicesDirectory({
         </div>
       ) : (
         <div className="mt-8">
-          <EmptyState title="No services found" />
+          <EmptyState title="Keine Services gefunden" />
         </div>
       )}
     </div>

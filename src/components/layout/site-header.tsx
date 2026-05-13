@@ -25,8 +25,8 @@ export type HeaderCategoryNavItem = {
 }
 
 const staticNavItems = [
-  { title: "Tools", href: "/tools" },
-  { title: "Compare", href: "/compare" },
+  { title: "Werkzeuge", href: "/tools" },
+  { title: "Vergleiche", href: "/compare" },
 ]
 
 function categoryHref(slug: string) {
@@ -66,7 +66,7 @@ function DesktopCategoryNavItem({
             href={href}
             className="block rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
           >
-            View all {category.name}
+            Alle anzeigen: {category.name}
           </Link>
           <div className="my-1 h-px bg-border" />
           {category.children.map((child) => (
@@ -150,7 +150,7 @@ export function SiteHeader({
                 <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
                 <Input
                   name="q"
-                  placeholder="Search tools and Services..."
+                  placeholder="Tools und Services suchen..."
                   className="h-9 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
                 />
               </div>
@@ -158,7 +158,7 @@ export function SiteHeader({
 
             <Button asChild className="rounded-full">
               <Link href="/compare">
-                Compare
+                Vergleichen
                 <ArrowRightIcon className="size-4" />
               </Link>
             </Button>
@@ -168,7 +168,7 @@ export function SiteHeader({
         <details className="group lg:hidden">
           <summary className="flex size-10 cursor-pointer list-none items-center justify-center rounded-lg border bg-background text-foreground transition-colors hover:bg-muted [&::-webkit-details-marker]:hidden">
             <MenuIcon className="size-4" />
-            <span className="sr-only">Open navigation</span>
+            <span className="sr-only">Navigation öffnen</span>
           </summary>
           <div className="fixed inset-x-0 top-16 border-b bg-background shadow-lg">
             <Container className="py-4">
@@ -177,7 +177,7 @@ export function SiteHeader({
                   <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
                   <Input
                     name="q"
-                    placeholder="Search tools and Services..."
+                    placeholder="Tools und Services suchen..."
                     className="h-10 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
                   />
                 </div>
@@ -226,7 +226,7 @@ export function SiteHeader({
 
               <Button asChild className="mt-4 w-full rounded-full">
                 <Link href="/compare">
-                  Compare tools
+                  Tools vergleichen
                   <ArrowRightIcon className="size-4" />
                 </Link>
               </Button>

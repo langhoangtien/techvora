@@ -19,7 +19,7 @@ export function WinnerBadge({
       )}
     >
       <TrophyIcon className="size-4" />
-      Winner: {winner}
+      Gewinner: {winner}
     </span>
   )
 }

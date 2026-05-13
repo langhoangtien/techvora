@@ -38,7 +38,7 @@ export function ToolCard({
             {category ? <span>{category}</span> : null}
             {featured ? (
               <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-primary">
-                Featured
+                Empfohlen
               </span>
             ) : null}
           </div>

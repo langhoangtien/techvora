@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 export function AffiliateButton({
   href,
-  children = "Visit website",
+  children = "Website besuchen",
 }: {
   href?: string | null
   children?: React.ReactNode

@@ -19,7 +19,7 @@ export function RatingBadge({
       )}
     >
       <StarIcon className="size-4 fill-current text-amber-500" />
-      {value == null || Number.isNaN(value) ? "Not rated" : value.toFixed(1)}
+      {value == null || Number.isNaN(value) ? "Keine Bewertung" : value.toFixed(1)}
     </span>
   )
 }

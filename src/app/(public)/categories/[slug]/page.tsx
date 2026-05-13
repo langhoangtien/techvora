@@ -72,16 +72,16 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       <Container className="py-10">
         <Breadcrumb
           items={[
-            { label: "Home", href: "/" },
-            { label: "Categories" },
+            { label: "Startseite", href: "/" },
+            { label: "Kategorien" },
             { label: category.name },
           ]}
         />
         <SectionHeader
           className="mt-8"
-          eyebrow="Category"
+          eyebrow="Kategorie"
           title={category.name}
-          description={category.description ?? "Articles in this category."}
+          description={category.description ?? "Artikel in dieser Kategorie."}
         />
         {category.children.length > 0 ? (
           <div className="mt-6 flex flex-wrap gap-2">
@@ -97,7 +97,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           </div>
         ) : null}
         <div className="mt-8">
-          <ArticleGrid posts={posts} emptyTitle="No articles in this category" />
+          <ArticleGrid posts={posts} emptyTitle="Keine Artikel in dieser Kategorie" />
         </div>
         <Pagination
           className="mt-8"

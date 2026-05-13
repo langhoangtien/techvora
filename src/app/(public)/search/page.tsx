@@ -22,7 +22,7 @@ import {
 } from "@/modules/search/public"
 
 export const metadata: Metadata = {
-  title: "Search",
+  title: "Suche",
   robots: {
     index: false,
     follow: true,
@@ -41,7 +41,7 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
 function formatDate(date: Date | null) {
   if (!date) return null
 
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("de-DE", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -59,7 +59,7 @@ function GroupHeader({
     <div className="flex items-center justify-between gap-4">
       <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
       <Button asChild variant="outline" size="sm">
-        <Link href={href}>View all</Link>
+        <Link href={href}>Alle anzeigen</Link>
       </Button>
     </div>
   )
@@ -70,7 +70,7 @@ function ArticleResultGroup({ results }: { results: SearchResult[] }) {
 
   return (
     <section className="space-y-4">
-      <GroupHeader title="Articles" href="/articles" />
+      <GroupHeader title="Artikel" href="/articles" />
       <div className="grid gap-4 md:grid-cols-2">
         {results.map((result) => (
           <ArticleCard
@@ -133,7 +133,7 @@ function ComparisonResultGroup({ results }: { results: SearchResult[] }) {
 
   return (
     <section className="space-y-4">
-      <GroupHeader title="Comparisons" href="/compare" />
+      <GroupHeader title="Vergleiche" href="/compare" />
       <div className="grid gap-4 md:grid-cols-2">
         {results.map((result) => (
           <ComparisonCard
@@ -170,7 +170,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
         data={{
           "@context": "https://schema.org",
           "@type": "SearchResultsPage",
-          name: "Search",
+          name: "Suche",
           url: new URL(query ? `/search?q=${encodeURIComponent(query)}` : "/search", site.url).toString(),
           isPartOf: {
             "@type": "WebSite",
@@ -182,9 +182,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
       <Container className="py-12">
         <div className="mx-auto max-w-4xl">
           <SectionHeader
-            eyebrow="Search"
-            title="Search the public library"
-            description="Find published articles, tools, services, and comparisons."
+            eyebrow="Suche"
+            title="Öffentliche Bibliothek durchsuchen"
+            description="Finden Sie veröffentlichte Artikel, Tools, Services und Vergleiche."
           />
           <form action="/search" className="mt-8">
             <div className="flex items-center gap-2 rounded-lg border bg-background p-2 shadow-sm">
@@ -192,12 +192,12 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <Input
                 name="q"
                 defaultValue={query}
-                placeholder="Search tools, tutorials, Services..."
+                placeholder="Tools, Ratgeber, Services suchen..."
                 className="h-11 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
                 autoFocus
               />
               <Button type="submit" className="hidden sm:inline-flex">
-                Search
+                Suchen
               </Button>
             </div>
           </form>
@@ -205,8 +205,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
           {query.length === 0 ? (
             <div className="mt-8">
               <EmptyState
-                title="Start with a search"
-                description="Enter at least two characters to search published public content."
+                title="Starten Sie mit einer Suche"
+                description="Geben Sie mindestens zwei Zeichen ein, um öffentliche Inhalte zu durchsuchen."
               />
             </div>
           ) : null}
@@ -214,8 +214,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
           {queryIsTooShort ? (
             <div className="mt-8">
               <EmptyState
-                title="Search query is too short"
-                description={`Enter at least ${minSearchQueryLength} characters to search the public library.`}
+                title="Suchanfrage ist zu kurz"
+                description={`Geben Sie mindestens ${minSearchQueryLength} Zeichen ein, um die öffentliche Bibliothek zu durchsuchen.`}
               />
             </div>
           ) : null}
@@ -223,8 +223,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
           {shouldShowEmpty ? (
             <div className="mt-8">
               <EmptyState
-                title="No results found"
-                description={`No published results matched "${query}". Try a broader term.`}
+                title="Keine Ergebnisse gefunden"
+                description={`Für "${query}" wurden keine veröffentlichten Ergebnisse gefunden. Versuchen Sie einen allgemeineren Begriff.`}
               />
             </div>
           ) : null}

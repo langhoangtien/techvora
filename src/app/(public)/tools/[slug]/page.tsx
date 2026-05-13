@@ -64,7 +64,7 @@ export default async function ToolDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 1, name: "Startseite", item: site.url },
       { "@type": "ListItem", position: 2, name: "Tools", item: new URL("/tools", site.url).toString() },
       { "@type": "ListItem", position: 3, name: tool.name, item: toolUrl },
     ],
@@ -90,7 +90,7 @@ export default async function ToolDetailPage({
       <Container className="py-10">
         <Breadcrumb
           items={[
-            { label: "Home", href: "/" },
+            { label: "Startseite", href: "/" },
             { label: "Tools", href: "/tools" },
             { label: tool.name },
           ]}
@@ -113,13 +113,13 @@ export default async function ToolDetailPage({
             </p>
           ) : null}
         </div>
-        <PublicAdSlot ads={site.ads} label="Advertisement" className="mt-8" />
+        <PublicAdSlot ads={site.ads} label="Anzeige" className="mt-8" />
         <section className="mt-8 rounded-lg border bg-card p-4 md:p-6">
           {ToolComponent ? (
             <ToolComponent />
           ) : (
             <p className="text-sm text-muted-foreground">
-              This tool is not connected to an interactive component yet.
+              Dieses Tool ist noch nicht mit einer interaktiven Komponente verbunden.
             </p>
           )}
         </section>
@@ -129,15 +129,15 @@ export default async function ToolDetailPage({
               <p className="mb-8 text-base leading-7 text-muted-foreground">{tool.description}</p>
             ) : null}
             {tool.content ? <ContentRenderer html={tool.content} /> : null}
-            <PublicAdSlot ads={site.ads} label="Advertisement" className="mt-8" />
+            <PublicAdSlot ads={site.ads} label="Anzeige" className="mt-8" />
           </div>
           <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-            <PublicAdSlot ads={site.ads} label="Sidebar Ad" />
+            <PublicAdSlot ads={site.ads} label="Sidebar-Anzeige" />
           </aside>
         </div>
         {related.length > 0 ? (
           <section className="mt-16 border-t pt-12">
-            <h2 className="text-2xl font-semibold tracking-tight">Related Tools</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Ähnliche Tools</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
                 <ToolCard

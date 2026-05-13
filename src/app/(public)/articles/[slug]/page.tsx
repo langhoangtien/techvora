@@ -77,8 +77,8 @@ export default async function ArticleDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: "Articles", item: new URL("/articles", site.url).toString() },
+      { "@type": "ListItem", position: 1, name: "Startseite", item: site.url },
+      { "@type": "ListItem", position: 2, name: "Artikel", item: new URL("/articles", site.url).toString() },
       { "@type": "ListItem", position: 3, name: post.title, item: articleUrl },
     ],
   }
@@ -103,8 +103,8 @@ export default async function ArticleDetailPage({
       <Container className="py-10">
         <Breadcrumb
           items={[
-            { label: "Home", href: "/" },
-            { label: "Articles", href: "/articles" },
+            { label: "Startseite", href: "/" },
+            { label: "Artikel", href: "/articles" },
             { label: post.title },
           ]}
         />
@@ -138,7 +138,7 @@ export default async function ArticleDetailPage({
               </p>
             ) : null}
             <div className="mt-4 text-sm text-muted-foreground">
-              Updated {formatPublicDate(post.updatedAt)}
+              Aktualisiert am {formatPublicDate(post.updatedAt)}
             </div>
           </div>
           {post.coverImageUrl ? (
@@ -151,9 +151,9 @@ export default async function ArticleDetailPage({
           ) : null}
           <div className="mx-auto mt-8 grid max-w-6xl gap-8 lg:grid-cols-[1fr_260px]">
             <div className="min-w-0">
-              <PublicAdSlot ads={site.ads} label="Advertisement" className="mb-8" />
+              <PublicAdSlot ads={site.ads} label="Anzeige" className="mb-8" />
               <ContentRenderer html={html} />
-              <PublicAdSlot ads={site.ads} label="Advertisement" className="my-8" />
+              <PublicAdSlot ads={site.ads} label="Anzeige" className="my-8" />
               {post.tags.length > 0 ? (
                 <div className="mt-8 flex flex-wrap gap-2">
                   {post.tags.map(({ tag }) => (
@@ -167,17 +167,17 @@ export default async function ArticleDetailPage({
                   ))}
                 </div>
               ) : null}
-              <PublicAdSlot ads={site.ads} label="Advertisement" className="mt-8" />
+              <PublicAdSlot ads={site.ads} label="Anzeige" className="mt-8" />
             </div>
             <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
               <TableOfContents items={toc} />
-              <PublicAdSlot ads={site.ads} label="Sidebar Ad" />
+              <PublicAdSlot ads={site.ads} label="Sidebar-Anzeige" />
             </aside>
           </div>
         </article>
         {related.length > 0 ? (
           <section className="mt-16 border-t pt-12">
-            <h2 className="text-2xl font-semibold tracking-tight">Related Articles</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Ähnliche Artikel</h2>
             <div className="mt-6">
               <ArticleGrid posts={related} />
             </div>

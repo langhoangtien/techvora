@@ -87,7 +87,7 @@ export default async function ServiceDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 1, name: "Startseite", item: site.url },
       { "@type": "ListItem", position: 2, name: "Services", item: new URL("/services", site.url).toString() },
       { "@type": "ListItem", position: 3, name: product.name, item: productUrl },
     ],
@@ -136,7 +136,7 @@ export default async function ServiceDetailPage({
       <Container className="py-10">
         <Breadcrumb
           items={[
-            { label: "Home", href: "/" },
+            { label: "Startseite", href: "/" },
             { label: "Services", href: "/services" },
             { label: product.name },
           ]}
@@ -169,9 +169,9 @@ export default async function ServiceDetailPage({
             ) : null}
           </div>
           <aside className="rounded-lg border bg-card p-5">
-            <p className="text-sm text-muted-foreground">Rating</p>
-            <div className="mt-2 text-3xl font-semibold">{product.rating?.toString() ?? "N/A"}</div>
-            <p className="mt-4 text-sm text-muted-foreground">Pricing</p>
+            <p className="text-sm text-muted-foreground">Bewertung</p>
+            <div className="mt-2 text-3xl font-semibold">{product.rating?.toString() ?? "Keine Angabe"}</div>
+            <p className="mt-4 text-sm text-muted-foreground">Preis</p>
             <div className="mt-1 text-lg font-medium">
               {priceLabel(product.pricingFrom?.toString(), product.currency)}
             </div>
@@ -179,39 +179,39 @@ export default async function ServiceDetailPage({
               <p className="mt-1 text-sm text-muted-foreground">{product.pricingModel}</p>
             ) : null}
             <div className="mt-5">
-              <AffiliateButton href={ctaUrl}>Visit {product.name}</AffiliateButton>
+              <AffiliateButton href={ctaUrl}>{product.name} besuchen</AffiliateButton>
             </div>
           </aside>
         </div>
-        <PublicAdSlot ads={site.ads} label="Advertisement" className="mt-8" />
+        <PublicAdSlot ads={site.ads} label="Anzeige" className="mt-8" />
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_260px]">
           <div className="space-y-8">
             {product.description ? (
               <section className="rounded-lg border bg-card p-5">
-                <h2 className="text-lg font-semibold tracking-tight">Quick verdict</h2>
+                <h2 className="text-lg font-semibold tracking-tight">Kurzfazit</h2>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">{product.description}</p>
               </section>
             ) : null}
             <section className="rounded-lg border bg-card p-5">
-              <h2 className="text-lg font-semibold tracking-tight">Pricing</h2>
+              <h2 className="text-lg font-semibold tracking-tight">Preise</h2>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                {product.name} uses {product.pricingModel ?? "a listed pricing model"} and starts from{" "}
+                {product.name} nutzt {product.pricingModel ?? "ein angegebenes Preismodell"} und startet bei{" "}
                 {priceLabel(product.pricingFrom?.toString(), product.currency)}.
               </p>
             </section>
-            <DetailList title="Features" items={jsonArray(product.features)} />
+            <DetailList title="Funktionen" items={jsonArray(product.features)} />
             <ProsConsList pros={product.pros} cons={product.cons} />
-            <DetailList title="Best for" items={jsonArray(product.bestFor)} />
+            <DetailList title="Geeignet für" items={jsonArray(product.bestFor)} />
             <DetailList title="Alternatives" items={jsonArray(product.alternatives)} />
-            <PublicAdSlot ads={site.ads} label="Advertisement" />
+            <PublicAdSlot ads={site.ads} label="Anzeige" />
           </div>
           <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-            <PublicAdSlot ads={site.ads} label="Sidebar Ad" />
+            <PublicAdSlot ads={site.ads} label="Sidebar-Anzeige" />
           </aside>
         </div>
         {related.length > 0 ? (
           <section className="mt-16 border-t pt-12">
-            <h2 className="text-2xl font-semibold tracking-tight">Related Services</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Ähnliche Services</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
                 <ServiceCard

@@ -24,21 +24,21 @@ export function Pagination({
 
   return (
     <nav
-      aria-label="Pagination"
+      aria-label="Seitennavigation"
       className={cn("flex items-center justify-between gap-3", className)}
     >
       <Button asChild variant="outline" size="sm" disabled={page <= 1}>
         <Link href={getPageHref(Math.max(1, page - 1))}>
           <ChevronLeftIcon />
-          Previous
+          Zurück
         </Link>
       </Button>
       <span className="text-sm text-muted-foreground">
-        Page {page} of {totalPages}
+        Seite {page} von {totalPages}
       </span>
       <Button asChild variant="outline" size="sm" disabled={page >= totalPages}>
         <Link href={getPageHref(Math.min(totalPages, page + 1))}>
-          Next
+          Weiter
           <ChevronRightIcon />
         </Link>
       </Button>

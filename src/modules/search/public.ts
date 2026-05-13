@@ -28,6 +28,7 @@ export type GroupedSearchResults = {
 }
 
 export const minSearchQueryLength = 2
+const locale = "de-DE"
 
 export function normalizeSearchQuery(query: string | null | undefined) {
   return String(query ?? "").trim().slice(0, 120)
@@ -67,6 +68,7 @@ export async function searchPublicContent(
       where: {
         status: "PUBLISHED",
         type: "ARTICLE",
+        locale,
         noIndex: false,
         OR: [{ title: match }, { excerpt: match }, { content: match }],
       },
@@ -84,6 +86,7 @@ export async function searchPublicContent(
     prisma.tool.findMany({
       where: {
         status: "PUBLISHED",
+        locale,
         noIndex: false,
         OR: [
           { name: match },

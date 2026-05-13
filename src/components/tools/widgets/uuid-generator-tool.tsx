@@ -16,7 +16,7 @@ export function UuidGeneratorTool() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end gap-3">
         <label className="grid gap-1 text-sm font-medium">
-          Quantity
+          Anzahl
           <input
             type="number"
             min={1}
@@ -27,14 +27,14 @@ export function UuidGeneratorTool() {
           />
         </label>
         <Button type="button" onClick={() => setIds(createIds(count))}>
-          Generate
+          Generieren
         </Button>
         <Button
           type="button"
           variant="outline"
           onClick={() => navigator.clipboard.writeText(ids.join("\n"))}
         >
-          Copy all
+          Alle kopieren
         </Button>
       </div>
       <div className="rounded-lg border bg-muted/20 p-3">

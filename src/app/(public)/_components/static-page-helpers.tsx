@@ -6,7 +6,7 @@ import { SeoJsonLd } from "@/components/seo/seo-json-ld"
 import type { SiteConfigFromSettings } from "@/lib/settings"
 import { cn } from "@/lib/utils"
 
-export const legalPageUpdatedAt = "May 11, 2026"
+export const legalPageUpdatedAt = "11. Mai 2026"
 
 export function staticPageMetadata({
   site,
@@ -65,7 +65,7 @@ export function breadcrumbJsonLd({
       {
         "@type": "ListItem",
         position: 1,
-        name: "Home",
+        name: "Startseite",
         item: site.url,
       },
       {
@@ -101,7 +101,7 @@ export function StaticPageShell({
     <>
       <SeoJsonLd data={breadcrumbJsonLd({ site, path, label })} />
       <Container className={cn("py-10 md:py-14", className)}>
-        <Breadcrumb items={[{ label: "Home", href: "/" }, { label }]} />
+        <Breadcrumb items={[{ label: "Startseite", href: "/" }, { label }]} />
         <header className="mt-10 max-w-3xl">
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-primary">
             {eyebrow}

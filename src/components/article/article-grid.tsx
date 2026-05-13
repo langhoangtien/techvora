@@ -14,7 +14,7 @@ type ArticleGridPost = {
 
 export function ArticleGrid({
   posts,
-  emptyTitle = "No articles found",
+  emptyTitle = "Keine Artikel gefunden",
 }: {
   posts: ArticleGridPost[]
   emptyTitle?: string
@@ -23,7 +23,7 @@ export function ArticleGrid({
     return (
       <EmptyState
         title={emptyTitle}
-        description="Published articles will appear here when available."
+        description="Veröffentlichte Artikel erscheinen hier, sobald sie verfügbar sind."
       />
     )
   }

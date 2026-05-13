@@ -21,7 +21,7 @@ export function ProsConsList({
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div className="rounded-lg border bg-card p-5">
-        <h2 className="text-lg font-semibold tracking-tight">Pros</h2>
+        <h2 className="text-lg font-semibold tracking-tight">Vorteile</h2>
         <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
           {proItems.map((item) => (
             <li key={item} className="flex gap-2">
@@ -32,7 +32,7 @@ export function ProsConsList({
         </ul>
       </div>
       <div className="rounded-lg border bg-card p-5">
-        <h2 className="text-lg font-semibold tracking-tight">Cons</h2>
+        <h2 className="text-lg font-semibold tracking-tight">Nachteile</h2>
         <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
           {conItems.map((item) => (
             <li key={item} className="flex gap-2">

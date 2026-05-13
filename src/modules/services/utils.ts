@@ -7,8 +7,8 @@ export function jsonArray(value: unknown): string[] {
 }
 
 export function priceLabel(value?: number | string | null, currency = "USD") {
-  if (value == null) return "Pricing not listed"
+  if (value == null) return "Preis nicht angegeben"
   const numeric = Number(value)
-  if (Number.isNaN(numeric)) return "Pricing not listed"
+  if (Number.isNaN(numeric)) return "Preis nicht angegeben"
   return `${currency} ${numeric.toFixed(2)}`
 }

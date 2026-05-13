@@ -151,8 +151,8 @@ export default async function HomePage() {
             </div>
 
             <h1 className="mt-8 text-5xl font-semibold tracking-[-0.04em] text-foreground md:text-7xl">
-              Build a sharper software and{" "}
-              <span className="text-primary">infrastructure</span> stack.
+              Treffen Sie bessere Entscheidungen für Software und{" "}
+              <span className="text-primary">Infrastruktur</span>.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
@@ -166,28 +166,28 @@ export default async function HomePage() {
                 className="bg-primary hover:bg-primary/90"
               >
                 <Link href="/tools">
-                  Explore tools
+                  Tools entdecken
                   <ArrowRightIcon className="size-4" />
                 </Link>
               </Button>
 
               <Button asChild variant="outline" size="lg">
-                <Link href="/compare">View comparisons</Link>
+                <Link href="/compare">Vergleiche ansehen</Link>
               </Button>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <ShieldCheckIcon className="size-4 text-primary" />
-                Unbiased reviews
+                Unabhängige Bewertungen
               </div>
               <div className="flex items-center gap-2">
                 <SparklesIcon className="size-4 text-primary" />
-                Actionable guides
+                Praxisnahe Ratgeber
               </div>
               <div className="flex items-center gap-2">
                 <UsersIcon className="size-4 text-primary" />
-                Built for developers & teams
+                Für Entwickler und Teams
               </div>
             </div>
           </div>
@@ -195,14 +195,14 @@ export default async function HomePage() {
           <div className="grid gap-5">
             <HomeHeroCard
               icon={<WrenchIcon className="size-6" />}
-              title="Tech tools"
-              description="Reviews, use cases, pricing notes, and practical alternatives."
+              title="Tech-Tools"
+              description="Tests, Einsatzszenarien, Preishinweise und sinnvolle Alternativen."
               href="/tools"
             />
             <HomeHeroCard
               icon={<TrendingUpIcon className="size-6" />}
-              title="Services stack"
-              description="Online services for hosting, VPS, VPN, domains, cloud, AI, analytics, and SaaS."
+              title="Service-Stack"
+              description="Online-Services für Hosting, VPS, VPN, Domains, Cloud, KI, Analytics und SaaS."
               href="/services"
             />
           </div>
@@ -215,35 +215,35 @@ export default async function HomePage() {
             <div>
               <div className="mb-4 flex items-center gap-2 text-sm font-semibold tracking-[0.2em] text-primary uppercase">
                 <ServerIcon className="size-4" />
-                Platform
+                Plattform
               </div>
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                Designed for scalable content from day one
+                Von Anfang an für skalierbare Inhalte gedacht
               </h2>
               <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
-                The first release defines the information architecture for
-                articles, tools, Services, comparisons, taxonomies, media,
-                redirects, and SEO.
+                Die erste Version legt die Informationsarchitektur für
+                Ratgeber, Tools, Services, Vergleiche, Taxonomien, Medien,
+                Weiterleitungen und SEO sauber an.
               </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
               <HomeMiniCard
                 icon={<FileTextIcon className="size-5" />}
-                title="Articles"
-                description="In-depth guides and practical tutorials."
+                title="Ratgeber"
+                description="Fundierte Leitfäden und praktische Tutorials."
                 href="/articles"
               />
               <HomeMiniCard
                 icon={<WrenchIcon className="size-5" />}
                 title="Tools"
-                description="Curated tools and honest reviews."
+                description="Kuratierte Werkzeuge und ehrliche Bewertungen."
                 href="/tools"
               />
               <HomeMiniCard
                 icon={<StarIcon className="size-5" />}
-                title="Comparisons"
-                description="Side-by-side comparisons you can trust."
+                title="Vergleiche"
+                description="Direkte Vergleiche mit klarer Einordnung."
                 href="/compare"
               />
             </div>
@@ -256,10 +256,10 @@ export default async function HomePage() {
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <SectionHeader
               eyebrow="Tools"
-              title="Featured tools"
-              description="Published tools and technical products, with featured items shown first."
+              title="Empfohlene Tools"
+              description="Veröffentlichte Werkzeuge und technische Produkte, mit Empfehlungen zuerst."
             />
-            <SectionLink href="/tools">View all tools</SectionLink>
+            <SectionLink href="/tools">Alle Tools ansehen</SectionLink>
           </div>
           {content.tools.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -278,7 +278,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No published tools found" />
+              <EmptyState title="Keine veröffentlichten Tools gefunden" />
             </div>
           )}
         </Container>
@@ -288,11 +288,11 @@ export default async function HomePage() {
         <Container>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <SectionHeader
-              eyebrow="Articles"
-              title="Latest articles"
-              description="Recent published guides and tutorials sorted by publication date."
+              eyebrow="Ratgeber"
+              title="Aktuelle Artikel"
+              description="Neue Leitfäden und Tutorials, sortiert nach Veröffentlichungsdatum."
             />
-            <SectionLink href="/articles">Read all articles</SectionLink>
+            <SectionLink href="/articles">Alle Artikel lesen</SectionLink>
           </div>
           {content.articles.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -311,7 +311,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No published articles found" />
+              <EmptyState title="Keine veröffentlichten Artikel gefunden" />
             </div>
           )}
         </Container>
@@ -322,10 +322,10 @@ export default async function HomePage() {
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <SectionHeader
               eyebrow="Services"
-              title="Services directory"
-              description="Published services with featured profiles shown first."
+              title="Service-Verzeichnis"
+              description="Veröffentlichte Services mit empfohlenen Profilen zuerst."
             />
-            <SectionLink href="/services">Browse Services</SectionLink>
+            <SectionLink href="/services">Services durchsuchen</SectionLink>
           </div>
           {content.services.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -348,7 +348,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No published services found" />
+              <EmptyState title="Keine veröffentlichten Services gefunden" />
             </div>
           )}
         </Container>
@@ -358,11 +358,11 @@ export default async function HomePage() {
         <Container>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <SectionHeader
-              eyebrow="Compare"
-              title="Comparisons"
-              description="Published side-by-side comparisons with featured decisions shown first."
+              eyebrow="Vergleiche"
+              title="Produktvergleiche"
+              description="Direkte Vergleiche mit empfohlenen Entscheidungen zuerst."
             />
-            <SectionLink href="/compare">View comparisons</SectionLink>
+            <SectionLink href="/compare">Vergleiche ansehen</SectionLink>
           </div>
           {content.comparisons.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -383,7 +383,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No published comparisons found" />
+              <EmptyState title="Keine veröffentlichten Vergleiche gefunden" />
             </div>
           )}
         </Container>
@@ -392,9 +392,9 @@ export default async function HomePage() {
       <HomeSection className="bg-muted/30">
         <Container>
           <SectionHeader
-            eyebrow="Categories"
-            title="Featured categories"
-            description="Browse selected topic areas across the public library."
+            eyebrow="Kategorien"
+            title="Ausgewählte Kategorien"
+            description="Durchsuchen Sie zentrale Themenbereiche der öffentlichen Bibliothek."
           />
           {content.categories.length > 0 ? (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -409,7 +409,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="mt-8">
-              <EmptyState title="No featured categories found" />
+              <EmptyState title="Keine hervorgehobenen Kategorien gefunden" />
             </div>
           )}
         </Container>
@@ -421,13 +421,13 @@ export default async function HomePage() {
             <div className="grid gap-6 md:grid-cols-[1fr_380px] md:items-center">
               <SectionHeader
                 eyebrow="Newsletter"
-                title="Get practical software research in your inbox"
-                description="A clean newsletter signup surface is ready for a future email backend."
+                title="Praxisnahe Software-Recherche per E-Mail"
+                description="Die Newsletter-Anmeldung ist für ein späteres E-Mail-Backend vorbereitet."
               />
               <form className="flex gap-2">
                 <Input type="email" placeholder="you@example.com" disabled />
                 <Button type="button" disabled>
-                  Subscribe
+                  Abonnieren
                 </Button>
               </form>
             </div>

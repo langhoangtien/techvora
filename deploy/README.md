@@ -36,9 +36,9 @@ POSTGRES_USER=tekvora
 POSTGRES_PASSWORD=replace-with-a-long-random-password
 DATABASE_URL=postgresql://tekvora:replace-with-a-long-random-password@postgres:5432/tekvora?schema=public
 
-NEXTAUTH_URL=https://your-domain.com
+NEXTAUTH_URL=https://tekvora.de
 NEXTAUTH_SECRET=replace-with-a-long-random-secret
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://tekvora.de
 EOF
 chmod 600 /opt/tekvora/.env.production
 ```
@@ -57,8 +57,8 @@ echo "YOUR_GHCR_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password
 
 Sửa domain trong `deploy/nginx/site.conf`:
 
-- `server_name tekvora.example.com www.tekvora.example.com`
-- đường dẫn certificate `/etc/letsencrypt/live/tekvora.example.com/...`
+- `server_name tekvora.de www.tekvora.de`
+- đường dẫn certificate `/etc/letsencrypt/live/tekvora.de/...`
 
 Copy file:
 
@@ -73,7 +73,7 @@ Nếu chưa có certificate, tạo cert trước khi bật server 443 hoặc t�
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
-sudo certbot --nginx -d your-domain.com -d www.your-domain.com
+sudo certbot --nginx -d tekvora.de -d www.tekvora.de
 ```
 
 ## 6. Bật firewall

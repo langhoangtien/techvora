@@ -9,14 +9,14 @@ import { getSiteConfig } from "@/lib/settings"
 import { getPublishedComparisons } from "@/modules/comparisons/public"
 
 export const revalidate = 3600
-export const metadata: Metadata = { title: "Comparisons", description: "Side-by-side comparisons for software, Services, and technical tools." }
+export const metadata: Metadata = { title: "Vergleiche", description: "Direkte Vergleiche für Software, Services und technische Tools." }
 
 export default async function ComparePage() {
   const [site, comparisons] = await Promise.all([getSiteConfig(), getPublishedComparisons()])
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Comparisons",
+    name: "Vergleiche",
     itemListElement: comparisons.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -29,14 +29,14 @@ export default async function ComparePage() {
     <>
       <SeoJsonLd data={itemListJsonLd} />
       <Container className="py-10">
-        <SectionHeader eyebrow="Compare" title="Side-by-side product comparisons" description="Evaluate tradeoffs, winners, use cases, pros, cons, and buying paths across tools and Services." />
+        <SectionHeader eyebrow="Vergleiche" title="Direkte Produktvergleiche" description="Bewerten Sie Kompromisse, Gewinner, Einsatzfälle, Vor- und Nachteile sowie Kaufpfade für Tools und Services." />
         {comparisons.length > 0 ? (
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {comparisons.map((item) => (
               <ComparisonCard key={item.id} title={item.title} href={`/compare/${item.slug}`} excerpt={item.excerpt} itemAName={item.itemAName} itemBName={item.itemBName} itemALogoUrl={item.itemALogoUrl} itemBLogoUrl={item.itemBLogoUrl} winner={item.winner} featured={item.isFeatured} />
             ))}
           </div>
-        ) : <div className="mt-8"><EmptyState title="No comparisons found" /></div>}
+        ) : <div className="mt-8"><EmptyState title="Keine Vergleiche gefunden" /></div>}
       </Container>
     </>
   )

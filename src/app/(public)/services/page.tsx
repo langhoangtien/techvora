@@ -13,8 +13,8 @@ import {
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Services Directory",
-  description: "service profiles, pricing, ratings, and practical use cases.",
+  title: "Service-Verzeichnis",
+  description: "Service-Profile, Preise, Bewertungen und praktische Einsatzszenarien.",
 }
 
 export default async function ServicesPage() {
@@ -27,8 +27,8 @@ export default async function ServicesPage() {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Services Directory",
-    description: "service profiles, pricing, ratings, and practical use cases.",
+    name: "Service-Verzeichnis",
+    description: "Service-Profile, Preise, Bewertungen und praktische Einsatzszenarien.",
     url: pageUrl,
   }
 
@@ -38,8 +38,8 @@ export default async function ServicesPage() {
       <Container className="py-10">
         <SectionHeader
           eyebrow="Services"
-          title="Services directory for modern teams"
-          description="Compare services by category, pricing model, rating, strengths, limitations, and best-fit use cases."
+          title="Service-Verzeichnis für moderne Teams"
+          description="Vergleichen Sie Services nach Kategorie, Preismodell, Bewertung, Stärken, Grenzen und passenden Einsatzfällen."
         />
         <ServicesDirectory
           products={products.map((product) => ({

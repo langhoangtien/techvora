@@ -66,7 +66,7 @@ export function ToolDirectory({
             setQuery(event.target.value)
             setPage(1)
           }}
-          placeholder="Search tools"
+          placeholder="Tools suchen"
         />
         <select
           value={categoryId}
@@ -76,7 +76,7 @@ export function ToolDirectory({
           }}
           className="h-9 rounded-lg border bg-background px-3 text-sm"
         >
-          <option value="">All categories</option>
+          <option value="">Alle Kategorien</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -92,7 +92,7 @@ export function ToolDirectory({
             setPage(1)
           }}
         >
-          Clear
+          Zurücksetzen
         </Button>
       </div>
       {categories.length > 0 ? (
@@ -105,7 +105,7 @@ export function ToolDirectory({
               setPage(1)
             }}
           >
-            All
+            Alle
           </button>
           {categories.map((category) => (
             <button
@@ -137,11 +137,11 @@ export function ToolDirectory({
         </div>
       ) : (
         <div className="mt-8">
-          <EmptyState title="No tools found" description="Try clearing filters or search terms." />
+          <EmptyState title="Keine Tools gefunden" description="Setzen Sie die Filter zurück oder verwenden Sie einen allgemeineren Suchbegriff." />
         </div>
       )}
       {totalPages > 1 ? (
-        <nav aria-label="Pagination" className="mt-8 flex items-center justify-between gap-3">
+        <nav aria-label="Seitennavigation" className="mt-8 flex items-center justify-between gap-3">
           <Button
             type="button"
             variant="outline"
@@ -149,10 +149,10 @@ export function ToolDirectory({
             disabled={currentPage <= 1}
             onClick={() => setPage((current) => Math.max(1, current - 1))}
           >
-            Previous
+            Zurück
           </Button>
           <span className="text-sm text-muted-foreground">
-            Page {currentPage} of {totalPages}
+            Seite {currentPage} von {totalPages}
           </span>
           <Button
             type="button"
@@ -161,7 +161,7 @@ export function ToolDirectory({
             disabled={currentPage >= totalPages}
             onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
           >
-            Next
+            Weiter
           </Button>
         </nav>
       ) : null}

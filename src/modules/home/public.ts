@@ -4,11 +4,16 @@ const publishedWhere = {
   status: "PUBLISHED" as const,
 }
 
+const locale = "de-DE"
+
 export async function getHomepageContent() {
   const [tools, articles, services, comparisons, categories] =
     await Promise.all([
       prisma.tool.findMany({
-        where: publishedWhere,
+        where: {
+          ...publishedWhere,
+          locale,
+        },
         select: {
           id: true,
           name: true,
@@ -26,6 +31,7 @@ export async function getHomepageContent() {
         where: {
           ...publishedWhere,
           type: "ARTICLE",
+          locale,
         },
         select: {
           id: true,
@@ -78,7 +84,7 @@ export async function getHomepageContent() {
         take: 4,
       }),
       prisma.category.findMany({
-        where: { isFeatured: true },
+        where: { isFeatured: true, locale },
         select: {
           id: true,
           name: true,

@@ -20,9 +20,9 @@ function slugify(value) {
 
 async function upsertCategory(data) {
   return prisma.category.upsert({
-    where: { slug_locale: { slug: data.slug, locale: "en" } },
+    where: { slug_locale: { slug: data.slug, locale: "de-DE" } },
     update: data,
-    create: { ...data, locale: "en" },
+    create: { ...data, locale: "de-DE" },
   })
 }
 
@@ -42,7 +42,7 @@ async function seedCategoryTree({
     parentId: null,
     order,
     isFeatured: true,
-    seoTitle: `${name} Categories`,
+    seoTitle: `${name} Kategorien`,
     seoDesc: description,
   })
 
@@ -51,13 +51,13 @@ async function seedCategoryTree({
       upsertCategory({
         name: childName,
         slug: `${slug}-${slugify(childName)}`,
-        description: `${childName} resources and recommendations.`,
+        description: `Ressourcen und Empfehlungen zu ${childName}.`,
         type,
         parentId: parent.id,
         order: index + 1,
         isFeatured: index < 6,
         seoTitle: `${childName} ${name}`,
-        seoDesc: `Browse ${childName.toLowerCase()} resources in ${name.toLowerCase()}.`,
+        seoDesc: `Durchsuchen Sie Ressourcen zu ${childName} im Bereich ${name}.`,
       })
     )
   )
@@ -70,25 +70,25 @@ async function seedCategoryTree({
 
 async function upsertTag(data) {
   return prisma.tag.upsert({
-    where: { slug_locale: { slug: data.slug, locale: "en" } },
+    where: { slug_locale: { slug: data.slug, locale: "de-DE" } },
     update: data,
-    create: { ...data, locale: "en" },
+    create: { ...data, locale: "de-DE" },
   })
 }
 
 async function upsertAuthor(data) {
   return prisma.author.upsert({
-    where: { slug_locale: { slug: data.slug, locale: "en" } },
+    where: { slug_locale: { slug: data.slug, locale: "de-DE" } },
     update: data,
-    create: { ...data, locale: "en" },
+    create: { ...data, locale: "de-DE" },
   })
 }
 
 async function upsertPost(data, tagIds) {
   const post = await prisma.post.upsert({
-    where: { slug_locale: { slug: data.slug, locale: "en" } },
+    where: { slug_locale: { slug: data.slug, locale: "de-DE" } },
     update: data,
-    create: { ...data, locale: "en" },
+    create: { ...data, locale: "de-DE" },
   })
 
   await prisma.postTag.deleteMany({ where: { postId: post.id } })
@@ -102,9 +102,9 @@ async function upsertPost(data, tagIds) {
 
 async function upsertTool(data) {
   return prisma.tool.upsert({
-    where: { slug_locale: { slug: data.slug, locale: "en" } },
+    where: { slug_locale: { slug: data.slug, locale: "de-DE" } },
     update: data,
-    create: { ...data, locale: "en" },
+    create: { ...data, locale: "de-DE" },
   })
 }
 
@@ -147,12 +147,12 @@ async function main() {
     name: "Services",
     slug: "services",
     description:
-      "Online services for teams, operations, infrastructure, analytics, AI, and growth.",
+      "Online-Services für Teams, Betrieb, Infrastruktur, Analytics, KI und Wachstum.",
     type: "SAAS",
     order: 1,
     children: [
-      "AI",
-      "Developer Tools",
+      "KI",
+      "Entwickler-Tools",
       "Hosting",
       "Cloud",
       "VPS",
@@ -160,40 +160,40 @@ async function main() {
       "Domains",
       "DNS",
       "CDN",
-      "Website Builders",
-      "E-commerce",
+      "Website-Baukästen",
+      "E-Commerce",
       "Analytics",
       "SEO",
       "Marketing",
       "Email",
-      "Productivity",
+      "Produktivität",
       "Design",
-      "Databases",
+      "Datenbanken",
       "Monitoring",
-      "Automation",
-      "Security",
-      "Payments",
+      "Automatisierung",
+      "Sicherheit",
+      "Zahlungen",
       "CMS",
-      "Storage",
+      "Speicher",
     ],
   })
 
   const articlesTree = await seedCategoryTree({
-    name: "Articles",
+    name: "Artikel",
     slug: "articles",
-    description: "Editorial categories for guides, tutorials, reviews, and research.",
+    description: "Redaktionelle Kategorien für Ratgeber, Tutorials, Tests und Recherche.",
     type: "ARTICLE",
     order: 2,
     children: [
-      "Guides",
+      "Ratgeber",
       "Tutorials",
-      "Comparisons",
-      "Reviews",
+      "Vergleiche",
+      "Tests",
       "Infrastructure",
-      "AI",
-      "Web Development",
+      "KI",
+      "Webentwicklung",
       "SEO",
-      "Security",
+      "Sicherheit",
       "Performance",
     ],
   })
@@ -201,84 +201,84 @@ async function main() {
   const toolsTree = await seedCategoryTree({
     name: "Tools",
     slug: "tools",
-    description: "Utility categories for technical tools and browser-based helpers.",
+    description: "Kategorien für technische Tools und browserbasierte Helfer.",
     type: "TOOL",
     order: 3,
     children: [
-      "Generators",
-      "Converters",
-      "SEO Tools",
-      "Developer Utilities",
-      "Text Tools",
-      "Image Tools",
-      "Performance Tools",
-      "Security Tools",
-      "Network Tools",
-      "JSON Tools",
-      "CSS Tools",
-      "Color Tools",
+      "Generatoren",
+      "Konverter",
+      "SEO-Tools",
+      "Entwickler-Helfer",
+      "Text-Tools",
+      "Bild-Tools",
+      "Performance-Tools",
+      "Security-Tools",
+      "Netzwerk-Tools",
+      "JSON-Tools",
+      "CSS-Tools",
+      "Farb-Tools",
     ],
   })
 
-  const articleGuides = articlesTree.childrenByName.get("Guides")
-  const articleAi = articlesTree.childrenByName.get("AI")
-  const toolJson = toolsTree.childrenByName.get("JSON Tools")
-  const toolGenerators = toolsTree.childrenByName.get("Generators")
-  const toolConverters = toolsTree.childrenByName.get("Converters")
+  const articleGuides = articlesTree.childrenByName.get("Ratgeber")
+  const articleAi = articlesTree.childrenByName.get("KI")
+  const toolJson = toolsTree.childrenByName.get("JSON-Tools")
+  const toolGenerators = toolsTree.childrenByName.get("Generatoren")
+  const toolConverters = toolsTree.childrenByName.get("Konverter")
 
   const [cloudTag, devopsTag, aiTag, serviceTag] = await Promise.all([
-    upsertTag({ name: "Cloud", slug: "cloud", description: "Cloud platforms and infrastructure." }),
-    upsertTag({ name: "DevOps", slug: "devops", description: "Automation and operations workflows." }),
-    upsertTag({ name: "AI Tools", slug: "ai-tools", description: "AI software and productivity tools." }),
-    upsertTag({ name: "Services", slug: "services", description: "Online services and software platforms." }),
+    upsertTag({ name: "Cloud", slug: "cloud", description: "Cloud-Plattformen und Infrastruktur." }),
+    upsertTag({ name: "DevOps", slug: "devops", description: "Automatisierung und Betriebsabläufe." }),
+    upsertTag({ name: "KI-Tools", slug: "ki-tools", description: "KI-Software und Produktivitätstools." }),
+    upsertTag({ name: "Services", slug: "services", description: "Online-Services und Softwareplattformen." }),
   ])
 
   const [alex, maya] = await Promise.all([
     upsertAuthor({
       name: "Alex Carter",
       slug: "alex-carter",
-      bio: "Infrastructure writer focused on practical cloud and developer tooling decisions.",
+      bio: "Infrastruktur-Autor mit Schwerpunkt auf praxistauglichen Cloud- und Entwickler-Tool-Entscheidungen.",
       avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=240&fit=crop",
-      websiteUrl: "https://tekvora.com",
+      websiteUrl: "https://tekvora.de",
       twitterUrl: "https://x.com",
       linkedinUrl: "https://linkedin.com",
     }),
     upsertAuthor({
       name: "Maya Chen",
       slug: "maya-chen",
-      bio: "Services analyst covering productivity software, AI tools, and modern team workflows.",
+      bio: "Service-Analystin für Produktivitätssoftware, KI-Tools und moderne Team-Workflows.",
       avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&h=240&fit=crop",
-      websiteUrl: "https://tekvora.com",
+      websiteUrl: "https://tekvora.de",
     }),
   ])
 
   const contentB = `
-    <p>Modern developer tools should reduce coordination cost rather than simply add another dashboard. The best tools fit naturally into code review, deployment, monitoring, and documentation workflows.</p>
-    <h2>Evaluate the workflow, not just the feature list</h2>
-    <p>A product with dozens of features can still fail if it adds friction to everyday development. Start by mapping the workflow your team repeats most often.</p>
-    <h3>Integrations</h3>
-    <p>Strong integrations with GitHub, Slack, CI systems, and observability platforms often matter more than niche features.</p>
+    <p>Moderne Entwickler-Tools sollten Abstimmungsaufwand reduzieren, statt nur ein weiteres Dashboard einzuführen. Gute Werkzeuge passen natürlich in Code-Review, Deployment, Monitoring und Dokumentation.</p>
+    <h2>Bewerten Sie den Workflow, nicht nur die Funktionsliste</h2>
+    <p>Ein Produkt mit vielen Funktionen kann trotzdem scheitern, wenn es den Entwicklungsalltag erschwert. Beginnen Sie mit dem Workflow, den Ihr Team am häufigsten wiederholt.</p>
+    <h3>Integrationen</h3>
+    <p>Starke Integrationen mit GitHub, Slack, CI-Systemen und Observability-Plattformen sind oft wichtiger als Nischenfunktionen.</p>
     <pre><code>deployment_checklist = ["tests", "review", "rollback"]</code></pre>
-    <h2>Adoption and governance</h2>
-    <p>Good tools make it easy to define ownership, permissions, audit trails, and usage conventions. This is especially important as teams grow.</p>
+    <h2>Einführung und Governance</h2>
+    <p>Gute Tools erleichtern es, Verantwortlichkeiten, Berechtigungen, Audit-Trails und Nutzungsregeln festzulegen. Das wird besonders wichtig, wenn Teams wachsen.</p>
   `
 
   const contentC = `
-    <p>AI services are moving quickly, but buyers still need a grounded evaluation process. The best choice depends on data handling, workflow fit, output quality, and administrative controls.</p>
-    <h2>Start with the use case</h2>
-    <p>Separate writing assistance, research automation, support workflows, and developer productivity. Each category has different quality and security requirements.</p>
-    <h2>Security and data controls</h2>
-    <p>Review retention policies, model training settings, team permissions, and export options before rolling out an AI product widely.</p>
-    <h3>Measurement</h3>
-    <p>Track time saved, error rates, and user satisfaction. Without measurement, AI tools can become expensive experiments.</p>
+    <p>KI-Services entwickeln sich schnell, doch Käufer brauchen weiterhin einen nüchternen Bewertungsprozess. Die beste Wahl hängt von Datenverarbeitung, Workflow-Passung, Ausgabequalität und administrativen Kontrollen ab.</p>
+    <h2>Beginnen Sie mit dem Einsatzfall</h2>
+    <p>Trennen Sie Schreibhilfe, Rechercheautomatisierung, Support-Workflows und Entwicklerproduktivität. Jede Kategorie hat andere Qualitäts- und Sicherheitsanforderungen.</p>
+    <h2>Sicherheit und Datenkontrolle</h2>
+    <p>Prüfen Sie Aufbewahrungsregeln, Modelltraining-Einstellungen, Teamrechte und Exportoptionen, bevor ein KI-Produkt breit ausgerollt wird.</p>
+    <h3>Messung</h3>
+    <p>Messen Sie eingesparte Zeit, Fehlerraten und Nutzerzufriedenheit. Ohne Messung können KI-Tools schnell zu teuren Experimenten werden.</p>
   `
 
   await Promise.all([
     upsertPost(
       {
-        title: "The Practical Developer Tool Buying Checklist",
+        title: "Die praktische Checkliste für den Kauf von Entwickler-Tools",
         slug: "developer-tool-buying-checklist",
-        excerpt: "A structured checklist for evaluating developer tools before they become part of your engineering workflow.",
+        excerpt: "Eine strukturierte Checkliste, um Entwickler-Tools zu bewerten, bevor sie Teil des Engineering-Workflows werden.",
         content: contentB,
         format: "HTML",
         status: "PUBLISHED",
@@ -286,17 +286,17 @@ async function main() {
         categoryId: articleGuides.id,
         authorId: alex.id,
         coverImageUrl: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1400&h=800&fit=crop",
-        seoTitle: "Developer Tool Buying Checklist",
-        seoDesc: "Use this developer tool buying checklist to evaluate workflow fit, integrations, governance, and operational value.",
+        seoTitle: "Checkliste für den Kauf von Entwickler-Tools",
+        seoDesc: "Bewerten Sie Workflow-Passung, Integrationen, Governance und operativen Nutzen von Entwickler-Tools.",
         publishedAt: daysAgo(5),
       },
       [devopsTag.id, cloudTag.id]
     ),
     upsertPost(
       {
-        title: "How to Evaluate AI Services Without the Hype",
+        title: "KI-Services ohne Hype bewerten",
         slug: "evaluate-ai-services",
-        excerpt: "A calm evaluation process for AI services focused on workflow fit, security, measurement, and quality.",
+        excerpt: "Ein nüchterner Bewertungsprozess für KI-Services mit Fokus auf Workflow-Passung, Sicherheit, Messbarkeit und Qualität.",
         content: contentC,
         format: "HTML",
         status: "PUBLISHED",
@@ -304,8 +304,8 @@ async function main() {
         categoryId: articleAi.id,
         authorId: maya.id,
         coverImageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=800&fit=crop",
-        seoTitle: "How to Evaluate AI Services",
-        seoDesc: "Evaluate AI services based on use case fit, data controls, measurement, and real operational value.",
+        seoTitle: "KI-Services bewerten",
+        seoDesc: "Bewerten Sie KI-Services nach Einsatzfall, Datenkontrolle, Messbarkeit und realem operativem Nutzen.",
         publishedAt: daysAgo(9),
       },
       [aiTag.id, serviceTag.id]
@@ -314,10 +314,10 @@ async function main() {
 
   await upsertPost(
     {
-      title: "Draft Example Hidden From Public Pages",
+      title: "Entwurf, der öffentlich verborgen bleibt",
       slug: "draft-example-hidden-from-public-pages",
-      excerpt: "This draft exists to verify that public queries only show published content.",
-      content: "<p>This post should not appear publicly.</p><h2>Draft heading</h2><p>Hidden content.</p>",
+      excerpt: "Dieser Entwurf prüft, dass öffentliche Abfragen nur veröffentlichte Inhalte anzeigen.",
+      content: "<p>Dieser Beitrag sollte öffentlich nicht erscheinen.</p><h2>Entwurfsüberschrift</h2><p>Verborgener Inhalt.</p>",
       format: "HTML",
       status: "DRAFT",
       type: "ARTICLE",
@@ -332,17 +332,17 @@ async function main() {
     upsertTool({
       name: "JSON Formatter",
       slug: "json-formatter",
-      shortDescription: "Format, validate, and read JSON data in a clean browser-based tool.",
-      tagline: "Format, validate, and read JSON data in a clean browser-based tool.",
+      shortDescription: "JSON-Daten in einem übersichtlichen Browser-Tool formatieren, validieren und lesen.",
+      tagline: "JSON-Daten in einem übersichtlichen Browser-Tool formatieren, validieren und lesen.",
       description:
-        "Paste JSON, choose indentation, and get a readable formatted output instantly.",
+        "JSON einfügen, Einrückung wählen und sofort eine lesbare formatierte Ausgabe erhalten.",
       content:
-        "<h2>Why use a JSON formatter?</h2><p>Formatted JSON is easier to inspect during debugging, API testing, and configuration review.</p>",
+        "<h2>Warum einen JSON Formatter nutzen?</h2><p>Formatiertes JSON lässt sich beim Debugging, API-Testen und Prüfen von Konfigurationen deutlich leichter lesen.</p>",
       status: "PUBLISHED",
       categoryId: toolJson.id,
       componentKey: "json-formatter",
       seoTitle: "JSON Formatter",
-      seoDesc: "Free online JSON formatter and validator for developers.",
+      seoDesc: "Kostenloser Online-JSON-Formatter und Validator für Entwickler.",
       isFeatured: true,
       order: 1,
       publishedAt: daysAgo(1),
@@ -350,17 +350,17 @@ async function main() {
     upsertTool({
       name: "UUID Generator",
       slug: "uuid-generator",
-      shortDescription: "Generate secure UUID v4 values for tests, fixtures, and application data.",
-      tagline: "Generate secure UUID v4 values for tests, fixtures, and application data.",
+      shortDescription: "Sichere UUID-v4-Werte für Tests, Fixtures und Anwendungsdaten erzeugen.",
+      tagline: "Sichere UUID-v4-Werte für Tests, Fixtures und Anwendungsdaten erzeugen.",
       description:
-        "Create one or many browser-generated UUIDs and copy them into your workflow.",
+        "Eine oder mehrere im Browser erzeugte UUIDs erstellen und direkt in den Workflow kopieren.",
       content:
-        "<h2>Common UUID uses</h2><p>UUIDs are useful for database records, idempotency keys, distributed systems, and sample data.</p>",
+        "<h2>Typische Einsatzfälle für UUIDs</h2><p>UUIDs eignen sich für Datenbankeinträge, Idempotency Keys, verteilte Systeme und Beispieldaten.</p>",
       status: "PUBLISHED",
       categoryId: toolGenerators.id,
       componentKey: "uuid-generator",
       seoTitle: "UUID Generator",
-      seoDesc: "Generate UUID v4 values online for development and testing.",
+      seoDesc: "UUID-v4-Werte online für Entwicklung und Tests erzeugen.",
       isFeatured: true,
       order: 2,
       publishedAt: daysAgo(1),
@@ -368,34 +368,34 @@ async function main() {
     upsertTool({
       name: "Base64 Encoder / Decoder",
       slug: "base64-encoder-decoder",
-      shortDescription: "Encode plain text to Base64 or decode Base64 back to readable text.",
-      tagline: "Encode plain text to Base64 or decode Base64 back to readable text.",
+      shortDescription: "Klartext in Base64 kodieren oder Base64 wieder in lesbaren Text dekodieren.",
+      tagline: "Klartext in Base64 kodieren oder Base64 wieder in lesbaren Text dekodieren.",
       description:
-        "A simple Base64 utility for text snippets, API payloads, and configuration values.",
+        "Ein einfaches Base64-Tool für Textausschnitte, API-Payloads und Konfigurationswerte.",
       content:
-        "<h2>Base64 basics</h2><p>Base64 is an encoding format, not encryption. Avoid using it for secrets unless combined with proper security controls.</p>",
+        "<h2>Base64-Grundlagen</h2><p>Base64 ist ein Kodierungsformat, keine Verschlüsselung. Nutzen Sie es für Secrets nur in Kombination mit geeigneten Sicherheitsmaßnahmen.</p>",
       status: "PUBLISHED",
       categoryId: toolConverters.id,
       componentKey: "base64-encoder",
-      seoTitle: "Base64 Encoder and Decoder",
-      seoDesc: "Free Base64 encoder and decoder for text snippets and developer workflows.",
+      seoTitle: "Base64 Encoder und Decoder",
+      seoDesc: "Kostenloser Base64 Encoder und Decoder für Textausschnitte und Entwickler-Workflows.",
       order: 3,
       publishedAt: daysAgo(1),
     }),
     upsertTool({
-      name: "Timestamp Converter",
+      name: "Zeitstempel-Konverter",
       slug: "timestamp-converter",
-      shortDescription: "Convert Unix timestamps to dates and dates back to timestamps.",
-      tagline: "Convert Unix timestamps to dates and dates back to timestamps.",
+      shortDescription: "Unix-Zeitstempel in Datumswerte umwandeln und Datumswerte zurück in Zeitstempel konvertieren.",
+      tagline: "Unix-Zeitstempel in Datumswerte umwandeln und Datumswerte zurück in Zeitstempel konvertieren.",
       description:
-        "Quickly inspect Unix seconds, milliseconds, ISO strings, and local display times.",
+        "Unix-Sekunden, Millisekunden, ISO-Zeichenfolgen und lokale Anzeigezeiten schnell prüfen.",
       content:
-        "<h2>Seconds vs milliseconds</h2><p>Unix timestamps are often stored as seconds, while JavaScript dates use milliseconds.</p>",
+        "<h2>Sekunden vs. Millisekunden</h2><p>Unix-Zeitstempel werden häufig in Sekunden gespeichert, während JavaScript-Datumswerte Millisekunden verwenden.</p>",
       status: "PUBLISHED",
       categoryId: toolConverters.id,
       componentKey: "timestamp-converter",
-      seoTitle: "Timestamp Converter",
-      seoDesc: "Convert Unix timestamps, milliseconds, and ISO dates online.",
+      seoTitle: "Zeitstempel-Konverter",
+      seoDesc: "Unix-Zeitstempel, Millisekunden und ISO-Datumswerte online umwandeln.",
       order: 4,
       publishedAt: daysAgo(1),
     }),
@@ -406,27 +406,27 @@ async function main() {
       name: "FlowDesk",
       slug: "flowdesk",
       shortDescription:
-        "A productivity service for product and engineering teams that need clear planning without heavy process.",
+        "Ein Produktivitätsservice für Produkt- und Engineering-Teams, die klare Planung ohne schweren Prozess benötigen.",
       description:
-        "FlowDesk works best for teams that want issue tracking, roadmaps, lightweight docs, and recurring delivery reports in one quiet workspace.",
+        "FlowDesk eignet sich besonders für Teams, die Issue Tracking, Roadmaps, schlanke Dokumentation und wiederkehrende Delivery-Reports in einem ruhigen Arbeitsbereich bündeln möchten.",
       logoUrl: "https://placehold.co/160x160/1d4ed8/ffffff?text=F",
       websiteUrl: "https://example.com/flowdesk",
       affiliateUrl: "https://example.com/flowdesk?ref=tekvora",
-      category: "Productivity",
-      pricingModel: "Per seat with free trial",
+      category: "Produktivität",
+      pricingModel: "Pro Nutzer mit kostenloser Testphase",
       pricingFrom: 8.0,
       currency: "USD",
       rating: 4.6,
-      features: ["Roadmaps", "Issue tracking", "Docs", "Delivery reports"],
-      pros: ["Fast onboarding", "Clean interface", "Strong reporting"],
-      cons: ["Limited enterprise workflow controls", "No native time tracking"],
-      bestFor: ["Product teams", "Engineering teams", "Startups"],
+      features: ["Roadmaps", "Issue Tracking", "Dokumente", "Delivery-Reports"],
+      pros: ["Schnelles Onboarding", "Aufgeräumte Oberfläche", "Starkes Reporting"],
+      cons: ["Begrenzte Enterprise-Workflow-Kontrollen", "Keine native Zeiterfassung"],
+      bestFor: ["Produktteams", "Engineering-Teams", "Startups"],
       alternatives: ["Linear", "Jira", "Asana"],
       status: "PUBLISHED",
       isFeatured: true,
       order: 1,
-      seoTitle: "FlowDesk Review",
-      seoDescription: "FlowDesk review covering pricing, features, best-fit teams, pros, cons, and alternatives.",
+      seoTitle: "FlowDesk Test",
+      seoDescription: "FlowDesk Test mit Preisen, Funktionen, passenden Teams, Vorteilen, Nachteilen und Alternativen.",
       ogImageUrl: "https://placehold.co/1200x630/1d4ed8/ffffff?text=FlowDesk",
       publishedAt: daysAgo(1),
     }),
@@ -434,54 +434,54 @@ async function main() {
       name: "MetricPilot",
       slug: "metricpilot",
       shortDescription:
-        "A lightweight analytics service for dashboards, funnels, retention, and revenue reporting.",
+        "Ein schlanker Analytics-Service für Dashboards, Funnels, Retention und Umsatz-Reporting.",
       description:
-        "MetricPilot gives operators a focused analytics layer without forcing teams into a heavyweight BI implementation.",
+        "MetricPilot bietet Betreibern eine fokussierte Analytics-Schicht, ohne Teams in eine schwergewichtige BI-Einführung zu zwingen.",
       logoUrl: "https://placehold.co/160x160/047857/ffffff?text=M",
       websiteUrl: "https://example.com/metricpilot",
       affiliateUrl: "https://example.com/metricpilot?ref=tekvora",
       category: "Analytics",
-      pricingModel: "Usage-based",
+      pricingModel: "Nutzungsbasiert",
       pricingFrom: 19.0,
       currency: "USD",
       rating: 4.4,
-      features: ["Funnels", "Retention cohorts", "Revenue metrics", "CSV export"],
-      pros: ["Clear service metrics", "Useful default dashboards", "Simple setup"],
-      cons: ["Advanced modeling is limited", "Connector catalog is still growing"],
-      bestFor: ["Service operators", "Growth teams", "Founders"],
+      features: ["Funnels", "Retention-Kohorten", "Umsatzmetriken", "CSV-Export"],
+      pros: ["Klare Service-Metriken", "Nützliche Standard-Dashboards", "Einfache Einrichtung"],
+      cons: ["Fortgeschrittene Modellierung ist begrenzt", "Connector-Katalog wächst noch"],
+      bestFor: ["Service-Betreiber", "Growth-Teams", "Gründer"],
       alternatives: ["Mixpanel", "Amplitude", "June"],
       status: "PUBLISHED",
       isFeatured: true,
       order: 2,
-      seoTitle: "MetricPilot Review",
-      seoDescription: "MetricPilot analytics review with pricing, features, alternatives, pros, cons, and ideal users.",
+      seoTitle: "MetricPilot Test",
+      seoDescription: "MetricPilot Analytics-Test mit Preisen, Funktionen, Alternativen, Vorteilen, Nachteilen und idealen Nutzern.",
       publishedAt: daysAgo(2),
     }),
     upsertServiceProduct({
       name: "SupportForge",
       slug: "supportforge",
       shortDescription:
-        "An email and support service that combines shared inbox, help center, automations, and AI drafting.",
+        "Ein E-Mail- und Support-Service, der Shared Inbox, Help Center, Automatisierungen und KI-Entwürfe kombiniert.",
       description:
-        "SupportForge is a practical option for growing support teams that need structured inbox workflows and a solid knowledge base.",
+        "SupportForge ist eine praktische Option für wachsende Support-Teams, die strukturierte Inbox-Workflows und eine solide Wissensdatenbank benötigen.",
       logoUrl: "https://placehold.co/160x160/be123c/ffffff?text=S",
       websiteUrl: "https://example.com/supportforge",
       affiliateUrl: "https://example.com/supportforge?ref=tekvora",
       category: "Email",
-      pricingModel: "Per agent",
+      pricingModel: "Pro Agent",
       pricingFrom: 15.0,
       currency: "USD",
       rating: 4.2,
-      features: ["Shared inbox", "Help center", "Automation rules", "AI drafts"],
-      pros: ["Good agent workflow", "Strong help center tools", "Flexible automations"],
-      cons: ["Reporting takes setup", "AI features cost extra"],
-      bestFor: ["Support teams", "B2B services", "Customer success"],
+      features: ["Shared Inbox", "Help Center", "Automatisierungsregeln", "KI-Entwürfe"],
+      pros: ["Guter Agent-Workflow", "Starke Help-Center-Tools", "Flexible Automatisierungen"],
+      cons: ["Reporting braucht Einrichtung", "KI-Funktionen kosten extra"],
+      bestFor: ["Support-Teams", "B2B-Services", "Customer Success"],
       alternatives: ["Zendesk", "Intercom", "Help Scout"],
       status: "PUBLISHED",
       isFeatured: false,
       order: 3,
-      seoTitle: "SupportForge Review",
-      seoDescription: "SupportForge review covering support workflows, AI features, pricing, pros, cons, and alternatives.",
+      seoTitle: "SupportForge Test",
+      seoDescription: "SupportForge Test zu Support-Workflows, KI-Funktionen, Preisen, Vorteilen, Nachteilen und Alternativen.",
       publishedAt: daysAgo(3),
     }),
   ])
@@ -490,7 +490,7 @@ async function main() {
     upsertComparison({
       title: "FlowDesk vs MetricPilot",
       slug: "flowdesk-vs-metricpilot",
-      excerpt: "A practical comparison between productivity and analytics service workflows.",
+      excerpt: "Ein praxisnaher Vergleich zwischen Produktivitäts- und Analytics-Workflows.",
       itemAName: "FlowDesk",
       itemBName: "MetricPilot",
       itemALogoUrl: "https://placehold.co/160x160/1d4ed8/ffffff?text=F",
@@ -499,33 +499,33 @@ async function main() {
       itemBUrl: "https://example.com/metricpilot",
       itemAAffiliateUrl: "https://example.com/flowdesk?ref=tekvora",
       itemBAffiliateUrl: "https://example.com/metricpilot?ref=tekvora",
-      summary: "FlowDesk is better for delivery planning, while MetricPilot is better for service metrics and revenue analysis.",
-      verdict: "Choose FlowDesk if your main problem is execution clarity. Choose MetricPilot if your main problem is product and revenue visibility.",
-      winner: "Tie",
+      summary: "FlowDesk ist stärker bei Delivery-Planung, während MetricPilot bei Service-Metriken und Umsatzanalyse überzeugt.",
+      verdict: "Wählen Sie FlowDesk, wenn vor allem Ausführungsklarheit fehlt. Wählen Sie MetricPilot, wenn Produkt- und Umsatzsichtbarkeit das größere Problem ist.",
+      winner: "Unentschieden",
       comparisonTable: [
-        { feature: "Primary use", itemA: "Project management", itemB: "Analytics", winner: "Tie" },
-        { feature: "Starting price", itemA: "$8/month", itemB: "$19/month", winner: "A" },
-        { feature: "Best for", itemA: "Product teams", itemB: "Growth teams", winner: "Tie" },
+        { feature: "Haupteinsatz", itemA: "Projektmanagement", itemB: "Analytics", winner: "Unentschieden" },
+        { feature: "Einstiegspreis", itemA: "$8/Monat", itemB: "$19/Monat", winner: "A" },
+        { feature: "Am besten für", itemA: "Produktteams", itemB: "Growth-Teams", winner: "Unentschieden" },
       ],
-      prosA: ["Clean planning workflow", "Strong delivery reports", "Fast onboarding"],
-      consA: ["No native analytics suite", "Limited advanced governance"],
-      prosB: ["Useful service dashboards", "Good funnel visibility", "Simple setup"],
-      consB: ["Not a task tracker", "Connector catalog is smaller than BI tools"],
-      bestForA: ["Roadmaps", "Issue tracking", "Engineering delivery"],
-      bestForB: ["Funnels", "Retention", "Revenue dashboards"],
-      content: "<h2>Bottom line</h2><p>These products solve different operational problems, so the right choice depends on whether planning or measurement is the current bottleneck.</p>",
+      prosA: ["Klarer Planungsworkflow", "Starke Delivery-Reports", "Schnelles Onboarding"],
+      consA: ["Keine native Analytics-Suite", "Begrenzte erweiterte Governance"],
+      prosB: ["Nützliche Service-Dashboards", "Gute Funnel-Sichtbarkeit", "Einfache Einrichtung"],
+      consB: ["Kein Task Tracker", "Connector-Katalog kleiner als bei BI-Tools"],
+      bestForA: ["Roadmaps", "Issue Tracking", "Engineering Delivery"],
+      bestForB: ["Funnels", "Retention", "Umsatz-Dashboards"],
+      content: "<h2>Fazit</h2><p>Diese Produkte lösen unterschiedliche operative Probleme. Die richtige Wahl hängt davon ab, ob Planung oder Messbarkeit aktuell der Engpass ist.</p>",
       status: "PUBLISHED",
       isFeatured: true,
       order: 1,
       seoTitle: "FlowDesk vs MetricPilot",
-      seoDescription: "Compare FlowDesk and MetricPilot by pricing, features, best use cases, pros, cons, and winner.",
+      seoDescription: "Vergleichen Sie FlowDesk und MetricPilot nach Preis, Funktionen, Einsatzfällen, Vorteilen, Nachteilen und Gewinner.",
       ogImageUrl: "https://placehold.co/1200x630/111827/ffffff?text=FlowDesk+vs+MetricPilot",
       publishedAt: daysAgo(1),
     }),
   ])
 
   console.log(`Seeded admin user: ${email}`)
-  console.log("Seeded sample public articles, tools, services, comparisons, categories, tags, and authors.")
+  console.log("Seeded German sample public articles, tools, services, comparisons, categories, tags, and authors.")
 }
 
 main()

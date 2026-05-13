@@ -25,7 +25,7 @@ export function TimestampConverterTool() {
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-3">
         <label className="text-sm font-medium" htmlFor="timestamp-input">
-          Unix timestamp
+          Unix-Zeitstempel
         </label>
         <input
           id="timestamp-input"
@@ -34,10 +34,10 @@ export function TimestampConverterTool() {
           className="h-10 w-full rounded-lg border bg-background px-3 font-mono text-sm"
         />
         <div className="rounded-lg border bg-muted/20 p-3 text-sm leading-7">
-          <p>UTC: {parsedTimestamp ? parsedTimestamp.toISOString() : "Invalid timestamp"}</p>
+          <p>UTC: {parsedTimestamp ? parsedTimestamp.toISOString() : "Ungültiger Zeitstempel"}</p>
           <p>
-            Local:{" "}
-            {parsedTimestamp ? parsedTimestamp.toLocaleString("en", { timeZoneName: "short" }) : "-"}
+            Lokal:{" "}
+            {parsedTimestamp ? parsedTimestamp.toLocaleString("de-DE", { timeZoneName: "short" }) : "-"}
           </p>
         </div>
         <Button
@@ -45,12 +45,12 @@ export function TimestampConverterTool() {
           variant="outline"
           onClick={() => setTimestamp(Math.floor(Date.now() / 1000).toString())}
         >
-          Use current time
+          Aktuelle Zeit verwenden
         </Button>
       </div>
       <div className="space-y-3">
         <label className="text-sm font-medium" htmlFor="date-input">
-          Date or ISO string
+          Datum oder ISO-Zeichenfolge
         </label>
         <input
           id="date-input"
@@ -59,8 +59,8 @@ export function TimestampConverterTool() {
           className="h-10 w-full rounded-lg border bg-background px-3 font-mono text-sm"
         />
         <div className="rounded-lg border bg-muted/20 p-3 text-sm leading-7">
-          <p>Seconds: {parsedDate ? Math.floor(parsedDate.getTime() / 1000) : "Invalid date"}</p>
-          <p>Milliseconds: {parsedDate ? parsedDate.getTime() : "-"}</p>
+          <p>Sekunden: {parsedDate ? Math.floor(parsedDate.getTime() / 1000) : "Ungültiges Datum"}</p>
+          <p>Millisekunden: {parsedDate ? parsedDate.getTime() : "-"}</p>
         </div>
       </div>
     </div>

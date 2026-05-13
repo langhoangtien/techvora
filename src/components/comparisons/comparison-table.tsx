@@ -21,10 +21,10 @@ export function ComparisonTable({ value }: { value: unknown }) {
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left text-xs uppercase tracking-[0.08em] text-muted-foreground">
             <tr>
-              <th className="px-4 py-3">Feature</th>
-              <th className="px-4 py-3">Item A</th>
-              <th className="px-4 py-3">Item B</th>
-              <th className="px-4 py-3">Winner</th>
+              <th className="px-4 py-3">Kriterium</th>
+              <th className="px-4 py-3">Option A</th>
+              <th className="px-4 py-3">Option B</th>
+              <th className="px-4 py-3">Gewinner</th>
             </tr>
           </thead>
           <tbody className="divide-y">

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 
 export function AdSlot({
-  label = "Advertisement",
+  label = "Anzeige",
   className,
   ...props
 }: React.ComponentProps<"aside"> & { label?: string }) {

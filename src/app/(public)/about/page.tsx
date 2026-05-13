@@ -25,33 +25,33 @@ export async function generateMetadata(): Promise<Metadata> {
   return staticPageMetadata({
     site,
     path,
-    title: "About",
-    description: `Learn about ${site.name}, an independent platform for practical software, Services, and tooling research.`,
+    title: "Über Tekvora",
+    description: `Erfahren Sie mehr über ${site.name}, eine unabhängige Plattform für praxisnahe Software-, Service- und Tool-Recherche.`,
   })
 }
 
 const offerings = [
   {
     title: "Tools",
-    description: "Practical utilities and references for everyday technical workflows.",
+    description: "Praktische Werkzeuge und Referenzen für technische Arbeitsabläufe.",
     href: "/tools",
     icon: WrenchIcon,
   },
   {
-    title: "Tutorials",
-    description: "Clear guides for choosing, configuring, and using modern software products.",
+    title: "Ratgeber",
+    description: "Klare Leitfäden zur Auswahl, Konfiguration und Nutzung moderner Softwareprodukte.",
     href: "/articles",
     icon: BookOpenIcon,
   },
   {
-    title: "Services reviews",
-    description: "Concise evaluations of online services, pricing models, and use cases.",
+    title: "Service-Tests",
+    description: "Kompakte Bewertungen von Online-Services, Preismodellen und Einsatzfällen.",
     href: "/services",
     icon: Layers3Icon,
   },
   {
-    title: "Comparisons",
-    description: "Side-by-side analysis to help readers understand practical differences.",
+    title: "Vergleiche",
+    description: "Direkte Analysen, die praktische Unterschiede verständlich machen.",
     href: "/compare",
     icon: GitCompareIcon,
   },
@@ -64,8 +64,8 @@ export default async function AboutPage() {
     <StaticPageShell
       site={site}
       path={path}
-      label="About"
-      eyebrow="About"
+      label="Über Tekvora"
+      eyebrow="Über Tekvora"
       title={site.name}
       description={site.tagline || site.seoDescription}
     >
@@ -73,33 +73,33 @@ export default async function AboutPage() {
         <div className="space-y-10">
           <section className="rounded-lg border bg-card p-6">
             <SectionHeader
-              title="Independent research for technical decisions"
+              title="Unabhängige Recherche für technische Entscheidungen"
               description={
                 site.footer.footerDescription ||
-                "We publish practical resources for people comparing software, infrastructure, and technical tools."
+                "Wir veröffentlichen praxisnahe Ressourcen für Menschen, die Software, Infrastruktur und technische Tools vergleichen."
               }
             />
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
-              {site.name} focuses on useful, readable guidance for builders,
-              operators, and technical buyers. The goal is to reduce research
-              friction by organizing tools, tutorials, Services, and
-              comparisons in one consistent public library.
+              {site.name} bietet verständliche Orientierung für Entwickler,
+              Betreiber und technische Entscheider. Ziel ist es, Recherche zu
+              vereinfachen, indem Tools, Ratgeber, Services und Vergleiche in
+              einer konsistenten öffentlichen Bibliothek gebündelt werden.
             </p>
           </section>
 
           <section className="space-y-5">
             <SectionHeader
               eyebrow="Mission"
-              title="Make software and infrastructure choices easier"
-              description="Our mission is to turn scattered product research into practical guidance that readers can evaluate quickly and revisit when their needs change."
+              title="Software- und Infrastrukturentscheidungen erleichtern"
+              description="Unsere Mission ist es, verstreute Produktrecherche in praktische Orientierung zu übersetzen, die Leser schnell bewerten und bei neuen Anforderungen erneut nutzen können."
             />
           </section>
 
           <section className="space-y-5">
             <SectionHeader
-              eyebrow="What we offer"
-              title="A focused directory for modern technical work"
-              description="Each section is designed to be useful without unnecessary clutter."
+              eyebrow="Angebot"
+              title="Ein fokussiertes Verzeichnis für moderne technische Arbeit"
+              description="Jeder Bereich ist auf Nutzwert ausgelegt, ohne unnötige Ablenkung."
             />
             <div className="grid gap-4 md:grid-cols-2">
               {offerings.map((item) => {
@@ -126,12 +126,12 @@ export default async function AboutPage() {
         <aside className="h-fit rounded-lg border bg-muted/30 p-6">
           <h2 className="font-semibold">Team</h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            {site.name} is maintained as an editorial and product research
-            platform. A detailed founder and team profile can be added here as
-            the publication grows.
+            {site.name} wird als redaktionelle Plattform für Produktrecherche
+            gepflegt. Ein ausführliches Gründer- und Teamprofil kann ergänzt
+            werden, sobald die Publikation weiter wächst.
           </p>
           <div className="mt-6">
-            <h3 className="text-sm font-medium">Follow</h3>
+            <h3 className="text-sm font-medium">Folgen</h3>
             <div className="mt-3">
               <SocialLinks site={site} />
             </div>

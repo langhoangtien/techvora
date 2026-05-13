@@ -55,7 +55,7 @@ export function ServiceCard({
             {category ? <span className="text-xs text-muted-foreground">{category}</span> : null}
             {featured ? (
               <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-xs text-primary">
-                Featured
+                Empfohlen
               </span>
             ) : null}
           </div>
@@ -75,10 +75,10 @@ export function ServiceCard({
       <div className="mt-4 space-y-1 text-sm">
         <p>
           {price == null || Number.isNaN(price) ? (
-            <span className="text-muted-foreground">Pricing not listed</span>
+            <span className="text-muted-foreground">Preis nicht angegeben</span>
           ) : (
             <>
-              From <strong>{currency ?? "USD"} {price.toFixed(2)}</strong>
+              Ab <strong>{currency ?? "USD"} {price.toFixed(2)}</strong>
             </>
           )}
         </p>
@@ -86,9 +86,9 @@ export function ServiceCard({
       </div>
       <div className="mt-auto flex flex-wrap gap-2 pt-5">
         <Button asChild variant="outline">
-          <Link href={href}>View profile</Link>
+          <Link href={href}>Profil ansehen</Link>
         </Button>
-        <AffiliateButton href={affiliateUrl}>Visit site</AffiliateButton>
+        <AffiliateButton href={affiliateUrl}>Zur Website</AffiliateButton>
       </div>
     </article>
   )

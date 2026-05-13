@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return staticPageMetadata({
     site,
     path,
-    title: "Privacy Policy",
-    description: `Read the ${site.name} privacy policy, including information about analytics, cookies, advertising, affiliates, and third-party services.`,
+    title: "Datenschutzerklärung",
+    description: `Lesen Sie die Datenschutzerklärung von ${site.name} mit Informationen zu Analytics, Cookies, Werbung, Affiliate-Links und Drittanbietern.`,
   })
 }
 
@@ -30,83 +30,89 @@ export default async function PrivacyPolicyPage() {
     <StaticPageShell
       site={site}
       path={path}
-      label="Privacy Policy"
-      eyebrow="Legal"
-      title="Privacy Policy"
-      description={`This policy explains how ${site.name} may collect, use, and protect information when you use this website.`}
+      label="Datenschutzerklärung"
+      eyebrow="Rechtliches"
+      title="Datenschutzerklärung"
+      description={`Diese Erklärung beschreibt, wie ${site.name} Informationen erheben, verwenden und schützen kann, wenn Sie diese Website nutzen.`}
     >
       <div className="mt-10 max-w-3xl space-y-8">
         <p className="text-sm text-muted-foreground">
-          Last updated: {legalPageUpdatedAt}
+          Zuletzt aktualisiert: {legalPageUpdatedAt}
         </p>
 
-        <PolicySection title="Information we collect">
+        <PolicySection title="Welche Informationen wir erfassen">
           <p>
-            We may collect basic information that you choose to provide, such as
-            your name, email address, subject, and message when a contact form or
-            similar feature is enabled.
+            Wir können grundlegende Informationen erfassen, die Sie freiwillig
+            bereitstellen, etwa Name, E-Mail-Adresse, Betreff und Nachricht,
+            wenn ein Kontaktformular oder eine ähnliche Funktion aktiviert ist.
           </p>
           <p>
-            The website may also collect technical information such as browser
-            type, device information, referring pages, approximate location, and
-            usage activity through analytics or server logs.
+            Außerdem kann die Website technische Informationen wie Browsertyp,
+            Gerätedaten, verweisende Seiten, ungefähren Standort und
+            Nutzungsaktivitäten über Analytics oder Server-Logs erfassen.
           </p>
         </PolicySection>
 
         <PolicySection title="Analytics">
           <p>
-            We may use analytics services to understand traffic patterns, page
-            performance, and content engagement. Analytics data is used to
-            improve the website and prioritize useful content.
+            Wir können Analytics-Dienste einsetzen, um Traffic-Muster,
+            Seitenleistung und die Nutzung von Inhalten zu verstehen. Diese
+            Daten helfen, die Website zu verbessern und nützliche Inhalte zu
+            priorisieren.
           </p>
         </PolicySection>
 
         <PolicySection title="Cookies">
           <p>
-            This website may use cookies or similar technologies for analytics,
-            preferences, security, advertising, and affiliate attribution.
-            Browser settings usually allow you to block or delete cookies.
+            Diese Website kann Cookies oder ähnliche Technologien für
+            Analytics, Präferenzen, Sicherheit, Werbung und Affiliate-Zuordnung
+            verwenden. In den meisten Browsern können Sie Cookies blockieren
+            oder löschen.
           </p>
         </PolicySection>
 
-        <PolicySection title="Advertising and Google AdSense preparation">
+        <PolicySection title="Werbung und Vorbereitung auf Google AdSense">
           <p>
-            The website may display advertising in the future, including Google
-            AdSense or similar advertising networks. Advertising partners may use
-            cookies or other identifiers to measure ad performance and deliver
-            relevant ads according to their own policies.
+            Die Website kann künftig Werbung anzeigen, einschließlich Google
+            AdSense oder ähnlicher Werbenetzwerke. Werbepartner können Cookies
+            oder andere Kennungen verwenden, um Anzeigenleistung zu messen und
+            relevante Anzeigen nach ihren eigenen Richtlinien auszuliefern.
           </p>
         </PolicySection>
 
-        <PolicySection title="Affiliate disclosure">
+        <PolicySection title="Affiliate-Hinweis">
           <p>
-            Some links may be affiliate links. If you click an affiliate link and
-            make a purchase, we may earn a commission at no additional cost to
-            you. Affiliate relationships do not guarantee positive coverage.
+            Einige Links können Affiliate-Links sein. Wenn Sie auf einen solchen
+            Link klicken und etwas kaufen, können wir eine Provision erhalten,
+            ohne dass Ihnen zusätzliche Kosten entstehen. Affiliate-Beziehungen
+            garantieren keine positive Berichterstattung.
           </p>
         </PolicySection>
 
-        <PolicySection title="Media uploads">
+        <PolicySection title="Medien-Uploads">
           <p>
-            If media upload features are available to authorized users, uploaded
-            files may be processed, resized, optimized, and stored for use on the
-            website. Do not upload files that you do not have permission to use.
+            Wenn Upload-Funktionen für autorisierte Nutzer verfügbar sind,
+            können hochgeladene Dateien verarbeitet, skaliert, optimiert und
+            für die Nutzung auf der Website gespeichert werden. Laden Sie keine
+            Dateien hoch, für die Ihnen die Nutzungsrechte fehlen.
           </p>
         </PolicySection>
 
-        <PolicySection title="Third-party services">
+        <PolicySection title="Dienste Dritter">
           <p>
-            The website may link to or integrate with third-party services such
-            as analytics providers, advertising networks, affiliate platforms,
-            social networks, service providers, and embedded content providers.
-            Their privacy practices are governed by their own policies.
+            Die Website kann auf Dienste Dritter verlinken oder diese
+            integrieren, etwa Analytics-Anbieter, Werbenetzwerke,
+            Affiliate-Plattformen, soziale Netzwerke, Serviceanbieter oder
+            eingebettete Inhalte. Für deren Datenschutzpraktiken gelten die
+            jeweiligen eigenen Richtlinien.
           </p>
         </PolicySection>
 
-        <PolicySection title="Changes to this policy">
+        <PolicySection title="Änderungen dieser Erklärung">
           <p>
-            We may update this policy as the website evolves. The latest version
-            will be published on this page with an updated date.
+            Wir können diese Erklärung aktualisieren, wenn sich die Website
+            weiterentwickelt. Die aktuelle Version wird mit aktualisiertem Datum
+            auf dieser Seite veröffentlicht.
           </p>
         </PolicySection>
       </div>

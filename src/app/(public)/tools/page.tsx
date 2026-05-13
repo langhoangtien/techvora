@@ -11,7 +11,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: "Tools",
-  description: "Free technical tools for developers, operators, and Services teams.",
+  description: "Kostenlose technische Werkzeuge für Entwickler, Operatoren und Service-Teams.",
 }
 
 export default async function ToolsPage() {
@@ -25,7 +25,7 @@ export default async function ToolsPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Tools",
-    description: "Free technical tools for developers, operators, and Services teams.",
+    description: "Kostenlose technische Werkzeuge für Entwickler, Operatoren und Service-Teams.",
     url: pageUrl,
   }
 
@@ -35,8 +35,8 @@ export default async function ToolsPage() {
       <Container className="py-10">
         <SectionHeader
           eyebrow="Tools"
-          title="Fast technical utilities for everyday work"
-          description="Format data, generate identifiers, encode text, and convert timestamps without leaving your browser."
+          title="Schnelle technische Helfer für den Arbeitsalltag"
+          description="Daten formatieren, Kennungen erzeugen, Text kodieren und Zeitstempel umwandeln, direkt im Browser."
         />
         <div id="tools">
           <ToolDirectory tools={tools} categories={categories} />

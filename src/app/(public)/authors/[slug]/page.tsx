@@ -59,15 +59,15 @@ export default async function AuthorPage({ params, searchParams }: PageProps) {
     <>
       <SeoJsonLd data={{ "@context": "https://schema.org", "@type": "CollectionPage", name: author.name, url: new URL(`/authors/${author.slug}`, site.url).toString() }} />
       <Container className="py-10">
-        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Authors" }, { label: author.name }]} />
+        <Breadcrumb items={[{ label: "Startseite", href: "/" }, { label: "Autoren" }, { label: author.name }]} />
         <div className="mt-8 flex flex-col gap-5 md:flex-row md:items-center">
           <Avatar className="size-20 rounded-xl">
             <AvatarImage src={author.avatarUrl ?? ""} alt={author.name} />
             <AvatarFallback className="rounded-xl">{author.name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <SectionHeader eyebrow="Author" title={author.name} description={author.bio ?? "Articles by this author."} />
+          <SectionHeader eyebrow="Autor" title={author.name} description={author.bio ?? "Artikel dieses Autors."} />
         </div>
-        <div className="mt-8"><ArticleGrid posts={posts} emptyTitle="No articles by this author" /></div>
+        <div className="mt-8"><ArticleGrid posts={posts} emptyTitle="Keine Artikel dieses Autors" /></div>
         <Pagination className="mt-8" page={page} totalPages={totalPages} getPageHref={(nextPage) => `/authors/${author.slug}?page=${nextPage}`} />
       </Container>
     </>

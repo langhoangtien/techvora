@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/prisma"
 
+const locale = "de-DE"
+
 export async function getFeaturedHeaderCategories() {
   return prisma.category.findMany({
     where: {
-      locale: "en",
+      locale,
       parentId: null,
       isFeatured: true,
       slug: { not: "tools" },
@@ -14,6 +16,7 @@ export async function getFeaturedHeaderCategories() {
       slug: true,
       children: {
         where: {
+          locale,
           isFeatured: true,
         },
         select: {

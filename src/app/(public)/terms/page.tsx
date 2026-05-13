@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return staticPageMetadata({
     site,
     path,
-    title: "Terms",
-    description: `Read the ${site.name} terms covering website usage, content ownership, disclosures, disclaimers, and limitations of liability.`,
+    title: "Nutzungsbedingungen",
+    description: `Lesen Sie die Nutzungsbedingungen von ${site.name} zu Website-Nutzung, Inhalten, Hinweisen, Haftungsausschlüssen und Haftungsbegrenzung.`,
   })
 }
 
@@ -30,73 +30,75 @@ export default async function TermsPage() {
     <StaticPageShell
       site={site}
       path={path}
-      label="Terms"
-      eyebrow="Legal"
-      title="Terms"
-      description={`These terms describe the conditions for using ${site.name} and the content published on this website.`}
+      label="Nutzungsbedingungen"
+      eyebrow="Rechtliches"
+      title="Nutzungsbedingungen"
+      description={`Diese Bedingungen beschreiben die Nutzung von ${site.name} und der auf dieser Website veröffentlichten Inhalte.`}
     >
       <div className="mt-10 max-w-3xl space-y-8">
         <p className="text-sm text-muted-foreground">
-          Last updated: {legalPageUpdatedAt}
+          Zuletzt aktualisiert: {legalPageUpdatedAt}
         </p>
 
-        <PolicySection title="Website usage">
+        <PolicySection title="Nutzung der Website">
           <p>
-            You may use this website for lawful personal, editorial, research,
-            and business evaluation purposes. You agree not to misuse the
-            website, interfere with its operation, or attempt unauthorized
-            access to private areas.
+            Sie dürfen diese Website für rechtmäßige persönliche,
+            redaktionelle, recherchierende und geschäftliche Bewertungszwecke
+            nutzen. Sie verpflichten sich, die Website nicht zu missbrauchen,
+            ihren Betrieb nicht zu stören und keinen unbefugten Zugriff auf
+            private Bereiche zu versuchen.
           </p>
         </PolicySection>
 
-        <PolicySection title="Content ownership">
+        <PolicySection title="Rechte an Inhalten">
           <p>
-            Unless otherwise stated, text, design, branding, and original
-            materials published on this website are owned by {site.name} or its
-            contributors. Product names, logos, and trademarks belong to their
-            respective owners.
+            Sofern nicht anders angegeben, gehören Texte, Design, Branding und
+            originale Materialien auf dieser Website {site.name} oder den
+            jeweiligen Beitragenden. Produktnamen, Logos und Marken gehören
+            ihren jeweiligen Eigentümern.
           </p>
         </PolicySection>
 
-        <PolicySection title="Editorial content and disclaimers">
+        <PolicySection title="Redaktionelle Inhalte und Hinweise">
           <p>
-            Content is provided for informational purposes only. We aim for
-            accuracy, but software products, service plans, prices, features,
-            and policies can change. You should verify important details with
-            the relevant provider before making a decision.
+            Inhalte dienen ausschließlich Informationszwecken. Wir bemühen uns
+            um Genauigkeit, doch Softwareprodukte, Servicepläne, Preise,
+            Funktionen und Richtlinien können sich ändern. Prüfen Sie wichtige
+            Details vor einer Entscheidung direkt beim jeweiligen Anbieter.
           </p>
         </PolicySection>
 
-        <PolicySection title="Affiliate disclosure">
+        <PolicySection title="Affiliate-Hinweis">
           <p>
-            This website may include affiliate links. We may receive a
-            commission when you click an affiliate link and make a purchase, at
-            no additional cost to you. Affiliate relationships do not remove the
-            need for independent evaluation.
+            Diese Website kann Affiliate-Links enthalten. Wenn Sie auf einen
+            Affiliate-Link klicken und etwas kaufen, können wir eine Provision
+            erhalten, ohne dass Ihnen zusätzliche Kosten entstehen. Eine
+            Affiliate-Beziehung ersetzt keine unabhängige Bewertung.
           </p>
         </PolicySection>
 
-        <PolicySection title="External links">
+        <PolicySection title="Externe Links">
           <p>
-            The website may link to third-party websites and services. We are
-            not responsible for their content, availability, terms, privacy
-            practices, or business practices.
+            Die Website kann auf Websites und Dienste Dritter verlinken. Für
+            deren Inhalte, Verfügbarkeit, Bedingungen, Datenschutzpraktiken oder
+            Geschäftspraktiken übernehmen wir keine Verantwortung.
           </p>
         </PolicySection>
 
-        <PolicySection title="Limitation of liability">
+        <PolicySection title="Haftungsbegrenzung">
           <p>
-            To the maximum extent permitted by law, {site.name} is not liable
-            for losses or damages resulting from use of the website, reliance on
-            published content, third-party services, or changes made by product
-            providers.
+            Soweit gesetzlich zulässig, haftet {site.name} nicht für Verluste
+            oder Schäden, die aus der Nutzung der Website, dem Vertrauen auf
+            veröffentlichte Inhalte, Diensten Dritter oder Änderungen durch
+            Produktanbieter entstehen.
           </p>
         </PolicySection>
 
-        <PolicySection title="Changes to these terms">
+        <PolicySection title="Änderungen dieser Bedingungen">
           <p>
-            We may update these terms as the website changes. Continued use of
-            the website after updates means you accept the current version.
+            Wir können diese Bedingungen aktualisieren, wenn sich die Website
+            verändert. Die weitere Nutzung nach einer Aktualisierung bedeutet,
+            dass Sie die jeweils aktuelle Version akzeptieren.
           </p>
         </PolicySection>
       </div>

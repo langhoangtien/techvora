@@ -28,8 +28,8 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteConfig()
   return collectionMetadata({
-    title: "Articles",
-    description: "Practical guides, reviews, and comparisons for technical software decisions.",
+    title: "Ratgeber",
+    description: "Praxisnahe Leitfäden, Tests und Vergleiche für fundierte Software-Entscheidungen.",
     path: "/articles",
     site,
   })
@@ -56,7 +56,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
         data={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          name: "Articles",
+          name: "Ratgeber",
           url: new URL("/articles", site.url).toString(),
         }}
       />
@@ -64,14 +64,14 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <SectionHeader
-              eyebrow="Articles"
-              title={category ? `${category.name} Articles` : "Latest Articles"}
-              description="Independent research and practical guidance for software, Services, and infrastructure decisions."
+              eyebrow="Ratgeber"
+              title={category ? `${category.name}: Artikel` : "Aktuelle Artikel"}
+              description="Unabhängige Recherche und praxisnahe Orientierung für Software, Services und Infrastruktur."
             />
             <form className="flex gap-2 md:w-80">
               {categorySlug ? <input type="hidden" name="category" value={categorySlug} /> : null}
-              <Input name="q" defaultValue={q} placeholder="Search articles" />
-              <Button type="submit" variant="outline">Search</Button>
+              <Input name="q" defaultValue={q} placeholder="Artikel suchen" />
+              <Button type="submit" variant="outline">Suchen</Button>
             </form>
           </div>
           <ArticleGrid posts={posts} />

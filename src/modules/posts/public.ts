@@ -5,7 +5,7 @@ import type { SiteConfigFromSettings } from "@/lib/settings"
 import { slugify } from "@/lib/slugify"
 
 const pageSize = 9
-const locale = "en"
+const locale = "de-DE"
 
 const publishedArticleWhere = {
   status: "PUBLISHED" as const,
@@ -198,7 +198,7 @@ export async function getSitemapArticles() {
 
 export function formatPublicDate(date: Date | null) {
   if (!date) return ""
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("de-DE", {
     month: "short",
     day: "numeric",
     year: "numeric",

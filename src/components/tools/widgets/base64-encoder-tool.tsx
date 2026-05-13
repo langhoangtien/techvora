@@ -23,7 +23,7 @@ export function Base64EncoderTool() {
         value: mode === "encode" ? encodeBase64(input) : decodeBase64(input),
       }
     } catch {
-      return { ok: false, value: "Invalid Base64 input." }
+      return { ok: false, value: "Ungültige Base64-Eingabe." }
     }
   }, [input, mode])
 
@@ -39,7 +39,7 @@ export function Base64EncoderTool() {
               mode === item ? "bg-background shadow-sm" : "text-muted-foreground"
             }`}
           >
-            {item === "encode" ? "Encode" : "Decode"}
+            {item === "encode" ? "Kodieren" : "Dekodieren"}
           </button>
         ))}
       </div>
@@ -63,7 +63,7 @@ export function Base64EncoderTool() {
             disabled={!result.ok}
             onClick={() => navigator.clipboard.writeText(result.value)}
           >
-            Copy output
+            Ausgabe kopieren
           </Button>
         </div>
       </div>

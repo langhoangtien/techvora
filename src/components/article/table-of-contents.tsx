@@ -21,7 +21,7 @@ export function TableOfContents({
 
   return (
     <aside className={cn("rounded-lg border bg-card p-4", className)}>
-      <p className="text-sm font-medium">On this page</p>
+      <p className="text-sm font-medium">Auf dieser Seite</p>
       <nav className="mt-3 space-y-2 text-sm text-muted-foreground">
         {items.map((item) => (
           <Link

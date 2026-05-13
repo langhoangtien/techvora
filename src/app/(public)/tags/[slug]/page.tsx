@@ -58,9 +58,9 @@ export default async function TagPage({ params, searchParams }: PageProps) {
     <>
       <SeoJsonLd data={{ "@context": "https://schema.org", "@type": "CollectionPage", name: tag.name, url: new URL(`/tags/${tag.slug}`, site.url).toString() }} />
       <Container className="py-10">
-        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Tags" }, { label: tag.name }]} />
-        <SectionHeader className="mt-8" eyebrow="Tag" title={tag.name} description={tag.description ?? "Articles with this tag."} />
-        <div className="mt-8"><ArticleGrid posts={posts} emptyTitle="No articles with this tag" /></div>
+        <Breadcrumb items={[{ label: "Startseite", href: "/" }, { label: "Tags" }, { label: tag.name }]} />
+        <SectionHeader className="mt-8" eyebrow="Tag" title={tag.name} description={tag.description ?? "Artikel mit diesem Tag."} />
+        <div className="mt-8"><ArticleGrid posts={posts} emptyTitle="Keine Artikel mit diesem Tag" /></div>
         <Pagination className="mt-8" page={page} totalPages={totalPages} getPageHref={(nextPage) => `/tags/${tag.slug}?page=${nextPage}`} />
       </Container>
     </>

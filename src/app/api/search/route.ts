@@ -34,7 +34,7 @@ export async function GET(request: Request) {
   } catch {
     return NextResponse.json(
       {
-        error: "Unable to search right now. Please try again later.",
+        error: "Die Suche ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
       },
       { status: 500 }
     )

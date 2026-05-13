@@ -46,7 +46,7 @@ export function ComparisonCard({
           <span className="text-xs font-medium text-muted-foreground">vs</span>
           <Logo name={itemBName} url={itemBLogoUrl} />
         </div>
-        {featured ? <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-xs text-primary">Featured</span> : null}
+        {featured ? <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-xs text-primary">Empfohlen</span> : null}
       </div>
       <h3 className="mt-4 text-lg font-semibold tracking-tight">
         <Link href={href}>{title}</Link>
@@ -59,7 +59,7 @@ export function ComparisonCard({
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <WinnerBadge winner={winner} />
         <Button asChild variant="outline">
-          <Link href={href}>Read comparison</Link>
+          <Link href={href}>Vergleich lesen</Link>
         </Button>
       </div>
     </article>

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 
 export function SearchBox({
   className,
-  placeholder = "Search Tekvora",
+  placeholder = "Tekvora durchsuchen",
   ...props
 }: React.ComponentProps<typeof Input>) {
   return (
