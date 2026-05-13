@@ -23,7 +23,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: sh -c "./node_modules/.bin/prisma migrate deploy"
+    command: sh -c "node ./node_modules/prisma/build/index.js migrate deploy"
 
   app:
     image: ${DOCKER_IMAGE:?Set DOCKER_IMAGE in .env.production}
