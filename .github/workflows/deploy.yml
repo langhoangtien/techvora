@@ -112,15 +112,26 @@ jobs:
             "GHCR_PASSWORD_B64='${GHCR_PASSWORD_B64}' GHCR_USERNAME='${{ github.actor }}' IMAGE_SHA='${IMAGE_SHA}' IMAGE_MIGRATE_SHA='${IMAGE_MIGRATE_SHA}' DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
           set -euo pipefail
 
+          echo "=== Starting deployment ==="
           cd "$DEPLOY_PATH"
+          echo "Working directory: $(pwd)"
+          echo "Image SHA: ${IMAGE_SHA}"
+          echo "Migrate SHA: ${IMAGE_MIGRATE_SHA}"
 
           if [ ! -f .env.production ]; then
-            echo ".env.production is missing in $DEPLOY_PATH" >&2
+            echo "ERROR: .env.production is missing in $DEPLOY_PATH" >&2
+            echo "Files in $DEPLOY_PATH:"
+            ls -la "$DEPLOY_PATH" || true
             exit 1
           fi
 
-          printf '%s' "$GHCR_PASSWORD_B64" | base64 -d | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin >/dev/null
+          echo "=== Docker login ==="
+          if ! printf '%s' "$GHCR_PASSWORD_B64" | base64 -d | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin; then
+            echo "ERROR: Docker login failed" >&2
+            exit 1
+          fi
 
+          echo "=== Updating .env.production ==="
           if grep -q '^DOCKER_IMAGE=' .env.production; then
             sed -i "s|^DOCKER_IMAGE=.*|DOCKER_IMAGE=${IMAGE_SHA}|" .env.production
           else
@@ -133,60 +144,89 @@ jobs:
             printf '\nDOCKER_IMAGE_MIGRATE=%s\n' "$IMAGE_MIGRATE_SHA" >> .env.production
           fi
 
-          docker compose --env-file .env.production -f docker-compose.yml pull app migrate
+          echo "Current DOCKER_IMAGE settings:"
+          grep "DOCKER_IMAGE" .env.production || echo "No DOCKER_IMAGE found"
 
-          echo "Running database migrations..."
-          docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
+          echo "=== Pulling images ==="
+          if ! docker compose --env-file .env.production -f docker-compose.yml pull app migrate; then
+            echo "ERROR: Failed to pull images" >&2
+            docker compose --env-file .env.production -f docker-compose.yml pull app migrate || true
+            exit 1
+          fi
 
-          echo "Starting app..."
-          docker compose --env-file .env.production -f docker-compose.yml up -d --force-recreate --remove-orphans app
+          echo "=== Running database migrations ==="
+          if ! docker compose --env-file .env.production -f docker-compose.yml run --rm migrate; then
+            echo "ERROR: Migration failed" >&2
+            docker compose --env-file .env.production -f docker-compose.yml logs migrate || true
+            exit 1
+          fi
 
-          echo "Checking app container..."
-          sleep 10
+          echo "=== Stopping old containers ==="
+          docker compose --env-file .env.production -f docker-compose.yml down || true
 
-          APP_CONTAINER_ID="$(docker compose --env-file .env.production -f docker-compose.yml ps -q app || true)"
-
-          if [ -z "$APP_CONTAINER_ID" ]; then
-            echo "App container was not created"
-            docker compose --env-file .env.production -f docker-compose.yml ps -a
+          echo "=== Starting app ==="
+          if ! docker compose --env-file .env.production -f docker-compose.yml up -d --remove-orphans app; then
+            echo "ERROR: Failed to start app" >&2
+            docker compose --env-file .env.production -f docker-compose.yml ps -a || true
             docker compose --env-file .env.production -f docker-compose.yml logs app || true
             exit 1
           fi
 
+          echo "=== Checking app container ==="
+          sleep 5
+
+          APP_CONTAINER_ID="$(docker compose --env-file .env.production -f docker-compose.yml ps -q app || true)"
+
+          if [ -z "$APP_CONTAINER_ID" ]; then
+            echo "ERROR: App container was not created" >&2
+            echo "Running containers:"
+            docker compose --env-file .env.production -f docker-compose.yml ps -a || true
+            echo "Logs:"
+            docker compose --env-file .env.production -f docker-compose.yml logs app || true
+            exit 1
+          fi
+
+          echo "App container ID: $APP_CONTAINER_ID"
+
           APP_STATUS="$(docker inspect -f '{{.State.Status}}' "$APP_CONTAINER_ID")"
+          echo "App status: $APP_STATUS"
 
           if [ "$APP_STATUS" != "running" ]; then
-            echo "App container is not running. Status: $APP_STATUS"
+            echo "ERROR: App container is not running" >&2
+            docker inspect "$APP_CONTAINER_ID" || true
             docker logs "$APP_CONTAINER_ID" || true
             exit 1
           fi
 
-          echo "Checking app health..."
-          for i in $(seq 1 12); do
-            APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")"
+          echo "=== Waiting for app to be healthy ==="
+          for i in $(seq 1 24); do
+            APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")" || true
+
+            echo "[$i/24] Health: $APP_HEALTH"
 
             if [ "$APP_HEALTH" = "healthy" ]; then
-              echo "App is healthy"
+              echo "✓ App is healthy"
               break
             fi
 
             if [ "$APP_HEALTH" = "unhealthy" ]; then
-              echo "App is unhealthy"
+              echo "ERROR: App is unhealthy" >&2
               docker logs "$APP_CONTAINER_ID" || true
               exit 1
             fi
 
-            echo "Waiting for app health... current: $APP_HEALTH"
             sleep 5
           done
 
-          APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")"
-
+          APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")" || true
           if [ "$APP_HEALTH" != "healthy" ]; then
-            echo "App did not become healthy. Final health: $APP_HEALTH"
+            echo "ERROR: App did not become healthy. Final health: $APP_HEALTH" >&2
             docker logs "$APP_CONTAINER_ID" || true
             exit 1
           fi
 
-          docker image prune -af --filter "until=168h"
+          echo "=== Cleanup ==="
+          docker image prune -af --filter "until=168h" || true
+
+          echo "=== Deployment completed successfully ==="
           EOF
