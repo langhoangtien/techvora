@@ -98,6 +98,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" "mkdir -p '${DEPLOY_PATH}'"
           scp -i ~/.ssh/deploy_key docker-compose.production.yml "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${DEPLOY_PATH}/docker-compose.yml"
+          echo "Compose file uploaded: docker-compose.yml"
 
       - name: Deploy on VPS
         shell: bash
@@ -125,34 +126,44 @@ jobs:
             exit 1
           fi
 
-          echo "=== Docker login ==="
-          if ! printf '%s' "$GHCR_PASSWORD_B64" | base64 -d | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin; then
-            echo "ERROR: Docker login failed" >&2
+          echo "=== Updating .env.production ==="
+          cp .env.production .env.production.backup.$(date +%s)
+
+          TMP_ENV=$(mktemp)
+          trap "rm -f $TMP_ENV" EXIT
+
+          cp .env.production "$TMP_ENV"
+          sed -i '/^DOCKER_IMAGE=/d; /^DOCKER_IMAGE_MIGRATE=/d' "$TMP_ENV"
+          {
+            echo "DOCKER_IMAGE=${IMAGE_SHA}"
+            echo "DOCKER_IMAGE_MIGRATE=${IMAGE_MIGRATE_SHA}"
+          } >> "$TMP_ENV"
+          mv "$TMP_ENV" .env.production
+
+          echo "=== Verifying DOCKER_IMAGE variables ==="
+          if ! grep -q "^DOCKER_IMAGE=${IMAGE_SHA}$" .env.production; then
+            echo "ERROR: DOCKER_IMAGE not properly set" >&2
+            echo "Content:"
+            cat .env.production
             exit 1
           fi
 
-          echo "=== Updating .env.production ==="
-          if grep -q '^DOCKER_IMAGE=' .env.production; then
-            sed -i "s|^DOCKER_IMAGE=.*|DOCKER_IMAGE=${IMAGE_SHA}|" .env.production
-          else
-            printf '\nDOCKER_IMAGE=%s\n' "$IMAGE_SHA" >> .env.production
-          fi
-
-          if grep -q '^DOCKER_IMAGE_MIGRATE=' .env.production; then
-            sed -i "s|^DOCKER_IMAGE_MIGRATE=.*|DOCKER_IMAGE_MIGRATE=${IMAGE_MIGRATE_SHA}|" .env.production
-          else
-            printf '\nDOCKER_IMAGE_MIGRATE=%s\n' "$IMAGE_MIGRATE_SHA" >> .env.production
-          fi
-
           echo "Current DOCKER_IMAGE settings:"
-          grep "DOCKER_IMAGE" .env.production || echo "No DOCKER_IMAGE found"
+          grep "^DOCKER_IMAGE" .env.production
+
+          echo "=== Docker login ==="
+          if ! printf '%s' "$GHCR_PASSWORD_B64" | base64 -d | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin >/dev/null 2>&1; then
+            echo "ERROR: Docker login failed" >&2
+            exit 1
+          fi
+          echo "✓ Docker login successful"
 
           echo "=== Pulling images ==="
           if ! docker compose --env-file .env.production -f docker-compose.yml pull app migrate; then
             echo "ERROR: Failed to pull images" >&2
-            docker compose --env-file .env.production -f docker-compose.yml pull app migrate || true
             exit 1
           fi
+          echo "✓ Images pulled successfully"
 
           echo "=== Running database migrations ==="
           if ! docker compose --env-file .env.production -f docker-compose.yml run --rm migrate; then
@@ -160,6 +171,7 @@ jobs:
             docker compose --env-file .env.production -f docker-compose.yml logs migrate || true
             exit 1
           fi
+          echo "✓ Migrations completed"
 
           echo "=== Stopping old containers ==="
           docker compose --env-file .env.production -f docker-compose.yml down || true
@@ -167,10 +179,10 @@ jobs:
           echo "=== Starting app ==="
           if ! docker compose --env-file .env.production -f docker-compose.yml up -d --remove-orphans app; then
             echo "ERROR: Failed to start app" >&2
-            docker compose --env-file .env.production -f docker-compose.yml ps -a || true
             docker compose --env-file .env.production -f docker-compose.yml logs app || true
             exit 1
           fi
+          echo "✓ App started"
 
           echo "=== Checking app container ==="
           sleep 5
@@ -199,10 +211,12 @@ jobs:
           fi
 
           echo "=== Waiting for app to be healthy ==="
-          for i in $(seq 1 24); do
+          HEALTH_CHECK_COUNT=0
+          while [ $HEALTH_CHECK_COUNT -lt 24 ]; do
+            HEALTH_CHECK_COUNT=$((HEALTH_CHECK_COUNT + 1))
             APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")" || true
 
-            echo "[$i/24] Health: $APP_HEALTH"
+            echo "[$HEALTH_CHECK_COUNT/24] Health: $APP_HEALTH"
 
             if [ "$APP_HEALTH" = "healthy" ]; then
               echo "✓ App is healthy"
@@ -225,8 +239,10 @@ jobs:
             exit 1
           fi
 
-          echo "=== Cleanup ==="
+          echo "=== Cleanup old images ==="
           docker image prune -af --filter "until=168h" || true
+
+          echo "=== ✓ Deployment completed successfully ===" 
 
           echo "=== Deployment completed successfully ==="
           EOF
