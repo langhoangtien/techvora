@@ -50,28 +50,34 @@ export async function proxy(request: NextRequest) {
 
   if (pathname.startsWith("/api")) return NextResponse.next()
 
-  if (!pathname.startsWith("/admin") && !shouldSkipRuntimeRedirect(pathname)) {
-    const lookupUrl = new URL("/api/redirects/lookup", request.url)
-    lookupUrl.searchParams.set("path", pathname)
-    const response = await fetch(lookupUrl, { cache: "no-store" })
+ if (!pathname.startsWith("/admin") && !shouldSkipRuntimeRedirect(pathname)) {
+  const internalBaseUrl =
+    process.env.INTERNAL_SITE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    request.nextUrl.origin
 
-    if (response.ok) {
-      const redirect = (await response.json()) as {
-        destination?: string
-        statusCode?: number
-      } | null
+  const lookupUrl = new URL("/api/redirects/lookup", internalBaseUrl)
+  lookupUrl.searchParams.set("path", pathname)
 
-      if (
-        redirect?.destination &&
-        (redirect.statusCode === 301 || redirect.statusCode === 302)
-      ) {
-        return NextResponse.redirect(
-          new URL(redirect.destination, request.url),
-          redirect.statusCode
-        )
-      }
+  const response = await fetch(lookupUrl, { cache: "no-store" })
+
+  if (response.ok) {
+    const redirect = (await response.json()) as {
+      destination?: string
+      statusCode?: number
+    } | null
+
+    if (
+      redirect?.destination &&
+      (redirect.statusCode === 301 || redirect.statusCode === 302)
+    ) {
+      return NextResponse.redirect(
+        new URL(redirect.destination, request.url),
+        redirect.statusCode
+      )
     }
   }
+}
 
   if (!pathname.startsWith("/admin") || pathname === "/admin/login") return NextResponse.next()
 

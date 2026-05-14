@@ -169,7 +169,7 @@ export function MediaLibrary({ media }: { media: Media[] }) {
                 <img
                   src={selected.url}
                   alt={selected.altText ?? selected.filename}
-                  className="max-h-[560px] w-full rounded-lg border object-contain"
+                  className="max-h-140 w-full rounded-lg border object-contain"
                 />
               </div>
               <div className="space-y-4">
