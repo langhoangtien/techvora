@@ -135,9 +135,58 @@ jobs:
 
           docker compose --env-file .env.production -f docker-compose.yml pull app migrate
 
+          echo "Running database migrations..."
           docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
 
-          docker compose --env-file .env.production -f docker-compose.yml up -d app --remove-orphans
+          echo "Starting app..."
+          docker compose --env-file .env.production -f docker-compose.yml up -d app --force-recreate --remove-orphans
+
+          echo "Checking app container..."
+          sleep 10
+
+          APP_CONTAINER_ID="$(docker compose --env-file .env.production -f docker-compose.yml ps -q app || true)"
+
+          if [ -z "$APP_CONTAINER_ID" ]; then
+            echo "App container was not created"
+            docker compose --env-file .env.production -f docker-compose.yml ps -a
+            docker compose --env-file .env.production -f docker-compose.yml logs app || true
+            exit 1
+          fi
+
+          APP_STATUS="$(docker inspect -f '{{.State.Status}}' "$APP_CONTAINER_ID")"
+
+          if [ "$APP_STATUS" != "running" ]; then
+            echo "App container is not running. Status: $APP_STATUS"
+            docker logs "$APP_CONTAINER_ID" || true
+            exit 1
+          fi
+
+          echo "Checking app health..."
+          for i in $(seq 1 12); do
+            APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")"
+
+            if [ "$APP_HEALTH" = "healthy" ]; then
+              echo "App is healthy"
+              break
+            fi
+
+            if [ "$APP_HEALTH" = "unhealthy" ]; then
+              echo "App is unhealthy"
+              docker logs "$APP_CONTAINER_ID" || true
+              exit 1
+            fi
+
+            echo "Waiting for app health... current: $APP_HEALTH"
+            sleep 5
+          done
+
+          APP_HEALTH="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$APP_CONTAINER_ID")"
+
+          if [ "$APP_HEALTH" != "healthy" ]; then
+            echo "App did not become healthy. Final health: $APP_HEALTH"
+            docker logs "$APP_CONTAINER_ID" || true
+            exit 1
+          fi
 
           docker image prune -af --filter "until=168h"
           EOF
