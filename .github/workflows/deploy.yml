@@ -139,7 +139,7 @@ jobs:
           docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
 
           echo "Starting app..."
-          docker compose --env-file .env.production -f docker-compose.yml up -d app --force-recreate --remove-orphans
+          docker compose --env-file .env.production -f docker-compose.yml up -d --force-recreate --remove-orphans app
 
           echo "Checking app container..."
           sleep 10
