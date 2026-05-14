@@ -14,7 +14,7 @@ export type AuthorFormState = {
   errors?: Partial<Record<"name" | "slug", string>>
 }
 
-const locale = "en"
+const locale = "de-DE"
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim()

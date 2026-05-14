@@ -44,6 +44,7 @@ export function TagForm({
       router.replace(`${url.pathname}${url.search}`, { scroll: false })
     }
   }
+console.log("TRIGGER",trigger);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

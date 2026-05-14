@@ -14,7 +14,7 @@ export type CategoryFormState = {
   errors?: Partial<Record<"name" | "slug" | "parentId" | "order", string>>
 }
 
-const locale = "en"
+const locale = "de-DE"
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim()

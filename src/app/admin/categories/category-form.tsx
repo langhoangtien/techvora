@@ -28,6 +28,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { IconPlus } from "@tabler/icons-react";
 
 const initialState: CategoryFormState = {
   ok: false,
@@ -38,11 +39,11 @@ type CategoryOption = Pick<Category, "id" | "name" | "parentId">
 export function CategoryForm({
   category,
   categories,
-  trigger,
+  showTrigger = false,
 }: {
   category?: Category | null
   categories: CategoryOption[]
-  trigger?: React.ReactNode
+  showTrigger?: boolean
 }) {
   const router = useRouter()
   const [state, formAction] = useActionState(saveCategoryAction, initialState)
@@ -60,7 +61,7 @@ export function CategoryForm({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
+      {showTrigger ? <DialogTrigger asChild><Button><IconPlus /> Tạo danh mục</Button></DialogTrigger> : null}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{category ? "Sửa danh mục" : "Tạo danh mục"}</DialogTitle>

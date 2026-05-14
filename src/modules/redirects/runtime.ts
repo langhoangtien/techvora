@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { normalizeRedirectPath, shouldSkipRuntimeRedirect } from "@/modules/redirects/paths"
 
-const locale = "en"
+const locale = "de-DE"
 
 export async function getRuntimeRedirect(pathname: string) {
   const source = normalizeRedirectPath(pathname)

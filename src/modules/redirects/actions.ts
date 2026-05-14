@@ -20,7 +20,7 @@ export type RedirectFormState = {
   errors?: Partial<Record<"fromPath" | "toPath" | "status", string>>
 }
 
-const locale = "en"
+const locale = "de-DE"
 const validStatusCodes = new Set([301, 302])
 
 function text(formData: FormData, key: string) {

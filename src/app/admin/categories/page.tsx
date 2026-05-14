@@ -2,7 +2,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import {
   IconEdit as EditIcon,
-  IconPlus as PlusIcon,
+  IconPlus,
   IconTrash as Trash2Icon,
 } from "@tabler/icons-react"
 
@@ -70,12 +70,7 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
           <SearchFilter defaultValue={query} placeholder="Tìm danh mục" />
           <CategoryForm
             categories={categoryOptions}
-            trigger={
-              <Button>
-                <PlusIcon />
-                Tạo danh mục
-              </Button>
-            }
+            showTrigger={true}
           />
         </div>
       </div>

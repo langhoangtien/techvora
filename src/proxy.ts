@@ -58,7 +58,6 @@ export async function proxy(request: NextRequest) {
 
   const lookupUrl = new URL("/api/redirects/lookup", internalBaseUrl)
   lookupUrl.searchParams.set("path", pathname)
-console.log("SITE_URL", internalBaseUrl, "LOOKUP_URL", lookupUrl.toString());
 
   const response = await fetch(lookupUrl, { cache: "no-store" })
 

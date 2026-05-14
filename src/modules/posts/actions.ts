@@ -20,7 +20,7 @@ export type PostFormState = {
   errors?: Partial<Record<string, string>>
 }
 
-const locale = "en"
+const locale = "de-DE"
 const validStatuses = new Set(["DRAFT", "PUBLISHED", "SCHEDULED", "ARCHIVED"])
 const validTypes = new Set(["ARTICLE", "TOOL", "SAAS", "COMPARISON", "PAGE"])
 const validFormats = new Set(["HTML", "MARKDOWN", "MDX"])

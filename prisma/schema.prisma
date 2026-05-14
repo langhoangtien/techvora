@@ -53,7 +53,7 @@ model Author {
   userId      String?  @unique
   name        String
   slug        String
-  locale      String   @default("en")
+  locale      String   @default("de-DE")
   bio         String?
   avatarId    String?
   avatarUrl   String?
@@ -80,7 +80,7 @@ model Category {
   id          String    @id @default(cuid())
   name        String
   slug        String
-  locale      String    @default("en")
+  locale      String    @default("de-DE")
   description String?
   type        PostType?
   parentId    String?
@@ -107,7 +107,7 @@ model Tag {
   id          String   @id @default(cuid())
   name        String
   slug        String
-  locale      String   @default("en")
+  locale      String   @default("de-DE")
   description String?
   seoTitle    String?
   seoDesc     String?
@@ -126,7 +126,7 @@ model Post {
   id              String        @id @default(cuid())
   title           String
   slug            String
-  locale          String        @default("en")
+  locale          String        @default("de-DE")
   excerpt         String?
   content         String?
   type            PostType      @default(ARTICLE)
@@ -173,7 +173,7 @@ model Tool {
   id               String        @id @default(cuid())
   name             String
   slug             String
-  locale           String        @default("en")
+  locale           String        @default("de-DE")
   type             PostType      @default(TOOL)
   tagline          String?
   shortDescription String?
@@ -309,7 +309,7 @@ model Media {
 model SiteSetting {
   id        String   @id @default(cuid())
   key       String
-  locale    String   @default("en")
+  locale    String   @default("de-DE")
   value     Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -323,7 +323,7 @@ model Redirect {
   source      String
   destination String
   statusCode  Int      @default(301)
-  locale      String   @default("en")
+  locale      String   @default("de-DE")
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
