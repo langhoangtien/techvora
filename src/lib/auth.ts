@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        if(!user.active) {
+        if(!user.isActive) {
           return null
         }
 
