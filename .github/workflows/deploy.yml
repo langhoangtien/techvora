@@ -177,12 +177,20 @@ jobs:
           docker compose --env-file .env.production -f docker-compose.yml down || true
 
           echo "=== Starting app ==="
-          if ! docker compose --env-file .env.production -f docker-compose.yml up -d --remove-orphans app; then
+          if ! docker compose --env-file .env.production -f docker-compose.yml up -d --force-recreate --remove-orphans app; then
             echo "ERROR: Failed to start app" >&2
             docker compose --env-file .env.production -f docker-compose.yml logs app || true
             exit 1
           fi
           echo "✓ App started"
+          RUNNING_IMAGES="$(docker inspect "$(docker compose --env-file .env.production -f docker-compose.yml ps -q app)" --format='{{.Config.Image}}')"
+          echo "Expected image: $IMAGE_SHA"
+          echo "Running image: $RUNNING_IMAGES"
+
+          if [ "$RUNNING_IMAGES" != "$IMAGE_SHA" ]; then
+            echo "ERROR: App is still running old image" >&2
+            exit 1
+          fi
 
           echo "=== Checking app container ==="
           sleep 5
