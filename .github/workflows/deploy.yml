@@ -167,8 +167,17 @@ jobs:
 
           echo "=== Running database migrations ==="
 
-          if ! docker compose --env-file .env.production -f docker-compose.yml run --rm -T --entrypoint sh migrate -lc "npx prisma migrate deploy"; then
-            echo "ERROR: Migration failed" >&2
+          NETWORK_NAME="$(docker compose --env-file .env.production -f docker-compose.yml ps -q postgres | xargs docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{println $k}}{{end}}' | head -n 1)"
+
+          echo "Docker network: $NETWORK_NAME"
+
+          if ! timeout 120s docker run --rm \
+            --network "$NETWORK_NAME" \
+            --env-file .env.production \
+            --entrypoint sh \
+            "$IMAGE_MIGRATE_SHA" \
+            -lc "npx prisma migrate deploy"; then
+            echo "ERROR: Migration failed or timed out" >&2
             exit 1
           fi
 
