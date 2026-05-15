@@ -10,6 +10,7 @@ import { deleteAuthorAction } from "@/modules/authors/actions"
 import { getAuthorForEdit, getAuthorsForAdmin } from "@/modules/authors/queries"
 import { requireAdmin } from "@/lib/admin-auth"
 import { AdminBadge } from "@/components/admin/badge"
+import { AdminPagination } from "@/components/admin/pagination"
 import { AuthorForm } from "@/app/admin/authors/author-form"
 import { DataTable } from "@/components/admin/data-table"
 import { SearchFilter } from "@/components/admin/search-filter"
@@ -48,7 +49,7 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
   const query = value(params, "q") ?? ""
   const page = Number(value(params, "page") ?? 1)
   const editId = value(params, "edit")
-  const [{ authors, totalPages }, author] = await Promise.all([
+  const [{ authors, total, totalPages }, author] = await Promise.all([
     getAuthorsForAdmin(query, page),
     getAuthorForEdit(editId),
   ])
@@ -144,20 +145,13 @@ export default async function AuthorsPage({ searchParams }: PageProps) {
           },
         ]}
       />
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page - 1, params)}>Trang trước</Link>
-            </Button>
-          ) : null}
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page + 1, params)}>Trang sau</Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="tác giả"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

@@ -9,6 +9,7 @@ import {
 import { bulkPostAction } from "@/modules/posts/actions"
 import { getPostEditorOptions, getPostList } from "@/modules/posts/queries"
 import { requireAdmin } from "@/lib/admin-auth"
+import { AdminPagination } from "@/components/admin/pagination"
 import { DeletePostButton } from "@/app/admin/posts/delete-post-button"
 import { DataTable } from "@/components/admin/data-table"
 import { StatusBadge } from "@/components/admin/status-badge"
@@ -79,7 +80,7 @@ export default async function PostsPage({ searchParams }: PageProps) {
     page,
   }
 
-  const [{ posts, totalPages }, options] = await Promise.all([
+  const [{ posts, total, totalPages }, options] = await Promise.all([
     getPostList(filters),
     getPostEditorOptions(),
   ])
@@ -284,25 +285,13 @@ export default async function PostsPage({ searchParams }: PageProps) {
         ]}
       />
 
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page - 1, params)}>
-                Trang trước
-              </Link>
-            </Button>
-          ) : null}
-
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page + 1, params)}>
-                Trang sau
-              </Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="bài viết"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

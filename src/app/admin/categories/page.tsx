@@ -2,7 +2,6 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import {
   IconEdit as EditIcon,
-  IconPlus,
   IconTrash as Trash2Icon,
 } from "@tabler/icons-react"
 
@@ -14,6 +13,7 @@ import {
 } from "@/modules/categories/queries"
 import { requireAdmin } from "@/lib/admin-auth"
 import { AdminBadge } from "@/components/admin/badge"
+import { AdminPagination } from "@/components/admin/pagination"
 import { CategoryForm } from "@/app/admin/categories/category-form"
 import { DataTable } from "@/components/admin/data-table"
 import { SearchFilter } from "@/components/admin/search-filter"
@@ -51,7 +51,7 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
   const query = value(params, "q") ?? ""
   const page = Number(value(params, "page") ?? 1)
   const editId = value(params, "edit")
-  const [{ categories, totalPages }, categoryOptions, category] = await Promise.all([
+  const [{ categories, total, totalPages }, categoryOptions, category] = await Promise.all([
     getCategoriesForAdmin(query, page),
     getCategoryOptions(),
     getCategoryForEdit(editId),
@@ -143,20 +143,13 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
           },
         ]}
       />
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page - 1, params)}>Trang trước</Link>
-            </Button>
-          ) : null}
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page + 1, params)}>Trang sau</Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="danh mục"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

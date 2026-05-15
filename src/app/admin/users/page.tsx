@@ -3,6 +3,7 @@ import { IconEdit, IconPlus } from "@tabler/icons-react"
 
 import { getUsersForAdmin, getUserForEdit } from "@/modules/users/queries"
 import { requireAdmin } from "@/lib/admin-auth"
+import { AdminPagination } from "@/components/admin/pagination"
 import { UserForm } from "@/app/admin/users/user-form"
 import { DataTable } from "@/components/admin/data-table"
 import { Button } from "@/components/ui/button"
@@ -170,42 +171,13 @@ export default async function UsersPage({ searchParams }: PageProps) {
         ]}
       />
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between rounded-lg border bg-card p-4">
-          <div className="text-sm text-muted-foreground">
-            Hiển thị {(page - 1) * 10 + 1} đến {Math.min(page * 10, total)} trên {total} người dùng
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              disabled={page === 1}
-            >
-              <a href={pageHref(page - 1, params)}>
-                Trang trước
-              </a>
-            </Button>
-
-            <Button variant="outline" size="sm" disabled>
-              Trang {page} / {totalPages}
-            </Button>
-
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              disabled={page === totalPages}
-            >
-              <a href={pageHref(page + 1, params)}>
-                Trang sau
-              </a>
-            </Button>
-          </div>
-        </div>
-      )}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="người dùng"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

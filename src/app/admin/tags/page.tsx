@@ -10,6 +10,7 @@ import { deleteTagAction } from "@/modules/tags/actions"
 import { getTagForEdit, getTagsForAdmin } from "@/modules/tags/queries"
 import { requireAdmin } from "@/lib/admin-auth"
 import { AdminBadge } from "@/components/admin/badge"
+import { AdminPagination } from "@/components/admin/pagination"
 import { DataTable } from "@/components/admin/data-table"
 import { SearchFilter } from "@/components/admin/search-filter"
 import { TagForm } from "@/app/admin/tags/tag-form"
@@ -47,7 +48,7 @@ export default async function TagsPage({ searchParams }: PageProps) {
   const query = value(params, "q") ?? ""
   const page = Number(value(params, "page") ?? 1)
   const editId = value(params, "edit")
-  const [{ tags, totalPages }, tag] = await Promise.all([
+  const [{ tags, total, totalPages }, tag] = await Promise.all([
     getTagsForAdmin(query, page),
     getTagForEdit(editId),
   ])
@@ -122,20 +123,13 @@ export default async function TagsPage({ searchParams }: PageProps) {
           },
         ]}
       />
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page - 1, params)}>Trang trước</Link>
-            </Button>
-          ) : null}
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page + 1, params)}>Trang sau</Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="thẻ"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }
