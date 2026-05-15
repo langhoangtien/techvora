@@ -167,14 +167,8 @@ jobs:
 
           echo "=== Running database migrations ==="
 
-          docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
-          MIGRATE_EXIT_CODE=$?
-
-          echo "Migrate exit code: $MIGRATE_EXIT_CODE"
-
-          if [ "$MIGRATE_EXIT_CODE" -ne 0 ]; then
+          if ! docker compose --env-file .env.production -f docker-compose.yml run --rm -T --entrypoint sh migrate -lc "npx prisma migrate deploy"; then
             echo "ERROR: Migration failed" >&2
-            docker compose --env-file .env.production -f docker-compose.yml logs migrate || true
             exit 1
           fi
 
