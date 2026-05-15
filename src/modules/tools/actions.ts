@@ -1,6 +1,6 @@
 ﻿"use server"
 
-import type { PostStatus } from "@prisma/client"
+import type { PostStatus } from "@/generated/prisma/client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 

@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react"
 import { useRouter } from "next/navigation"
-import type { Category } from "@prisma/client"
+import type { Category } from "@/generated/prisma/client"
 
 import {
   saveCategoryAction,

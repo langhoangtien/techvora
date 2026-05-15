@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import { useActionState, useState } from "react"
-import type { ServiceProduct as Service } from "@prisma/client"
+import type { ServiceProduct as Service } from "@/generated/prisma/client"
 
 import { saveServiceAction, type ServiceFormState } from "@/modules/services/actions"
 import { jsonArrayToText } from "@/modules/services/utils"

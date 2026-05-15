@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import type { User } from "@prisma/client"
+import type { User } from "@/generated/prisma/client"
 import {
   IconEye,
   IconEyeOff,

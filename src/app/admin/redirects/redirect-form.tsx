@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState } from "react"
-import type { Redirect } from "@prisma/client"
+import type { Redirect } from "@/generated/prisma/client"
 
 import {
   saveRedirectAction,

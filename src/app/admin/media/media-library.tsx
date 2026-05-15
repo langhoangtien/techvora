@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
-import type { Media } from "@prisma/client"
+import type { Media } from "@/generated/prisma/client"
 import {
   IconClipboard as ClipboardIcon,
   IconCopy as CopyIcon,

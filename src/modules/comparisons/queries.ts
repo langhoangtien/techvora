@@ -1,4 +1,4 @@
-import type { PostStatus } from "@prisma/client"
+import type { PostStatus } from "@/generated/prisma/client"
 
 import { prisma } from "@/lib/prisma"
 

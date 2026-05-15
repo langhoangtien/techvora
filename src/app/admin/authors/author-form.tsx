@@ -2,7 +2,7 @@
 
 import { useActionState, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import type { Author } from "@prisma/client"
+import type { Author } from "@/generated/prisma/client"
 
 import {
   saveAuthorAction,

@@ -2,7 +2,7 @@
 
 import { useActionState, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import type { Author, Category, Post, PostTag, Tag } from "@prisma/client"
+import type { Author, Category, Post, PostTag, Tag } from "@/generated/prisma/client"
 import {
   IconCircleCheck as CheckCircle2Icon,
   IconAlertCircle as CircleAlertIcon,

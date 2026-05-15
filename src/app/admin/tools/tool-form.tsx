@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react"
-import type { Category, Tool } from "@prisma/client"
+import type { Category, Tool } from "@/generated/prisma/client"
 
 import { saveToolAction, type ToolFormState } from "@/modules/tools/actions"
 import { toolComponentOptions } from "@/modules/tools/definitions"

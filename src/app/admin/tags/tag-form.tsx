@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react"
 import { useRouter } from "next/navigation"
-import type { Tag } from "@prisma/client"
+import type { Tag } from "@/generated/prisma/client"
 
 import { saveTagAction, type TagFormState } from "@/modules/tags/actions"
 import { SlugFields } from "@/components/admin/slug-fields"

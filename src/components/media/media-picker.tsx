@@ -1,6 +1,6 @@
 "use client"
 
-import type { Media } from "@prisma/client"
+import type { Media } from "@/generated/prisma/client"
 
 export type MediaPickerProps = {
   media: Media[]

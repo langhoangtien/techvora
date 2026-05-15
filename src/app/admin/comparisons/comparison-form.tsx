@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react"
-import type { Comparison } from "@prisma/client"
+import type { Comparison } from "@/generated/prisma/client"
 
 import { saveComparisonAction, type ComparisonFormState } from "@/modules/comparisons/actions"
 import { comparisonTableToText, jsonArrayToText } from "@/modules/comparisons/utils"

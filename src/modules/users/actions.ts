@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import bcrypt from "bcryptjs"
-import type { Prisma, UserRole } from "@prisma/client"
+import type { Prisma, UserRole } from "@/generated/prisma/client"
 
 import { isAdminSession } from "@/lib/admin-auth"
 import { adminRedirect, deleteErrorMessage } from "@/lib/admin-redirect"
