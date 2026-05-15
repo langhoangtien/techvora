@@ -10,6 +10,7 @@ import { DeleteComparisonButton } from "@/app/admin/comparisons/delete-compariso
 import { requireAdmin } from "@/lib/admin-auth"
 import { getComparisonList } from "@/modules/comparisons/queries"
 import { DataTable } from "@/components/admin/data-table"
+import { AdminPagination } from "@/components/admin/pagination"
 import { StatusBadge } from "@/components/admin/status-badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -69,7 +70,7 @@ export default async function AdminComparisonsPage({
     page,
   }
 
-  const { comparisons, totalPages } =
+  const { comparisons, total, totalPages } =
     await getComparisonList(filters)
 
   return (
@@ -225,29 +226,13 @@ export default async function AdminComparisonsPage({
         ]}
       />
 
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link
-                href={pageHref(page - 1, params)}
-              >
-                Trang trước
-              </Link>
-            </Button>
-          ) : null}
-
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link
-                href={pageHref(page + 1, params)}
-              >
-                Trang sau
-              </Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="comparison"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

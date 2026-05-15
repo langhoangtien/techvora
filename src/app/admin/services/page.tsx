@@ -11,6 +11,7 @@ import { requireAdmin } from "@/lib/admin-auth"
 import { getServiceList } from "@/modules/services/queries"
 import { priceLabel } from "@/modules/services/utils"
 import { DataTable } from "@/components/admin/data-table"
+import { AdminPagination } from "@/components/admin/pagination"
 import { StatusBadge } from "@/components/admin/status-badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -71,7 +72,7 @@ export default async function AdminServicesPage({ searchParams }: PageProps) {
     page,
   }
 
-  const { products, categories, totalPages } = await getServiceList(filters)
+  const { products, categories, total, totalPages } = await getServiceList(filters)
 
   return (
     <div className="flex flex-col gap-6">
@@ -225,25 +226,13 @@ export default async function AdminServicesPage({ searchParams }: PageProps) {
         ]}
       />
 
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page - 1, params)}>
-                Trang trước
-              </Link>
-            </Button>
-          ) : null}
-
-          {page < totalPages ? (
-            <Button asChild variant="outline">
-              <Link href={pageHref(page + 1, params)}>
-                Trang sau
-              </Link>
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="service"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }

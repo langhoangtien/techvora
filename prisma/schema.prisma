@@ -60,6 +60,7 @@ model Author {
   websiteUrl  String?
   twitterUrl  String?
   linkedinUrl String?
+  facebookUrl String?
   seoTitle    String?
   seoDesc     String?
   canonical   String?

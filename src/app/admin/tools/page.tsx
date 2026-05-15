@@ -11,6 +11,7 @@ import { bulkToolAction } from "@/modules/tools/actions"
 import { toolComponentOptions } from "@/modules/tools/definitions"
 import { getToolEditorOptions, getToolList } from "@/modules/tools/queries"
 import { requireAdmin } from "@/lib/admin-auth"
+import { AdminPagination } from "@/components/admin/pagination"
 import { DataTable } from "@/components/admin/data-table"
 import { StatusBadge } from "@/components/admin/status-badge"
 import { Button } from "@/components/ui/button"
@@ -61,7 +62,7 @@ export default async function AdminToolsPage({ searchParams }: PageProps) {
     componentKey: value(params, "componentKey") ?? "",
     page,
   }
-  const [{ tools, totalPages }, options] = await Promise.all([
+  const [{ tools, total, totalPages }, options] = await Promise.all([
     getToolList(filters),
     getToolEditorOptions(),
   ])
@@ -190,12 +191,13 @@ export default async function AdminToolsPage({ searchParams }: PageProps) {
           },
         ]}
       />
-      {totalPages > 1 ? (
-        <div className="flex justify-end gap-2">
-          {page > 1 ? <Button asChild variant="outline"><Link href={pageHref(page - 1, params)}>Trang trước</Link></Button> : null}
-          {page < totalPages ? <Button asChild variant="outline"><Link href={pageHref(page + 1, params)}>Trang sau</Link></Button> : null}
-        </div>
-      ) : null}
+      <AdminPagination
+        page={page}
+        total={total}
+        totalPages={totalPages}
+        itemLabel="tool"
+        getPageHref={(nextPage) => pageHref(nextPage, params)}
+      />
     </div>
   )
 }
