@@ -166,11 +166,18 @@ jobs:
           echo "✓ Images pulled successfully"
 
           echo "=== Running database migrations ==="
-          if ! docker compose --env-file .env.production -f docker-compose.yml run --rm migrate; then
+
+          docker compose --env-file .env.production -f docker-compose.yml run --rm migrate
+          MIGRATE_EXIT_CODE=$?
+
+          echo "Migrate exit code: $MIGRATE_EXIT_CODE"
+
+          if [ "$MIGRATE_EXIT_CODE" -ne 0 ]; then
             echo "ERROR: Migration failed" >&2
             docker compose --env-file .env.production -f docker-compose.yml logs migrate || true
             exit 1
           fi
+
           echo "✓ Migrations completed"
 
           echo "=== Stopping old containers ==="
