@@ -4,6 +4,7 @@ import { useActionState, useState } from "react"
 import type { Category, Tool } from "@/generated/prisma/client"
 
 import { saveToolAction, type ToolFormState } from "@/modules/tools/actions"
+import { formatCategoryPath } from "@/modules/categories/labels"
 import { toolComponentOptions } from "@/modules/tools/definitions"
 import { slugify } from "@/lib/slugify"
 import { cn } from "@/lib/utils"
@@ -214,7 +215,7 @@ export function ToolForm({ tool, categories }: ToolFormProps) {
                   <option value="">Không danh mục</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
-                      {category.name}
+                      {formatCategoryPath(category, categories)}
                     </option>
                   ))}
                 </select>

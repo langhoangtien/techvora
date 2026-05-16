@@ -8,6 +8,7 @@ import {
   saveCategoryAction,
   type CategoryFormState,
 } from "@/modules/categories/actions"
+import { formatCategoryPath } from "@/modules/categories/labels"
 import { SlugFields } from "@/components/admin/slug-fields"
 import { SubmitButton } from "@/components/admin/submit-button"
 import { Button } from "@/components/ui/button"
@@ -108,7 +109,7 @@ export function CategoryForm({
                     .filter((item) => item.id !== category?.id)
                     .map((item) => (
                       <option key={item.id} value={item.id}>
-                        {item.name}
+                        {formatCategoryPath(item, categories)}
                       </option>
                     ))}
                 </select>

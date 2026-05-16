@@ -8,6 +8,7 @@ import {
 
 import { DeleteToolButton } from "@/app/admin/tools/delete-tool-button"
 import { bulkToolAction } from "@/modules/tools/actions"
+import { formatCategoryPath } from "@/modules/categories/labels"
 import { toolComponentOptions } from "@/modules/tools/definitions"
 import { getToolEditorOptions, getToolList } from "@/modules/tools/queries"
 import { requireAdmin } from "@/lib/admin-auth"
@@ -94,7 +95,11 @@ export default async function AdminToolsPage({ searchParams }: PageProps) {
         </select>
         <select name="categoryId" defaultValue={filters.categoryId} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
           <option value="">Tất cả danh mục</option>
-          {options.categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+          {options.categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {formatCategoryPath(category, options.categories)}
+            </option>
+          ))}
         </select>
         <select name="componentKey" defaultValue={filters.componentKey} className="h-8 rounded-lg border bg-background px-2.5 text-sm">
           <option value="">Tất cả widget</option>

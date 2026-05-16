@@ -1,5 +1,6 @@
 import type { PostStatus } from "@/generated/prisma/client"
 
+import { sortCategoriesByTree } from "@/modules/categories/labels"
 import { prisma } from "@/lib/prisma"
 
 const pageSize = 10
@@ -54,7 +55,7 @@ export async function getToolEditorOptions() {
     select: { id: true, name: true, parentId: true },
   })
 
-  return { categories }
+  return { categories: sortCategoriesByTree(categories) }
 }
 
 export async function getToolForEdit(id: string) {

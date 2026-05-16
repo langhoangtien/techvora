@@ -7,6 +7,7 @@ import {
 } from "@tabler/icons-react"
 
 import { bulkPostAction } from "@/modules/posts/actions"
+import { formatCategoryPath } from "@/modules/categories/labels"
 import { getPostEditorOptions, getPostList } from "@/modules/posts/queries"
 import { requireAdmin } from "@/lib/admin-auth"
 import { AdminPagination } from "@/components/admin/pagination"
@@ -147,7 +148,7 @@ export default async function PostsPage({ searchParams }: PageProps) {
 
           {options.categories.map((category) => (
             <option key={category.id} value={category.id}>
-              {category.name}
+              {formatCategoryPath(category, options.categories)}
             </option>
           ))}
         </select>

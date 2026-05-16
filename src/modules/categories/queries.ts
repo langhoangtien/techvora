@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { sortCategoriesByTree } from "@/modules/categories/labels"
 
 const pageSize = 10
 
@@ -49,7 +50,7 @@ export async function getCategoriesForAdmin(query = "", pageValue = 1) {
 }
 
 export async function getCategoryOptions() {
-  return prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     select: {
       id: true,
       name: true,
@@ -57,6 +58,8 @@ export async function getCategoryOptions() {
     },
     orderBy: [{ order: "asc" }, { name: "asc" }],
   })
+
+  return sortCategoriesByTree(categories)
 }
 
 export async function getCategoryForEdit(id?: string) {

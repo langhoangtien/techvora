@@ -1,5 +1,6 @@
 import type { PostStatus, PostType } from "@/generated/prisma/client"
 
+import { sortCategoriesByTree } from "@/modules/categories/labels"
 import { prisma } from "@/lib/prisma"
 
 export type PostListFilters = {
@@ -56,7 +57,7 @@ export async function getPostList(filters: PostListFilters) {
 export async function getPostEditorOptions() {
   const [categories, tags, authors] = await Promise.all([
     prisma.category.findMany({
-      select: { id: true, name: true },
+      select: { id: true, name: true, parentId: true },
       orderBy: [{ order: "asc" }, { name: "asc" }],
     }),
     prisma.tag.findMany({
@@ -69,7 +70,7 @@ export async function getPostEditorOptions() {
     }),
   ])
 
-  return { categories, tags, authors }
+  return { categories: sortCategoriesByTree(categories), tags, authors }
 }
 
 export async function getPostForEdit(id: string) {
